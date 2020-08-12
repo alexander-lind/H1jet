@@ -19,7 +19,7 @@ contains
   
 !=======================================================================================
 ! Test function to see if the user interface is set up and included 
-
+! AB use integer identifiers
   integer function user_included() 
 
     ! This file is the default file where the user interface has not been set up 
