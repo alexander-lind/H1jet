@@ -1,0 +1,162 @@
+\documentclass[12pt,a4wide]{article}
+
+\usepackage{a4wide,amsmath,amssymb,graphicx,color}
+
+\usepackage{listings,enumitem,calc,hyperref,caption,mmacells} 
+\lstset{basicstyle=\small\ttfamily,breaklines=true,breakatwhitespace=true}
+
+\definecolor{comment}{rgb}{0,0.3,0}
+\lstset{language=Fortran}
+\lstset{
+  columns=flexible,
+  basicstyle=\tt\footnotesize,
+  keywordstyle=,
+  identifierstyle=\color{black},
+  commentstyle=\tt\color{comment},
+  mathescape=false,
+  escapebegin=\color{comment},
+  showstringspaces=false,
+  keepspaces=true
+}
+
+\title{H1jet, a fast program to compute transverse momentum distributions}
+
+
+\begin{document}
+
+\maketitle
+
+\abstract{We present a fast code that computes the differential
+  distribution of one of the final-state particles produced in a
+  $2\to 2$ process.}
+
+\section{Introduction}
+\label{sec:intro}
+
+\section{The method}
+\label{sec:method}
+
+We consider here a generic $2\to 2$ partonic process
+$p_1 p_2 \to p_3 X$, where $p_1,p_2,p_3$ are partons, and $p_X$ is a
+generic non-QCD particle $X$, e.g.\ a Higgs, of mass $m_X$. Our
+program computes $d\sigma/dp_T$, where $p_T$ is the transverse
+momentum of $p_X$ with respect to the beam axis, or the transverse
+momentum of the recoiling jet originated by $p_3$. The possible
+partonic subprocesses are $gg\to g X$, $q_f \bar q_{\bar f} \to g X$,
+$q_f g\to q_f X$, $gq_f \to q_fX$, where $f,\bar f$ denotes quark (or
+antiquark) flavours. The corresponding amplitudes $M_{ij}$ (with
+$i,j=g,q_f$) are functions of the three Mandelstam invariants
+\begin{equation}
+  \label{eq:Mandelstam}
+  \begin{split}
+  \hat s & = (p_1+p_2)^2 = (p_3+p_X)^2 \,,\\
+  \hat t & = (p_1-p_3)^2 = (p_2-p_X)^2 \,,\\
+  \hat u & = (p_2-p_3)^2 = (p_1-p_X)^2 \,.
+  \end{split}
+\end{equation}
+Without loss of generality, in the centre-of-mass frame of the
+partonic collision, we can parametrise momenta as follows
+\begin{equation}
+  \label{eq:momenta}
+  \begin{split}
+  p_1&=\frac{\sqrt s}{2}(1,0,0,1)\,,\qquad p_3 = p_T(\cosh\eta,1,0,\sinh\eta)\,,\\
+  p_2&=\frac{\sqrt s}{2}(1,0,0,1)\,,\qquad p_X = (\sqrt{m_X^2+p^2_T\cosh^2\eta},-1,0,-\sinh\eta)\,,
+  \end{split}
+\end{equation}
+so that $\eta$ is in fact the rapidity of parton $p_3$ in the
+centre-of-mass frame. The {\em partonic} $p_T$ spectrum for the
+process initiated by partons $ij$ is given by
+\begin{equation}
+  \label{eq:partonic-pt}
+  \frac{d\hat \sigma_{ij}}{dp_T} = \frac{p_T}{16\pi}\int d\eta \frac{M^2_{ij}(\hat s,\hat t,\hat u)}{E_X \hat s} \delta\left(\sqrt{\hat s} - p_T\cosh\eta-\sqrt{m_X^2+p^2_T\cosh^2\eta}\right)\,, 
+\end{equation}
+with $E_x=\sqrt{m_X^2+p^2_T\cosh^2\eta}$ the energy of the non-QCD
+particle $p_X$.  The above equation selects two values of $\eta$, as
+follows
+\begin{equation}
+\label{eq:eta-values}
+  \eta = \ln(\hat x_M \pm \sqrt{\hat x_M^2-1})\,,\qquad \hat x_M\equiv\frac{\hat s-m_X^2}{2 p_T \sqrt{\hat s} }\,.
+\end{equation}
+The corresponding hadronic cross section reads, as usual
+\begin{equation}
+\label{eq:hadronic-pt}
+  \frac{d\sigma}{dp_T} = \sum_{i,j} \int_0^1 dx_1\, f_{i/p}(x_1,\mu_F)\int_0^1 dx_2 \, f_{i/p}(x_1,\mu_F) \left[\frac{d\hat \sigma_{ij}}{dp_T} \Theta(s-\hat s) \Theta\left(\hat s-p_T-\sqrt{m_X^2+p^2_T}\right)  \right]_{\hat s=x_1x_2 s}\,.
+\end{equation}
+Since eq.~\eqref{eq:eta-values} give two monotonic functions of $\hat s$ for $s>p_T+\sqrt{m_X^2+p^2_T}$, varying $\hat s$ in the allowed range spans all possible values of $\eta$ in the range $-\eta_M<\eta<\eta_M$ with
+\begin{equation}
+\label{eq:eta-range}
+\eta_M \equiv \ln(x_M + \sqrt{x_M^2-1})\,,\qquad  x_M\equiv\frac{s-m_X^2}{2 p_T \sqrt{s} }\,.
+\end{equation}
+This allows us to integrate over $\eta$ last, and obtain, after some
+manipulations,
+\begin{equation}
+\label{eq:hadronic-pt-lumi}
+  \frac{d\sigma}{dp_T} = \frac{p_T}{8 \pi}\int_{-\eta_M}^{\eta_M}\!d\eta\, \sum_{i,j}  \left[\frac{M^2_{ij}\left(\hat s,-p_T e^{-\eta}\sqrt {\hat s}  ,- p_T e^{\eta}\sqrt{\hat s}\right)}{E_X \hat s^{3/2}}\mathcal{L}_{ij}\left(\frac{\hat s}{s},\mu_F\right) \right]_{\hat s=\left(p_T\cosh\eta+\sqrt{m_X^2+p^2_T\cosh^2\eta}\right)^2}\,,
+\end{equation}
+where $\mathcal{L}_{ij}\left(\tau,\mu_F\right)$ is the partonic luminosity
+\begin{equation}
+  \label{eq:hoppet-lumi}
+  \mathcal{L}_{ij}\left(\tau,\mu_F\right) = \tau \int_\tau^1 \frac{dx}{x}\, f_{i/p}(x,\mu_F)\, f_{j/p}\left(\frac{\tau}{x},\mu_F\right)\,.
+\end{equation}
+
+\input{manual}
+
+\section{Conclusions}
+\label{sec:the-end}
+
+\paragraph{Acknowledgements.}
+
+\appendix
+
+\section{Implementation of scalar integrals}
+\label{sec:scalar-integrals}
+
+\paragraph{Bubbles.} The bubble integral is defined as
+\begin{equation}
+  \label{eq:bubble}
+  B_0(s)=2 -\sqrt{1-\frac{4(m^2-i\epsilon)}{s}}\ln\left[-\frac{z}{1-z}\right]\,,
+\end{equation}
+where 
+\begin{equation}
+  \label{eq:z}
+  z=\frac{1}{2}\left(1+\sqrt{1-\frac{4(m^2-i\epsilon)}{s}}\right)\,.
+\end{equation}
+The argument of the logarithm in eq.~\eqref{eq:bubble} has a different
+from according to the value of $s$:
+\begin{equation}
+  \label{eq:z-omz}
+  -\frac{z}{1-z} = \left\{
+    \begin{split}
+      &-\frac{1+\sqrt{1+\frac{4m^2}{|s|}}}{1-\sqrt{1+\frac{4m^2}{|s|}}}\,,\qquad \qquad s<0\,,\\
+        & -\frac{1+i\sqrt{\frac{4m^2}{s}-1}}{1-i\sqrt{\frac{4m^2}{s}-1}}\,,\qquad \quad\>\> 0<s<4m^2\,,\\
+        &
+        -\frac{1-\sqrt{1-\frac{4m^2}{s}}}{1-\sqrt{1-\frac{4m^2}{s}}}-i\epsilon\,,\qquad
+        s>4m^2
+    \end{split}
+\right.
+\end{equation}
+Note that the only case in which one needs a small imaginary part is
+the case $s>4m^2$. This imaginary part has the opposite convention as
+in CHAPLIN. As a solution, we invert the argument of the logarithm in that region, 
+ 
+\paragraph{Triangles.} The triangle integral $C_0(s)$ is defined as
+\begin{equation}
+  \label{eq:triangle}
+  C_0(s) = \frac{1}{2s}\ln^2\left[-\frac{z}{1-z}\right]\,,
+\end{equation}
+where $z$ is given in eq.~\eqref{eq:z}. 
+
+\begin{equation}
+  \label{eq:triangle-HPL}
+  s\,C_0(s) = H\left(0,0;\frac{z-1}{z}\right)\,.
+\end{equation}
+
+\begin{thebibliography}{1}
+   \bibitem{bib:h1jet} H1jet can be downloaded from: \\ \href{https://h1jet.hepforge.com}{https://h1jet.hepforge.com}
+   \bibitem{bib:lhapdf} A.\ Buckley, J.\ Ferrando, S.\ Lloyd, K.\ Nordstrom, B.\ Page, M.\ Ruefenacht, M.\ Schoenherr, and G.\ Watt, \textit{LHAPDF6: parton density access in the LHC precision era}, Eur.\ Phys.\ J.\ \textbf{C75} (2015) 3, 132, [\href{https://arxiv.org/abs/1412.7420}{arXiv:1412.7420}]. 
+   \bibitem{bib:hoppet} G.\ P.\ Salam and J.\ Rojo, \textit{A Higher Order Perturbative Parton Evolution Toolkit (HOPPET)}, Comput.\ Phys.\ Commun.\ \textbf{180} (2009) 120-156, [\href{https://arxiv.org/abs/0804.3755}{arXiv:0804.3755}]. 
+   \bibitem{bib:chaplin} S.\ Buehler and C.\ Duhr, \textit{CHAPLIN - Complex Harmonic Polylogarithms in Fortran}, Comput.\ Phys.\ Commun.\ \textbf{185} (2014) 2703, [\href{https://arxiv.org/abs/1106.5739}{arXiv:1106.5739}]. 
+   \bibitem{bib:alp} I.\ Brivio, M.\ B.\ Gavela, L.\ Merlo, K.\ Mimasu, J.\ M.\ No, R.\ del Rey, and V.\ Sanz, \textit{ALPs Effective Field Theory and Collider Signatures}, Eur.\ Phys.\ J.\ \textbf{C77} (2017) 572, [\href{https://arxiv.org/abs/1701.05379}{arXiv:1701.05379}]. The \textsc{FeynRules} model file is available here: \href{https://feynrules.irmp.ucl.ac.be/wiki/ALPsEFT}{https://feynrules.irmp.ucl.ac.be/wiki/ALPsEFT}. 
+\end{thebibliography}
+
+\end{document}
