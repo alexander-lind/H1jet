@@ -58,9 +58,11 @@ distclean: clean
 .SUFFIXES: $(SUFFIXES) .f90
 
 %.o: %.f90 
+	@ mkdir -p obj modules 
 	$(FC) $(FFLAGS)  $(INCLUDE) -c -o obj/$@ $<
 
 %.o: %.f
+	@ mkdir -p obj modules 
 	$(FC) $(FFLAGS) $(INCLUDE) -c -o obj/$@ $<
 
 d107d1.o:
