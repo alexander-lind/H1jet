@@ -45,7 +45,7 @@ program h1jet
   call print_welcome_banner(idev)
 
   ! Handle user input 
-  call handle_input 
+  call input_handler 
 
   ! Set up PDFs 
   call init_pdfs_from_LHAPDF(pdf_name, pdf_mem)

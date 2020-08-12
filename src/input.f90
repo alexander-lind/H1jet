@@ -4,13 +4,13 @@
 !--------------------------------------------------------
 !========================================================
 
+! AB think about getting the default values from an input file
 module input
 
   use hoppet_v1 
   use ew_parameters 
   use mass_helper
   use sub_defs_io
-  use hboson
   use common_vars 
 
   implicit none
@@ -19,14 +19,14 @@ module input
 
   character(len=8) :: proc 
 
-  public :: handle_input, gen_momenta, set_scale, print_settings 
+  public :: input_handler, gen_momenta, set_scale, print_settings 
 
 contains
 
 !======================================================================================= 
 ! Handle all user input 
 
-  subroutine handle_input 
+  subroutine input_handler
 
     ! Print commandline options
     write(idev,'(a)') 'Provided command options: '
@@ -61,7 +61,7 @@ contains
     ! G_mu scheme 
     mz_in = dble_val_opt('--mZ', mz)
     mw_in = dble_val_opt('--mW', mw)
-    GF_GeVm2_in = dble_val_opt('--gf', GF_GeVm2)
+    GF_GeVm2_in = dble_val_opt('--GF', GF_GeVm2)
     sinwsq_in = one - (mw_in**2) / (mz_in**2) 
     higgs_vev_in = one / dsqrt(dsqrt(two) * GF_GeVm2_in) 
     call set_gv2 
@@ -74,11 +74,13 @@ contains
     pdf_name = trim(string_val_opt('--pdf_name', 'MSTW2008nlo68cl')) !//'.LHgrid'
     pdf_mem  = int_val_opt('--pdf_mem', 0)
 
-    ! Approximation for quark loops 
-    approx = trim(string_val_opt('--approx', 'none'))
-    if (approx /= 'none' .and. approx /= 'sml' .and. approx /= 'iml') then
-      call wae_error('handle_input', 'Unrecognised approximation type: ', approx)
-    end if 
+    ! Approximation for quark loops AB ideally you might want to
+    ! select a different approximation for each loop, how do you
+    ! achieve it?
+    !    approx = trim(string_val_opt('--approx', 'none'))
+    !    if (approx /= 'none' .and. approx /= 'sml' .and. approx /= 'iml') then
+    !      call wae_error('handle_input', 'Unrecognised approximation type: ', approx)
+    !    end if 
 
     call set_masses_and_couplings
 
@@ -104,16 +106,15 @@ contains
                     &when using --log')
     end if
 
-    ! Set the desired Monte Carlo accuracy 
+    ! Set the desired integration accuracy 
     accuracy = dble_val_opt('--accuracy', 1e-3_dp)
 
-  end subroutine handle_input
+  end subroutine input_handler
   
 !======================================================================================= 
 ! Convert --proc command option argument to internal id 
 
   function proc_to_id(proc) result(res)
-
     character(len=*) :: proc
     integer :: res
     
@@ -132,10 +133,9 @@ contains
   end function proc_to_id
   
 !=======================================================================================
-! Generate initial momenta 
+! Generate particle momenta in the centre-of-mass frame 
 
   subroutine gen_momenta(y, p)
-
     real(dp), intent(in) :: y
     real(dp), intent(out) :: p(4,4)
 
@@ -152,9 +152,6 @@ contains
     p(1,:) = Ebeam / two * (/zero, zero, one, one/)
     p(2,:) = Ebeam / two * (/zero, zero, -one, one/)
   
-    !s = mh**2 + two * pt * cosh(y) * sqrt(pt**2 * cosh(y)**2 + mh**2) &
-    !    & + two * pt**2 * cosh(y)**2 
-
   end subroutine gen_momenta
 
 !=======================================================================================
@@ -183,7 +180,8 @@ contains
 ! Function to set the relevant masses and parameters depending on the selected process 
 
   subroutine set_masses_and_couplings
-    
+    use hboson
+
     select case(iproc)
 
       ! pp -> H + jet 
@@ -221,17 +219,18 @@ contains
           ytp = ytp * sth2
           mass_array = (/mt_in, mb_in, mtp/)
           yukawa = (/yt, yb, ytp/)
-          select case(approx)
-            case('sml')
-              ! Small mass limit 
-              iloop_array = (/0, 0, 0/)
-            case('iml')
-              ! Infinite mass limit 
-              iloop_array = (/2, 2, 2/)
-            case default 
+          ! AB we need to decide what we do with approx
+!          select case(approx)
+!            case('sml')
+!              ! Small mass limit 
+!              iloop_array = (/0, 0, 0/)
+!            case('iml')
+!              ! Infinite mass limit 
+!              iloop_array = (/2, 2, 2/)
+!            case default 
               ! Exact result -- equivalent to approx=none 
-              iloop_array = (/1, 1, 1/)
-          end select
+          iloop_array = iloop_fm_fermion
+!          end select
         else if (mst1 /= zero) then
           ! Include SUSY stop squark in loops 
           cth2 = one - sth2
@@ -243,33 +242,36 @@ contains
           allocate(mass_array(4), yukawa(4), iloop_array(4))
           mass_array = (/mt_in, mb_in, mst1, mst2/)
           yukawa = (/yt, yb, yst1, yst2/)
-          select case(approx)
-            case('sml')
-              ! Small mass limit 
-              iloop_array = (/0, 0, 3, 3/)
-            case('iml')
-              ! Infinite mass limit 
-              iloop_array = (/2, 2, 4, 4/)
-            case default 
-              ! Exact result -- equivalent to approx=none 
-              iloop_array = (/1, 1, 3, 3/)
-          end select 
+          ! AB we need to decide what to do with approx
+!          select case(approx)
+!            case('sml')
+!              ! Small mass limit 
+!              iloop_array = (/0, 0, 3, 3/)
+!            case('iml')
+!              ! Infinite mass limit 
+!              iloop_array = (/2, 2, 4, 4/)
+!            case default 
+!              ! Exact result -- equivalent to approx=none 
+          iloop_array(1:2) = iloop_fm_fermion
+          iloop_array(3:4) = iloop_fm_scalar
+ !         end select 
         else
           ! SM, only bottom and top in quark loops 
           allocate(mass_array(2), yukawa(2), iloop_array(2))
           mass_array = (/mt_in, mb_in/)
           yukawa = (/yt, yb/)
-          select case(approx)
-            case('sml')
-              ! Small mass limit 
-              iloop_array = (/0, 0/)
-            case('iml')
-              ! Infinite mass limit 
-              iloop_array = (/2, 2/)
-            case default 
-              ! Exact result -- equivalent to approx=none 
-              iloop_array = (/1, 1/)
-          end select 
+          ! AB we need to decide what to do with approx
+!          select case(approx)
+!            case('sml')
+!              ! Small mass limit 
+!              iloop_array = (/0, 0/)
+!            case('iml')
+!              ! Infinite mass limit 
+!              iloop_array = (/2, 2/)
+!            case default 
+!              ! Exact result -- equivalent to approx=none 
+          iloop_array = iloop_fm_fermion
+!          end select 
         end if
 
       ! pp -> Z + jet   
@@ -282,14 +284,14 @@ contains
 
         M = dble_val_opt('--mH', mh) ! Higgs mass 
         allocate(mass_array(1), yukawa(1))
-        mass_array(1) = dble_val_opt('--mbmb', 4.18_dp)
+        mass_array(1) = dble_val_opt('--mbmb', mbmb)
 
       ! User specified process 
       case (id_user)
 
         ! Relevant mass for the user specified amplitude 
         ! Important to set for correct scales muR and muF 
-        M = dble_val_opt('--mass', mh) 
+        M = dble_val_opt('--mass', zero) 
 
       case default
 
@@ -315,7 +317,7 @@ contains
     else if (mst1 /= zero) then 
       write(idev,*) 'model          = SUSY' 
     else if (cpodd) then 
-      write(idev,*) 'model          = Pseudoscalar Higgs'
+      write(idev,*) 'model          = CP-odd Higgs'
     else 
       write(idev,*) 'model          = SM' 
     end if

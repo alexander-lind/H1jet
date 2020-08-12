@@ -24,8 +24,9 @@ endif
 LIBS= `$(HOPPET_CONFIG) --ldflags` `$(LHAPDF_CONFIG) --ldflags`
 
 #CHAPLIN= `locate libchaplin.a | tail -1 | sed s/libchaplin.a//`
-CHAPLIN=/its/home/al629/scratch/heptools/chaplin-1.2/chaplin-install/lib
-LDFLAGS = -L$(CHAPLIN) -lchaplin
+#CHAPLIN=/its/home/al629/scratch/heptools/chaplin-1.2/chaplin-install/lib
+#LDFLAGS = -L$(CHAPLIN) -lchaplin
+LDFLAGS = -lchaplin 
 
 # Select between smallR version of the code and the svn one
 SOURCEDIR  = $(PWD)/src
