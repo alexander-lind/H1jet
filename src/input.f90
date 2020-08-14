@@ -237,9 +237,10 @@ contains
 
            ! AB here you need to check the format 
            read(indev,*,iostat=ios) nqmax_eq, nqmax
-
+           if (ios /= 0) call wae_error('input','incorrect file format, see SM.dat for an example')
+           
            ! maximum number of quarks in the loops, including bottom and top
-           ! I am not sure why I have introduced this one
+           ! AB I am not sure why I have introduced this one
            !           nqmax = min(int_val_opt('--nqmax', nqmax),nqmax)
 
            call read_top_partners(indev,nqmax)
@@ -437,14 +438,15 @@ end subroutine set_yukawas
 subroutine read_top_partners(indev,nqmax)
   integer, intent(in) :: indev, nqmax
   !---------------------------
-  integer :: i
+  integer :: i, ios
   real(dp) :: kappa, kappa_tilde
   
   allocate(mass_array(nqmax),yukawa(nqmax),iloop_array(nqmax))
 
   do i=1,nqmax
      ! AB here you need to check the format
-     read(indev, *) mass_array(i), kappa, kappa_tilde, iloop_array(i)
+     read(indev,*,iostat=ios) mass_array(i), kappa, kappa_tilde, iloop_array(i)
+     if (ios /= 0) call wae_error('read_top_partners','incorrect file format, see SM.dat for an example')
      if (cpodd) then
         yukawa(i) = kappa_tilde
      else
