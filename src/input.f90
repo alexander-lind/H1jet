@@ -21,6 +21,8 @@ module input
 
   public :: input_handler, gen_momenta, set_scale, print_settings 
 
+  integer, parameter :: M1_5=1, M1_14=2, M4_5=3, M4_14=4
+
 contains
 
 !======================================================================================= 
@@ -181,7 +183,11 @@ contains
 
   subroutine set_masses_and_couplings
     use hboson
-
+    real(dp) :: invfscale, imc1
+    integer  :: model
+    integer  :: indev, ios, nqmax
+    character(len=7) :: nqmax_eq
+    
     select case(iproc)
 
       ! pp -> H + jet 
@@ -193,7 +199,11 @@ contains
         ! Standard parameters 
         M = dble_val_opt('--mH', mh) ! Higgs mass 
         yt = dble_val_opt('--yt', one) ! Top Yukawa factor 
-        yb = dble_val_opt('--yb', one) ! Bottom Yukawa factor 
+        if (cpodd) then
+           yb = dble_val_opt('--yb', one) ! Bottom Yukawa factor
+        else
+           yb = dble_val_opt('--yb', zero) ! Bottom CP-odd Yukawa factor
+        end if
         sth2 = dble_val_opt('--sth2', zero) ! Stop/Top-partner mixing angle 
 
         ! Top partner mass and Yukawa coupling 
@@ -212,13 +222,53 @@ contains
                     &and stops not allowed') 
         end if 
 
-        if (mtp /= zero) then
+        if (log_val_opt('--in') .or. log_val_opt('-i')) then
+
+           if (mst1  /= zero) then 
+              call wae_error('set_masses_and_couplings', 'Simoultaneous top partners &
+                    &and stops not allowed') 
+           end if
+
+           if (log_val_opt('--in') ) then
+              indev = idev_open_opt('--in',status="old")
+           else if (log_val_opt('-i')) then
+              indev = idev_open_opt('-i',status="old")
+           end if
+
+           ! AB here you need to check the format 
+           read(indev,*,iostat=ios) nqmax_eq, nqmax
+
+           ! maximum number of quarks in the loops, including bottom and top
+           ! I am not sure why I have introduced this one
+           !           nqmax = min(int_val_opt('--nqmax', nqmax),nqmax)
+
+           call read_top_partners(indev,nqmax)
+
+        else if (mtp /= zero) then
           ! Include top partner in quark loops 
           allocate(mass_array(3), yukawa(3), iloop_array(3))
-          yt = yt * (one - sth2)
-          ytp = ytp * sth2
+
           mass_array = (/mt_in, mb_in, mtp/)
+
+          ! The inverse of fscale
+          if (log_val_opt('--fscale')) then
+             invfscale = one/dble_val_opt('--fscale',zero)
+          else if (log_val_opt('-f')) then
+             invfscale = one/dble_val_opt('-f',zero)
+          else
+             invfscale = zero
+             yt = yt * (one - sth2)
+             ytp = ytp * sth2
+          end if
+
+          if (invfscale /= zero) then
+             model = int_val_opt('--model',M1_5)
+             imc1 = dble_val_opt('-imc1',zero)
+             call set_yukawas(model, invfscale,imc1)
+          end if
+
           yukawa = (/yt, yb, ytp/)
+
           ! AB we need to decide what we do with approx
 !          select case(approx)
 !            case('sml')
@@ -300,6 +350,111 @@ contains
     end select
 
   end subroutine set_masses_and_couplings
+
+  !==============================================================================
+  ! Set Yukawa couplings for specific composite Higgs models
+  subroutine set_yukawas(model, invfscale, imc1)
+  integer, intent(in)  :: model
+  real(dp), intent(in) :: invfscale, imc1
+!  real(dp), intent(inout) :: yt, ytp,yb
+!-----------------------------------------  
+  real(dp) :: seps, ceps
+  real(dp) :: sthRsq, cthRsq,tanthRsq
+  real(dp) :: sthLsq, cthLsq,tanthLsq
+
+
+  seps = higgs_vev_in*invfscale
+  ceps = sqrt(one-seps**2)
+  select case(model)
+  case(M1_5)
+     sthLsq = sth2            
+     cthLsq = one-sth2 
+     if (cpodd) then
+        yt=zero
+        ytp=zero
+     else
+        yt = yt*cthLsq*ceps
+        ytp = ytp*sthLsq*ceps
+        yb = yb*ceps
+     end if
+  case(M1_14)
+     sthLsq = sth2            
+     cthLsq = one-sth2 
+     if (cpodd) then
+        yt=zero
+        ytp=zero
+        yb = zero
+     else
+        yt = yt*cthLsq*(two*ceps**2-one)/ceps
+        ytp = ytp*sthLsq*(two*ceps**2-one)/ceps
+        yb = yb*(two*ceps**2-one)/ceps
+     end if
+     
+  case(M4_5)
+     sthRsq = sth2            
+     cthRsq = one-sth2 
+     tanthLsq = (mtp/mt)**2*sthRsq/cthRsq
+     cthLsq = one/(one+tanthLsq)
+     sthLsq = one-cthLsq 
+     if (cpodd) then
+        yt=four*ceps*seps/sqrt(two*(one+ceps**2))*&
+             &imc1*sqrt(sthRsq*cthRsq)
+        ytp=-yt
+        yb = zero
+     else
+        yt=yt*ceps*(cthRsq-seps**2/(one+ceps**2)*(cthLsq-cthRsq))
+        ytp=ytp*ceps*(sthRsq-seps**2/(one+ceps**2)*(sthLsq-sthRsq))
+        yb = yb*ceps
+     end if
+  case(M4_14)
+     sthRsq = sth2            
+     cthRsq = one-sth2 
+     tanthLsq = (mtp/mt)**2*sthRsq/cthRsq
+     cthLsq = one/(one+tanthLsq)
+     sthLsq = one-cthLsq 
+     if (cpodd) then
+        yt=four*seps*(one-two*seps**2)/&
+             &sqrt(two*(four*ceps**4-three*ceps**2+one))*&
+             &imc1*sqrt(sthRsq*cthRsq)
+        ytp=-yt
+        yb = zero
+     else
+        yt=yt*(cthRsq*(two*ceps**2-one)/ceps-&
+             &seps**2*ceps/(four*ceps**4-three*ceps**2+one)*&
+             &(8._dp*ceps**2-three)*(cthLsq-cthRsq))
+        ytp=ytp*(sthRsq*(two*ceps**2-one)/ceps-&
+             &seps**2*ceps/(four*ceps**4-three*ceps**2+one)*&
+             &(8._dp*ceps**2-three)*(sthLsq-sthRsq))
+        yb = yb*(two*ceps**2-one)/ceps
+     end if
+  case default
+     call wae_error('set_yukawas','unrecognised model: ',&
+          &intval=model)
+  end select
+
+end subroutine set_yukawas
+
+subroutine read_top_partners(indev,nqmax)
+  integer, intent(in) :: indev, nqmax
+  !---------------------------
+  integer :: i
+  real(dp) :: kappa, kappa_tilde
+  
+  allocate(mass_array(nqmax),yukawa(nqmax),iloop_array(nqmax))
+
+  do i=1,nqmax
+     ! AB here you need to check the format
+     read(indev, *) mass_array(i), kappa, kappa_tilde, iloop_array(i)
+     if (cpodd) then
+        yukawa(i) = kappa_tilde
+     else
+        yukawa(i) = kappa
+     end if
+  end do
+  close(indev)
+
+end subroutine read_top_partners
+
 
 !=======================================================================================
 ! Print the settings from user input 
