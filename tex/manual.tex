@@ -215,14 +215,14 @@ If process \texttt{Z}, i.e.\
 has been selected, then the following options are relevant: 
 \begin{description}[labelindent=\parindent, labelwidth =\widthof{\bfseries9999999999999999999999}, leftmargin = !] 
 	\item[\texttt{--mZ <value>}] Z boson mass, $m_Z$ [GeV]. \\ Default: 91.1876 GeV.
-	\item[\texttt{--gf <value>}] Fermi coupling constant, $G_F$ [GeV$^{-2}$]. \\ Default: $0.116639 \times 10^{-4}$ GeV$^{-2}$. 
+	\item[\texttt{--GF <value>}] Fermi coupling constant, $G_F$ [GeV$^{-2}$]. \\ Default: $0.116639 \times 10^{-4}$ GeV$^{-2}$. 
 	\item[\texttt{--sinwsq <value>}] Squared sine of the Weinberg angle, $\sin^2\left ( \theta_W \right )$. \\ Default: 0.231. 
 \end{description}
 
 \subsubsection{Relevant Options for Process: \texttt{user}}
 In the case of process \texttt{user}, i.e.\ a custom user-specified process, any of the above physics options may be relevant if they are used in the custom amplitude code. The code will have to be inspected to determine this. The only built-in process-relevant option is: 
 \begin{description}[labelindent=\parindent, labelwidth =\widthof{\bfseries9999999999999999999999}, leftmargin = !] 
-	\item[\texttt{--mass <value>}] Relevant mass in the user specified process, $M$ [GeV]. Used in the scale choice and in the setup of kinematics. \\ Default: 1000 GeV. 
+	\item[\texttt{--mass <value>}] Relevant mass in the user specified process, $M$ [GeV]. Used in the scale choice and in the setup of kinematics. \\ Default: 0 GeV. 
 \end{description}
 Additional options may be added depending on the custom process/amplitude. See Section \ref{sec:newprocs} below for more details on the implementation of a custom process. 
 

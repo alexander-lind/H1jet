@@ -80,6 +80,6 @@ scalar_integrals.o:
 vboson.o: ew_parameters.o
 mass_helper.o:
 input.o: ew_parameters.o io_utils.o hboson.o pdfs_tools.o common_vars.o 
-user_interface.o: ew_parameters.o mass_helper.o 
+user_interface.o: ew_parameters.o mass_helper.o common_vars.o  
 cross_sections.o: vboson.o ew_parameters.o io_utils.o hboson.o input.o user_interface.o 
 banner.o: user_interface.o common_vars.o 

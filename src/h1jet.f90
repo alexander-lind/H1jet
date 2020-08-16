@@ -27,9 +27,9 @@ program h1jet
 
   ! Print help message or version number if invoked 
   if (log_val_opt('-h') .or. log_val_opt('--help')) then
-    call print_help_message(stderr)
+    call print_help_message
   else if (log_val_opt('-v') .or. log_val_opt('--version')) then 
-    call print_version_number(stderr) 
+    call print_version_number 
   end if
 
   ! Set output level 
@@ -42,7 +42,7 @@ program h1jet
   end if
 
   ! Print welcome banner
-  call print_welcome_banner(idev)
+  call print_welcome_banner
 
   ! Handle user input 
   call input_handler 

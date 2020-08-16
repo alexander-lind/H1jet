@@ -10,6 +10,7 @@ module user_interface
   use ew_parameters
   use mass_helper
   use hoppet_v1 
+  use common_vars 
   
   implicit none
   
@@ -19,16 +20,16 @@ contains
   
 !=======================================================================================
 ! Test function to see if the user interface is set up and included 
-! AB use integer identifiers
+  
   integer function user_included() 
 
     ! This file is the default file where the user interface has not been set up 
     ! Please see the manual for the implementation 
 
-    ! 0 = user interface has not been set up 
-    ! 1 = total born-level cross-section not included 
-    ! 2 = full implementation 
-    user_included = 0 
+    ! id_noImplementation   = user interface has not been set up 
+    ! id_missingTotXsec     = total born-level cross-section not included 
+    ! id_fullImplementation = full implementation 
+    user_included = id_noImplementation 
 
   end function user_included 
 
@@ -80,9 +81,7 @@ contains
 !=======================================================================================
 ! Print any parameter additions to the help message
   
-  subroutine user_help_message(idev) 
-
-    integer, intent(in) :: idev 
+  subroutine user_help_message 
 
     ! Deliberately empty 
   

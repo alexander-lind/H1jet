@@ -192,7 +192,7 @@ def main():
     higgsMassUsed = False 
 
     # Container for the level of implementation 
-    user_included = 1 
+    user_included = "id_missingTotXsec" 
 
     # Loop over all input files 
     for filelist in args.inputfile: 
@@ -1610,15 +1610,11 @@ def main():
         outputfile.write("\n")
         outputfile.write("module user_interface\n")
         outputfile.write("\n")
-        outputfile.write("  use types\n")
-        outputfile.write("  use consts_dp\n")
-        outputfile.write("  use qcd\n")
         outputfile.write("  use ew_parameters\n")
         outputfile.write("  use mass_helper\n")
         outputfile.write("  use sub_defs_io\n")
-        outputfile.write("  ! If using LHAPDF, rename a couple of hoppet functions which\n")
-        outputfile.write("  ! would otherwise conflict with LHAPDF \n")
         outputfile.write("  use hoppet_v1\n")
+        outputfile.write("  use common_vars\n")
         outputfile.write("\n")
         outputfile.write("  implicit none\n")
         outputfile.write("\n")
@@ -1631,10 +1627,10 @@ def main():
         outputfile.write("\n")
         outputfile.write("  integer function user_included() \n")
         outputfile.write("\n")
-        outputfile.write("    ! 0 = user interface has not been set up \n")
-        outputfile.write("    ! 1 = total born-level cross-section not included \n")
-        outputfile.write("    ! 2 = full implementation \n")
-        outputfile.write("    user_included = " + str(user_included) + " \n") 
+        outputfile.write("    ! id_noImplementation   = user interface has not been set up \n")
+        outputfile.write("    ! id_missingTotXsec     = total born-level cross-section not included \n")
+        outputfile.write("    ! id_fullImplementation = full implementation \n")
+        outputfile.write("    user_included = " + user_included + " \n") 
         outputfile.write("\n")
         outputfile.write("  end function user_included \n")
         outputfile.write("\n")

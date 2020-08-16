@@ -7,6 +7,8 @@
 
 module banner
 
+  use common_vars 
+
   implicit none
 
   private
@@ -22,66 +24,64 @@ contains
 !=======================================================================================
 ! Print the help message (invoked with the --help or -h command options) 
 
-  subroutine print_help_message(idev)
+  subroutine print_help_message
 
     use user_interface
 
-    integer, intent(in) :: idev
+    write(stderr,'(a)') 'Usage: h1jet [options]'
+    write(stderr,'(a)') 'Calculate the transverse momentum distribution for Higgs + jet production.'
+    write(stderr,'(a)') 
+    write(stderr,'(a)') 'Options:'
+    write(stderr,'(a)') '  -o, --out <file>       Direct output to <file>'
+    write(stderr,'(a)') '  --collider <arg>       Specify collider type (pp, ppbar), default = pp'
+    write(stderr,'(a)') '  --roots <value>        Center-of-mass energy in [GeV], default = 13 TeV'
+    write(stderr,'(a)') '  --proc <arg>           Specify the process (H, bbH, Z, user)'
+    write(stderr,'(a)') '                         H    : pp -> Higgs + jet (default)' 
+    write(stderr,'(a)') '                         bbH  : b bbar -> Higgs + jet' 
+    write(stderr,'(a)') '                         Z    : pp -> Z + jet' 
+    write(stderr,'(a)') '                         user : Amplitude from custom code, see manual for implementation' 
+    write(stderr,'(a)') '  --approx <arg>         Specify loop approximation (none, sml, iml)'
+    write(stderr,'(a)') '                         none : Exact result for loops (default)' 
+    write(stderr,'(a)') '                         sml  : Small mass limit for quarks in the loops' 
+    write(stderr,'(a)') '                         iml  : Infinite mass limit for quarks in the loops' 
+    write(stderr,'(a)') '  --pdf_name <arg>       Specify the PDF set name from LHAPDF, default = MSTW2008nlo68cl'
+    write(stderr,'(a)') '  --pdf_mem <value>      Integer value specifying the PDF member, default = 0'
+    write(stderr,'(a)') '  --scale_strategy <arg> Set the scale strategy, i.e. set the dynamic muR = muF value (M, HT, MT)'
+    write(stderr,'(a)') '                         M  : muR = muF = M' 
+    write(stderr,'(a)') '                         HT : muR = muF = pT + sqrt(pT^2 + M^2) (default)' 
+    write(stderr,'(a)') '                         MT : muR = muF = sqrt(pT**2 + M^2)' 
+    write(stderr,'(a)') '                         M is --mH for proc = H / bbH, --mZ for proc = Z, --mass for proc = user' 
+    write(stderr,'(a)') '  --xmur <value>         Factor for the renormalization scale, muR = muR * xmur, default = 0.5'
+    write(stderr,'(a)') '  --xmuf <value>         Factor for the factorization scale, muF = muF * xmuf, default = 0.5'
+    write(stderr,'(a)') '  --nbins <value>        Number of histogram bins in the output, default = 400'
+    write(stderr,'(a)') '  --log                  Enables logarithmic x-axis of histogram, i.e. logarithmic bins and pT'
+    write(stderr,'(a)') '  --ptmin <value>        Minimum pT value, default = 0 (set to nonzero if --log is enabled)'
+    write(stderr,'(a)') '  --ptmax <value>        Maximum pT value, default = 4000 GeV'
+    write(stderr,'(a)') '  --accuracy <value>     The desired Monte Carlo integration accuracy, default = 0.001'
+    write(stderr,'(a)') '  --cppodd               Toggle for pseudoscalar Higgs' 
+    write(stderr,'(a)') '  --mass <value>         Relevant mass in user process for muR/muF [GeV], default = 0 GeV' 
+    write(stderr,'(a)') '  --mH <value>           Higgs mass [GeV], default = 125 GeV'
+    write(stderr,'(a)') '  --mZ <value>           Z boson mass [GeV], default = 91.1876 GeV'
+    write(stderr,'(a)') '  --mW <value>           W boson mass [GeV], default = 80.385 GeV'
+    write(stderr,'(a)') '  --GF <value>           Fermi coupling constant [GeV^(-2)], default = 0.116638e-4 GeV^(-2)'
+    write(stderr,'(a)') '  --mt <value>           Top quark mass [GeV], default = 173.5 GeV'
+    write(stderr,'(a)') '  --mb <value>           On-shell bottom quark mass [GeV], default = 4.65 GeV'
+    write(stderr,'(a)') '  --yt <value>           Top Yukawa factor [GeV], default = 1'
+    write(stderr,'(a)') '  --yb <value>           Bottom Yukawa factor [GeV], default = 1'
+    write(stderr,'(a)') '  --mtp <value>          Top partner mass [GeV], default = 0 GeV'
+    write(stderr,'(a)') '  --ytp <value>          Top partner Yukawa factor, default = 1'
+    write(stderr,'(a)') '  --mst <value>          MSSM stop mass [GeV], default = 0 GeV'
+    write(stderr,'(a)') '  --delta <value>        MSSM stop mass separation [GeV], default = 0 GeV'
+    write(stderr,'(a)') '  --sth2 <value>         Stop (or top-partner) mixing angle, sin^2(theta), default = 0'
+    write(stderr,'(a)') '  --tbeta <value>        Ratio of VEVs in MHDMs, tan(beta), default = 0'
+    write(stderr,'(a)') '  --mbmb <value>         MSbar bottom mass mb(mb) [GeV], default = 4.18 GeV'
+    write(stderr,'(a)') 
 
-    write(idev,'(a)') 'Usage: h1jet [options]'
-    write(idev,'(a)') 'Calculate the transverse momentum distribution for Higgs + jet production.'
-    write(idev,'(a)') 
-    write(idev,'(a)') 'Options:'
-    write(idev,'(a)') '  -o, --out <file>       Direct output to <file>'
-    write(idev,'(a)') '  --collider <arg>       Specify collider type (pp, ppbar), default = pp'
-    write(idev,'(a)') '  --roots <value>        Center-of-mass energy in [GeV], default = 13 TeV'
-    write(idev,'(a)') '  --proc <arg>           Specify the process (H, bbH, Z, user)'
-    write(idev,'(a)') '                         H    : pp -> Higgs + jet (default)' 
-    write(idev,'(a)') '                         bbH  : b bbar -> Higgs + jet' 
-    write(idev,'(a)') '                         Z    : pp -> Z + jet' 
-    write(idev,'(a)') '                         user : Amplitude from custom code, see manual for implementation' 
-    write(idev,'(a)') '  --approx <arg>         Specify loop approximation (none, sml, iml)'
-    write(idev,'(a)') '                         none : Exact result for loops (default)' 
-    write(idev,'(a)') '                         sml  : Small mass limit for quarks in the loops' 
-    write(idev,'(a)') '                         iml  : Infinite mass limit for quarks in the loops' 
-    write(idev,'(a)') '  --pdf_name <arg>       Specify the PDF set name from LHAPDF, default = MSTW2008nlo68cl'
-    write(idev,'(a)') '  --pdf_mem <value>      Integer value specifying the PDF member, default = 0'
-    write(idev,'(a)') '  --scale_strategy <arg> Set the scale strategy, i.e. set the dynamic muR = muF value (M, HT, MT)'
-    write(idev,'(a)') '                         M  : muR = muF = M' 
-    write(idev,'(a)') '                         HT : muR = muF = pT + sqrt(pT^2 + M^2) (default)' 
-    write(idev,'(a)') '                         MT : muR = muF = sqrt(pT**2 + M^2)' 
-    write(idev,'(a)') '                         M is --mH for proc = H / bbH, --mZ for proc = Z, --mass for proc = user' 
-    write(idev,'(a)') '  --xmur <value>         Factor for the renormalization scale, muR = muR * xmur, default = 0.5'
-    write(idev,'(a)') '  --xmuf <value>         Factor for the factorization scale, muF = muF * xmuf, default = 0.5'
-    write(idev,'(a)') '  --nbins <value>        Number of histogram bins in the output, default = 400'
-    write(idev,'(a)') '  --log                  Enables logarithmic x-axis of histogram, i.e. logarithmic bins and pT'
-    write(idev,'(a)') '  --ptmin <value>        Minimum pT value, default = 0 (set to nonzero if --log is enabled)'
-    write(idev,'(a)') '  --ptmax <value>        Maximum pT value, default = 4000 GeV'
-    write(idev,'(a)') '  --accuracy <value>     The desired Monte Carlo integration accuracy, default = 0.001'
-    write(idev,'(a)') '  --cppodd               Toggle for pseudoscalar Higgs' 
-    write(idev,'(a)') '  --mass <value>         Relevant mass in user process for muR/muF [GeV], default = 125 GeV' 
-    write(idev,'(a)') '  --mH <value>           Higgs mass [GeV], default = 125 GeV'
-    write(idev,'(a)') '  --mZ <value>           Z boson mass [GeV], default = 91.1876 GeV'
-    write(idev,'(a)') '  --mW <value>           W boson mass [GeV], default = 80.385 GeV'
-    write(idev,'(a)') '  --gf <value>           Fermi coupling constant [GeV^(-2)], default = 0.116638e-4 GeV^(-2)'
-    write(idev,'(a)') '  --mt <value>           Top quark mass [GeV], default = 173.5 GeV'
-    write(idev,'(a)') '  --mb <value>           On-shell bottom quark mass [GeV], default = 4.65 GeV'
-    write(idev,'(a)') '  --yt <value>           Top Yukawa factor [GeV], default = 1'
-    write(idev,'(a)') '  --yb <value>           Bottom Yukawa factor [GeV], default = 1'
-    write(idev,'(a)') '  --mtp <value>          Top partner mass [GeV], default = 0 GeV'
-    write(idev,'(a)') '  --ytp <value>          Top partner Yukawa factor, default = 1'
-    write(idev,'(a)') '  --mst <value>          MSSM stop mass [GeV], default = 0 GeV'
-    write(idev,'(a)') '  --delta <value>        MSSM stop mass separation [GeV], default = 0 GeV'
-    write(idev,'(a)') '  --sth2 <value>         Stop (or top-partner) mixing angle, sin^2(theta), default = 0'
-    write(idev,'(a)') '  --tbeta <value>        Ratio of VEVs in MHDMs, tan(beta), default = 0'
-    write(idev,'(a)') '  --mbmb <value>         MSbar bottom mass mb(mb) [GeV], default = 4.18 GeV'
-    write(idev,'(a)') 
+    call user_help_message 
 
-    call user_help_message(idev) 
-
-    write(idev,'(a)') '  -h, --help             Print this help message and exit'
-    write(idev,'(a)') '  -v, --version          Print the version number and exit'
-    write(idev,'(a)') ! Blank space for cleaner output 
+    write(stderr,'(a)') '  -h, --help             Print this help message and exit'
+    write(stderr,'(a)') '  -v, --version          Print the version number and exit'
+    write(stderr,'(a)') ! Blank space for cleaner output 
 
     stop 
 
@@ -90,9 +90,7 @@ contains
 !=======================================================================================
 ! Print the welcome banner at the start of the program 
 
-  subroutine print_welcome_banner(idev)
-
-    integer, intent(in) :: idev
+  subroutine print_welcome_banner
     
     write(idev,'(a)') '============================================================'
     write(idev,'(a)') '                    H1jet version '//trim(version_number) 
@@ -106,11 +104,9 @@ contains
 
 !=======================================================================================
 
-  subroutine print_version_number(idev) 
+  subroutine print_version_number 
 
-    integer, intent(in) :: idev
-
-    write(idev,'(a)') 'H1jet version '//trim(version_number) 
+    write(stderr,'(a)') 'H1jet version '//trim(version_number) 
 
     stop 
 

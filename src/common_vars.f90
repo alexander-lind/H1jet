@@ -1,6 +1,6 @@
 !========================================================
 !--------------------------------------------------------
-! Module containing all public variables  
+! Module containing commonly used public variables  
 !--------------------------------------------------------
 !========================================================
 
@@ -24,6 +24,11 @@ module common_vars
   integer, public, parameter :: id_bbH = 3
   integer, public, parameter :: id_user = 4
   integer, public :: iproc
+
+  ! User interface related id's 
+  integer, public, parameter :: id_noImplementation = 0
+  integer, public, parameter :: id_missingTotXsec = 1 
+  integer, public, parameter :: id_fullImplementation = 2
 
   ! Array specifying the particles in the loops 
   integer, pointer, public :: iloop_array(:) 
