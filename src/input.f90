@@ -185,8 +185,8 @@ contains
     use hboson
     real(dp) :: invfscale, imc1
     integer  :: model
-    integer  :: indev, ios, nqmax
-    character(len=7) :: nqmax_eq
+    integer  :: indev, ios, nq
+    character(len=7) :: nq_eq
     
     select case(iproc)
 
@@ -235,15 +235,10 @@ contains
               indev = idev_open_opt('-i',status="old")
            end if
 
-           ! AB here you need to check the format 
-           read(indev,*,iostat=ios) nqmax_eq, nqmax
+           read(indev,*,iostat=ios) nq_eq, nq
            if (ios /= 0) call wae_error('input','incorrect file format, see SM.dat for an example')
            
-           ! maximum number of quarks in the loops, including bottom and top
-           ! AB I am not sure why I have introduced this one
-           !           nqmax = min(int_val_opt('--nqmax', nqmax),nqmax)
-
-           call read_top_partners(indev,nqmax)
+           call read_top_partners(indev,nq)
 
         else if (mtp /= zero) then
           ! Include top partner in quark loops 
@@ -254,8 +249,6 @@ contains
           ! The inverse of fscale
           if (log_val_opt('--fscale')) then
              invfscale = one/dble_val_opt('--fscale',zero)
-          else if (log_val_opt('-f')) then
-             invfscale = one/dble_val_opt('-f',zero)
           else
              invfscale = zero
              yt = yt * (one - sth2)
@@ -435,16 +428,15 @@ contains
 
 end subroutine set_yukawas
 
-subroutine read_top_partners(indev,nqmax)
-  integer, intent(in) :: indev, nqmax
+subroutine read_top_partners(indev,nq)
+  integer, intent(in) :: indev, nq
   !---------------------------
   integer :: i, ios
   real(dp) :: kappa, kappa_tilde
   
-  allocate(mass_array(nqmax),yukawa(nqmax),iloop_array(nqmax))
+  allocate(mass_array(nq),yukawa(nq),iloop_array(nq))
 
-  do i=1,nqmax
-     ! AB here you need to check the format
+  do i=1,nq
      read(indev,*,iostat=ios) mass_array(i), kappa, kappa_tilde, iloop_array(i)
      if (ios /= 0) call wae_error('read_top_partners','incorrect file format, see SM.dat for an example')
      if (cpodd) then
