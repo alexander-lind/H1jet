@@ -13,10 +13,6 @@ module common_vars
   ! Output level 
   integer, public, parameter :: stdout = 6
   integer, public, parameter :: stderr = 0
-  integer, public :: idev
-
-  ! Warning parameter for wae_warn from HOPPET 
-  integer, public, save :: warn_param = 3
 
   ! Process id 
   integer, public, parameter :: id_H = 1
@@ -30,30 +26,23 @@ module common_vars
   integer, public, parameter :: id_missingTotXsec = 1 
   integer, public, parameter :: id_fullImplementation = 2
 
-  ! Array specifying the particles in the loops 
-  integer, pointer, public :: iloop_array(:) 
-
-  ! Collider type (pp or ppbar) 
+  ! Collider type (pp or ppbar)
+  ! This is an input of get_pdfs, so maybe avoid making it public
   character(len=5), public :: collider 
 
-  ! Loop approximation 
-  character(len=8), public :: approx 
+  ! Loop approximation
+  ! AB we need to decide how to treat quark loops
+!  character(len=8), public :: approx 
 
-  ! Monte Carlo integration accuracy 
+  ! Monte Carlo integration accuracy
+  ! This is an input to other subroutines, so it should  not be made public
   real(dp), public :: accuracy
 
   ! Kinematics related variables 
   real(dp), public :: M
-  real(dp), public :: roots, rootshat, pt 
-  real(dp), public :: p(4,4), lnpt, y, yfrac
-  real(dp), public :: xmom, ymin, ymax, ptmin, ptmax
+  real(dp), public :: roots, pt 
 
-  ! Model parameters 
-  real(dp), public :: yt, yb, ytp
-  real(dp), public :: mtp, sth2, cth2, s2th2
-  real(dp), public :: yst1, yst2
-  real(dp), public :: delta, alpha1, alpha2, tbeta, c2beta
-  real(dp), public :: mst1, mst2 
+!  ! Model parameters 
   real(dp), pointer, public :: mb0
   real(dp), public :: mass
 

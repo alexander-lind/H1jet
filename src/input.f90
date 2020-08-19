@@ -8,8 +8,7 @@
 module input
 
   use hoppet_v1 
-  use ew_parameters 
-  use mass_helper
+!  use mass_helper
   use sub_defs_io
   use common_vars 
 
@@ -20,7 +19,9 @@ module input
   character(len=8) :: proc 
 
   public :: input_handler, gen_momenta, set_scale, print_settings 
-
+  real(dp), public :: ptmin, ptmax
+  real(dp) :: tbeta, sth2
+  
   integer, parameter :: M1_5=1, M1_14=2, M4_5=3, M4_14=4
 
 contains
@@ -28,7 +29,9 @@ contains
 !======================================================================================= 
 ! Handle all user input 
 
-  subroutine input_handler
+  subroutine input_handler(idev)
+    use hboson; use ew_parameters 
+    integer, intent(in) :: idev
 
     ! Print commandline options
     write(idev,'(a)') 'Provided command options: '
@@ -182,12 +185,20 @@ contains
 ! Function to set the relevant masses and parameters depending on the selected process 
 
   subroutine set_masses_and_couplings
-    use hboson
+    use hboson; use ew_parameters
     real(dp) :: invfscale, imc1
     integer  :: model
     integer  :: indev, ios, nq
     character(len=7) :: nq_eq
-    
+
+    ! Model-specific parameters 
+    real(dp) :: yt, yb, ytp
+    real(dp) :: mtp, cth2, s2th2
+    real(dp) :: yst1, yst2
+    real(dp) :: delta, alpha1, alpha2, c2beta
+    real(dp) :: mst1, mst2 
+
+
     select case(iproc)
 
       ! pp -> H + jet 
@@ -242,7 +253,7 @@ contains
 
         else if (mtp /= zero) then
           ! Include top partner in quark loops 
-          allocate(mass_array(3), yukawa(3), iloop_array(3))
+          allocate(mass_array(3), yukawa_array(3), iloop_array(3))
 
           mass_array = (/mt_in, mb_in, mtp/)
 
@@ -258,10 +269,10 @@ contains
           if (invfscale /= zero) then
              model = int_val_opt('--model',M1_5)
              imc1 = dble_val_opt('-imc1',zero)
-             call set_yukawas(model, invfscale,imc1)
+             call set_yukawas(model, invfscale,imc1,mtp,yt,yb,ytp)
           end if
 
-          yukawa = (/yt, yb, ytp/)
+          yukawa_array = (/yt, yb, ytp/)
 
           ! AB we need to decide what we do with approx
 !          select case(approx)
@@ -283,9 +294,9 @@ contains
           alpha2 = mz_in**2 / mt_in**2 * c2beta * four / three * sinwsq_in
           yst1 = (mt_in / mst1)**2 * (alpha1 * cth2 + alpha2 * sth2 + two - delta**2 / two / mt_in**2 * s2th2)
           yst2 = (mt_in / mst2)**2 * (alpha1 * sth2 + alpha2 * cth2 + two + delta**2 / two / mt_in**2 * s2th2)
-          allocate(mass_array(4), yukawa(4), iloop_array(4))
+          allocate(mass_array(4), yukawa_array(4), iloop_array(4))
           mass_array = (/mt_in, mb_in, mst1, mst2/)
-          yukawa = (/yt, yb, yst1, yst2/)
+          yukawa_array = (/yt, yb, yst1, yst2/)
           ! AB we need to decide what to do with approx
 !          select case(approx)
 !            case('sml')
@@ -301,9 +312,9 @@ contains
  !         end select 
         else
           ! SM, only bottom and top in quark loops 
-          allocate(mass_array(2), yukawa(2), iloop_array(2))
+          allocate(mass_array(2), yukawa_array(2), iloop_array(2))
           mass_array = (/mt_in, mb_in/)
-          yukawa = (/yt, yb/)
+          yukawa_array = (/yt, yb/)
           ! AB we need to decide what to do with approx
 !          select case(approx)
 !            case('sml')
@@ -327,7 +338,7 @@ contains
       case(id_bbH)
 
         M = dble_val_opt('--mH', mh) ! Higgs mass 
-        allocate(mass_array(1), yukawa(1))
+        allocate(mass_array(1), yukawa_array(1))
         mass_array(1) = dble_val_opt('--mbmb', mbmb)
 
       ! User specified process 
@@ -347,14 +358,15 @@ contains
 
   !==============================================================================
   ! Set Yukawa couplings for specific composite Higgs models
-  subroutine set_yukawas(model, invfscale, imc1)
-  integer, intent(in)  :: model
-  real(dp), intent(in) :: invfscale, imc1
-!  real(dp), intent(inout) :: yt, ytp,yb
-!-----------------------------------------  
-  real(dp) :: seps, ceps
-  real(dp) :: sthRsq, cthRsq,tanthRsq
-  real(dp) :: sthLsq, cthLsq,tanthLsq
+  subroutine set_yukawas(model,invfscale,imc1,mtp,yt,ytp,yb)
+    use hboson; use ew_parameters
+    integer, intent(in)  :: model
+    real(dp), intent(in) :: invfscale, imc1, mtp
+  real(dp), intent(inout) :: yt, ytp,yb
+    !-----------------------------------------  
+    real(dp) :: seps, ceps
+    real(dp) :: sthRsq, cthRsq,tanthRsq
+    real(dp) :: sthLsq, cthLsq,tanthLsq
 
 
   seps = higgs_vev_in*invfscale
@@ -429,20 +441,21 @@ contains
 end subroutine set_yukawas
 
 subroutine read_top_partners(indev,nq)
+  use hboson
   integer, intent(in) :: indev, nq
   !---------------------------
   integer :: i, ios
   real(dp) :: kappa, kappa_tilde
   
-  allocate(mass_array(nq),yukawa(nq),iloop_array(nq))
+  allocate(mass_array(nq),yukawa_array(nq),iloop_array(nq))
 
   do i=1,nq
      read(indev,*,iostat=ios) mass_array(i), kappa, kappa_tilde, iloop_array(i)
      if (ios /= 0) call wae_error('read_top_partners','incorrect file format, see SM.dat for an example')
      if (cpodd) then
-        yukawa(i) = kappa_tilde
+        yukawa_array(i) = kappa_tilde
      else
-        yukawa(i) = kappa
+        yukawa_array(i) = kappa
      end if
   end do
   close(indev)
@@ -453,33 +466,38 @@ end subroutine read_top_partners
 !=======================================================================================
 ! Print the settings from user input 
 
-  subroutine print_settings 
-
+  subroutine print_settings(idev)
+    use hboson
+    integer, intent(in) :: idev
+    
     write(idev,*) ! Blank line for nicer output 
     write(idev,*) 'collider       = ', collider
     write(idev,*) 'roots(GeV)     =', roots
     write(idev,*) 'process        = ', proc
-    if (iproc == id_user) then 
-      write(idev,*) 'model          = User-defined from included custom code' 
-    else if (mtp /= zero) then 
-      write(idev,*) 'model          = SM with top partners' 
-    else if (mst1 /= zero) then 
-      write(idev,*) 'model          = SUSY' 
-    else if (cpodd) then 
-      write(idev,*) 'model          = CP-odd Higgs'
-    else 
-      write(idev,*) 'model          = SM' 
-    end if
+    select case(iproc)
+    case(id_user)
+       write(idev,*) 'model          = User-defined from included custom code' 
+    case(id_H)
+       if (cpodd) then
+          write(idev,*) 'model          = CP-odd Higgs'
+       else if (size(mass_array)==2) then
+          write(idev,*) 'model          = SM' 
+       else if (iloop_array(3) <= iloop_lm_fermion) then
+          write(idev,*) 'model          = SM with top partners' 
+       else
+          write(idev,*) 'model          = SUSY' 
+       end if
+    end select
     write(idev,*) 'mass           =', M
     write(idev,*) 'muR            =', muR
     write(idev,*) 'muF            =', muF
     write(idev,*) 'alphas(muR)    =', alphas
     write(idev,*) 'scale strategy = ', scale_strategy 
-    if (iproc /= id_user) then 
+    if (iproc == id_H) then 
       write(idev,*) 'masses         =', mass_array
-    end if 
-    write(idev,*) 'tan(beta)      =', tbeta
-    write(idev,*) 'sin^2(theta)   =', sth2
+      write(idev,*) 'tan(beta)      =', tbeta
+      write(idev,*) 'sin^2(theta)   =', sth2
+   end if
     write(idev,*) 'sigma0 [nb]    =', sigma0 
     write(idev,*) 'log            =', log_val_opt('--log')
     write(idev,*) ! Blank line for nicer output 

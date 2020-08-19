@@ -174,7 +174,6 @@ contains
 ! account whether the collider is pp or ppbar
 
   subroutine get_pdfs(muF, collider, pdf1, pdf2)
-
     real(dp),         intent(in)  :: muF
     character(len=*), intent(in)  :: collider
     real(dp),         intent(out) :: pdf1(:,-6:), pdf2(:,-6:)

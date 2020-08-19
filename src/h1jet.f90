@@ -12,8 +12,8 @@ program h1jet
   use hoppet_v1
   use frcgauss_intrfc
   use sub_defs_io
-  use ew_parameters 
-  use mass_helper
+  use ew_parameters
+  use hboson
   use input 
   use cross_sections
   use banner
@@ -23,7 +23,14 @@ program h1jet
   implicit none
 
   ! Loop index 
-  integer :: i 
+  integer :: i
+  ! I/O unit identifier
+  integer :: idev
+  ! Maximum number of warnings
+  integer :: max_warns = 3
+  ! Local kinematical variables
+  real(dp) :: lnpt, xmom, ymin, ymax
+  
 
   ! Print help message or version number if invoked 
   if (log_val_opt('-h') .or. log_val_opt('--help')) then
@@ -42,10 +49,10 @@ program h1jet
   end if
 
   ! Print welcome banner
-  call print_welcome_banner
+  call print_welcome_banner(idev)
 
   ! Handle user input 
-  call input_handler 
+  call input_handler(idev) 
 
   ! Set up PDFs 
   call init_pdfs_from_LHAPDF(pdf_name, pdf_mem)
@@ -55,16 +62,12 @@ program h1jet
   ! If proc == user then check if it is set up 
   if (iproc == id_user) then 
     select case(user_included())
-      case (0)
-        write(idev,*) ! Blank line for nicer output
+      case (id_noImplementation)
         call wae_error('h1jet', 'User-specified process not set -- please recompile &
              &H1jet with USERPATH set')
-        write(idev,*) ! Blank line for nicer output
-      case (1)
-        write(idev,*) ! Blank line for nicer output
-        call wae_warn(warn_param, 'h1jet', 'Total born-level cross-section not &
+      case (id_missingTotXsec)
+        call wae_warn(max_warns, 'h1jet', 'Total born-level cross-section not &
              &included in user interface')
-        write(idev,*) ! Blank line for nicer output
     end select
   end if
 
@@ -107,7 +110,7 @@ program h1jet
   allocate(dsigma_dpt(nbins), sigma(nbins))
  
   ! Output settings used 
-  call print_settings 
+  call print_settings(idev) 
   
   write(idev,*) ! Blank line for nicer output
   write(idev,*) '# cols are:   binmin   binmed   binmax   dsigma/dpt [fb/GeV]   sigma(pt) [fb]'

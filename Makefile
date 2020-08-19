@@ -35,9 +35,9 @@ VPATH = $(USERPATH):$(SOURCEDIR):$(PWD)/obj
 
 PROG = h1jet 
 
-SRCS = mass_helper.f90 scalar_integrals.f90 dgset.f dgquad.f d107d1.f frcgauss.f90 vboson.f90 pdfs_tools.f90 ew_parameters.f90 io_utils.f90 lcl_dec.f90 hboson.f90 input.f90 cross_sections.f90 user_interface.f90 banner.f90 common_vars.f90 
+SRCS = scalar_integrals.f90 dgset.f dgquad.f d107d1.f frcgauss.f90 vboson.f90 pdfs_tools.f90 ew_parameters.f90 io_utils.f90 lcl_dec.f90 hboson.f90 input.f90 cross_sections.f90 user_interface.f90 banner.f90 common_vars.f90 
 
-OBJS = mass_helper.o scalar_integrals.o dgset.o dgquad.o d107d1.o frcgauss.o vboson.o pdfs_tools.o ew_parameters.o io_utils.o lcl_dec.o hboson.o input.o cross_sections.o user_interface.o banner.o common_vars.o 
+OBJS = scalar_integrals.o dgset.o dgquad.o d107d1.o frcgauss.o vboson.o pdfs_tools.o ew_parameters.o io_utils.o lcl_dec.o hboson.o input.o cross_sections.o user_interface.o banner.o common_vars.o 
 
 # Trick to enable old 'make PROG=xxx' form to still work
 ALL: $(PROG)__
@@ -72,14 +72,13 @@ dgset.o: dgquad.o d107d1.o
 ew_parameters.o: 
 common_vars.o: 
 frcgauss.o: dgset.o 
-h1jet.o: pdfs_tools.o io_utils.o frcgauss.o mass_helper.o input.o cross_sections.o banner.o common_vars.o 
-hboson.o: scalar_integrals.o mass_helper.o
+h1jet.o: pdfs_tools.o io_utils.o frcgauss.o input.o cross_sections.o banner.o common_vars.o 
+hboson.o: scalar_integrals.o
 io_utils.o: lcl_dec.o
 pdfs_tools.o: ew_parameters.o hboson.o user_interface.o common_vars.o 
 scalar_integrals.o:
 vboson.o: ew_parameters.o
-mass_helper.o:
 input.o: ew_parameters.o io_utils.o hboson.o pdfs_tools.o common_vars.o 
-user_interface.o: ew_parameters.o mass_helper.o common_vars.o  
-cross_sections.o: vboson.o ew_parameters.o io_utils.o hboson.o input.o user_interface.o 
+user_interface.o: ew_parameters.o common_vars.o  
+cross_sections.o: vboson.o io_utils.o hboson.o input.o user_interface.o 
 banner.o: user_interface.o common_vars.o 

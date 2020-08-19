@@ -8,7 +8,7 @@
 module user_interface 
 
   use ew_parameters
-  use mass_helper
+!  use mass_helper
   use hoppet_v1 
   use common_vars 
   

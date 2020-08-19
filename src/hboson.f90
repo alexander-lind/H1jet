@@ -10,7 +10,7 @@ module hboson
   use hoppet_v1
   use ew_parameters
   use scalar_integrals
-  use mass_helper
+!  use mass_helper
   
   implicit none
 
@@ -24,8 +24,26 @@ module hboson
   integer, public, parameter :: iloop_lm_scalar =4
   
   real(dp), public :: mh2 ! Higgs mass squared
+
+    ! Constant default heavy quark masses 
+  real(dp), parameter, public :: mb = 4.65_dp  ! from PDG 2012
+  real(dp), parameter, public :: mt = 173.5_dp ! from PDG 2012
+  real(dp), parameter, public :: mbmb = 4.18_dp
+
+  ! Heavy quark masses which can be changed by user input 
+  real(dp), public :: mb_in, mt_in 
+  real(dp), pointer, public :: mass_array(:)
+  ! Anomalous Yukawa couplings
+  real(dp), pointer, public :: yukawa_array(:)
+  ! Array specifying the particles in the loops 
+  integer, pointer, public :: iloop_array(:) 
+
+  logical, public :: cpodd = .false.
+  
   public :: hboson_cross_section, bbH_cross_section
   public :: hboson_msquared, hboson_cpodd_Msquared, bbH_msquared
+
+  public :: RunningMass
   
 contains
 
@@ -300,15 +318,53 @@ contains
 !=======================================================================================
 ! Cross-section for gg -> H + jet 
 
-  function hboson_cross_section(lumigg, iloop_array, mass_array, yukawa) result(res)
+  function hboson_cross_section(lumigg) result(res)
 
     real(dp) :: nc = three  
     real(dp) :: res, lumigg
-    integer, intent(in) :: iloop_array(:)
-    real(dp), intent(in) :: mass_array(:), yukawa(:)
+!    integer, intent(in) :: iloop_array(:)
+!    real(dp), intent(in) :: mass_array(:), yukawa(:)
+    !---------------------------------
+    integer :: i
+    real(dp) :: tau
+    complex(dp) :: amp
 
-    res = one / pi / (nc**2 - 1) / 72._dp / higgs_vev_in**2
-    res = res * born_ampsquare(iloop_array, mass_array, yukawa)
+    amp = (zero,zero)
+    
+    do i = 1, size(iloop_array)
+
+       if (mass_array(i) == zero) cycle
+
+       tau = mh2 / (four * mass_array(i)**2)
+   
+       select case(iloop_array(i))
+       case(iloop_fm_fermion) ! fermion
+          if (cpodd) then
+             amp = amp + F12_cpodd(tau) * yukawa_array(i)
+          else
+             amp = amp + F12(tau) * yukawa_array(i) 
+          end if
+       case(iloop_lm_fermion)
+          if (cpodd) then
+             amp = amp + two * yukawa_array(i)
+          else
+             amp = amp + four / three * yukawa_array(i) 
+          end if
+       case(iloop_fm_scalar) ! scalar 
+          if (cpodd) call wae_error('hboson_cross_section',&
+               &'CP-odd Higgs with scalar loops not yet implemented')
+          amp = amp + half * F0(tau) * yukawa_array(i) 
+       case(iloop_lm_scalar)
+          if (cpodd) call wae_error('hboson_cross_section',&
+               &'CP-odd Higgs with scalar loops not yet implemented')
+          amp = amp + one / three * yukawa_array(i) 
+       case default
+          call wae_error('hboson_cross_section','unknown iloop',intval=iloop_array(i))
+      end select
+   end do
+
+   res = res / pi / (nc**2 - 1) / 72._dp / higgs_vev_in**2
+!    res = res * born_ampsquare(iloop_array, mass_array, yukawa)
     res = res * lumigg
     res = res * invGev2_to_nb
 
@@ -323,10 +379,8 @@ contains
 !    gqbar -> qbar H (obtained by permutation of the qqbar amplitude) 
 ! Modified code from Herwig 6.521 
 
-  subroutine hboson_Msquared(s, t, u, iloop_in, mass_in, yukawa_in,  wtqq, wtqg, wtgq, wtgg)
+  subroutine hboson_Msquared(s, t, u,  wtqq, wtqg, wtgq, wtgg)
     real(dp), intent(in) :: s, t, u
-    integer, intent(in) :: iloop_in(:)
-    real(dp), intent(in) :: mass_in(:), yukawa_in(:)
     real(dp), intent(out) :: wtqq, wtqg, wtgq, wtgg
 
     complex(dp) :: BI(4), CI(7), DI(3), amp(7) 
@@ -348,15 +402,15 @@ contains
     amp_imag = zero
     amp_real = zero
     
-    do imass = 1, size(iloop_in)
+    do imass = 1, size(iloop_array)
     
-      mq2 = mass_in(imass)**2
+      mq2 = mass_array(imass)**2
       if (mq2 == zero) cycle
 
-      yukawa = yukawa_in(imass)
+      yukawa = yukawa_array(imass)
       
       ! Selection for loop quarks 
-      iloop = iloop_in(imass)
+      iloop = iloop_array(imass)
 
       ! Evaluate scalar loop integrals 
          
@@ -483,10 +537,8 @@ contains
 !    qg -> qH (obtained by permutation of the qqbar amplitude) 
 !    gqbar -> qbar H (obtained by permutation of the qqbar amplitude) 
 ! Modified code from Herwig 6.521 
-  subroutine hboson_cpodd_Msquared(s, t, u, iloop_in, mass_in, yukawa_in,  wtqq, wtqg, wtgq, wtgg)
+  subroutine hboson_cpodd_Msquared(s, t, u,  wtqq, wtqg, wtgq, wtgg)
     real(dp), intent(in) :: s, t, u
-    integer, intent(in) :: iloop_in(:)
-    real(dp), intent(in) :: mass_in(:), yukawa_in(:)
     real(dp), intent(out) :: wtqq, wtqg, wtgq, wtgg
 
     complex(dp) :: BI(4), CI(7), DI(3), amp(7) 
@@ -508,15 +560,15 @@ contains
     amp_imag = zero
     amp_real = zero
     
-    do imass = 1, size(iloop_in)
+    do imass = 1, size(iloop_array)
     
-      mq2 = mass_in(imass)**2
+      mq2 = mass_array(imass)**2
       if (mq2 == zero) cycle
 
-      yukawa = yukawa_in(imass)
+      yukawa = yukawa_array(imass)
       
       ! Selection for loop quarks 
-      iloop = iloop_in(imass)
+      iloop = iloop_array(imass)
 
       ! Evaluate scalar loop integrals 
          
@@ -637,10 +689,10 @@ contains
 
 !=======================================================================================
 
-  function born_ampsquare(iloop_in, mass_in, yukawa_in) result(res)
+  function born_ampsquare(iloop_in, mass_array, yukawa_array) result(res)
 
     integer, intent(in) :: iloop_in(:)
-    real(dp), intent(in) :: mass_in(:), yukawa_in(:)
+    real(dp), intent(in) :: mass_array(:), yukawa_array(:)
     real(dp) :: res  
 
     real(dp) :: tau
@@ -651,31 +703,31 @@ contains
 
     do i = 1, size(iloop_in)
 
-      if (mass_in(i) == zero) cycle
+      if (mass_array(i) == zero) cycle
 
-      tau = mh2 / (four * mass_in(i)**2)
+      tau = mh2 / (four * mass_array(i)**2)
    
       select case(iloop_in(i))
         case(iloop_fm_fermion) ! fermion
           if (cpodd) then
-             amp = amp + F12_cpodd(tau) * yukawa_in(i)
+             amp = amp + F12_cpodd(tau) * yukawa_array(i)
           else
-             amp = amp + F12(tau) * yukawa_in(i) 
+             amp = amp + F12(tau) * yukawa_array(i) 
           end if
        case(iloop_lm_fermion)
           if (cpodd) then
-             amp = amp + two * yukawa_in(i)
+             amp = amp + two * yukawa_array(i)
           else
-             amp = amp + four / three * yukawa_in(i) 
+             amp = amp + four / three * yukawa_array(i) 
           end if
        case(iloop_fm_scalar) ! scalar 
           if (cpodd) call wae_error('born_ampsquare',&
                &'CP-odd Higgs with scalar loops not yet implemented')
-          amp = amp + half * F0(tau) * yukawa_in(i) 
+          amp = amp + half * F0(tau) * yukawa_array(i) 
        case(iloop_lm_scalar)
           if (cpodd) call wae_error('born_ampsquare',&
                &'CP-odd Higgs with scalar loops not yet implemented')
-          amp = amp + one / three * yukawa_in(i) 
+          amp = amp + one / three * yukawa_array(i) 
        case default
           call wae_error('born_ampsquare','unknown iloop',intval=iloop_in(i))
       end select
@@ -696,7 +748,7 @@ contains
 
     real(dp) :: lumiqqbar
     real(dp) :: res
-
+    
     res = pi / 6._dp / higgs_vev_in**2 / mh2 
     res = res * lumiqqbar 
     res = res * invGev2_to_nb 
@@ -721,6 +773,31 @@ contains
 
 !=======================================================================================
 
+  ! Calculate the running quark mass 
+
+  function RunningMass(muR, m0, as, as0) result(res)
+    real(dp), intent(in) :: muR, m0, as, as0
+    real(dp) :: A1, res
+    real(dp), parameter :: gamma0 = one
+    real(dp), parameter :: gamma1 = one / 16._dp * (202._dp / three - 20._dp / 9._dp * nf_def)
+  
+    A1 = -beta1 * gamma0 / beta0 + gamma1 / (pi * beta0) 
+
+    res = m0 * (as / as0)**(gamma0 / (pi * beta0)) * (one + A1 * as / pi) / (one + A1 * as0 / pi)
+
+    ! Modification to check with SusHi
+    !res = m0 * ((one - two * 0.120_dp * beta0 * log(91.2_dp / m0)) / &
+    !      & (one - two * 0.120_dp * beta0 * log(91.2_dp / muR)))**(gamma0 / (pi * beta0))
+
+    ! Further modification to check with SusHi 
+    !res = m0 * (as / as0)**(gamma0 / (pi * beta0)) * ((one + (gamma1 / (pi * beta0) &
+    !& - beta1 * gamma0 / (pi**2 * beta0**2)) * as / pi) / (one + (gamma1 / (pi * beta0) &
+    !& - beta1 * gamma0 / (pi**2 * beta0**2)) * as0 / pi)) 
+
+  end function RunningMass
+
+!=======================================================================================
+  
 end module hboson
 
 

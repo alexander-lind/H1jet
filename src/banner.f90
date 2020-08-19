@@ -90,7 +90,8 @@ contains
 !=======================================================================================
 ! Print the welcome banner at the start of the program 
 
-  subroutine print_welcome_banner
+  subroutine print_welcome_banner(idev)
+    integer, intent(in) :: idev
     
     write(idev,'(a)') '============================================================'
     write(idev,'(a)') '                    H1jet version '//trim(version_number) 

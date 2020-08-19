@@ -9,16 +9,13 @@ module cross_sections
 
   use hoppet_v1 
   use pdfs_tools
-  use ew_parameters 
-  use mass_helper
-  use vboson
-  use hboson
   use input 
-  use user_interface 
-  use common_vars 
+  use common_vars
+  use hboson; use vboson; use user_interface 
   
   implicit none
 
+!  private
   real(dp), pointer :: lumi_gg(:), lumi_qg(:), lumi_gq(:), lumi_qqbar(:)
 
 contains
@@ -67,7 +64,6 @@ contains
 ! Calculate the born-level total cross-section 
 
   function cross_section(lumi_gg, lumi_qg, lumi_gq, lumi_qqbar, tau) result(res)
-
     real(dp), intent(in) :: lumi_gg(0:), lumi_qg(0:), lumi_gq(0:), lumi_qqbar(0:)
     type(gdval), intent(in) :: tau
 
@@ -76,7 +72,7 @@ contains
     select case(iproc)
       case (id_H)
         mh2 = M**2
-        res = hboson_cross_section(lumi_gg .atx. tau, iloop_array, mass_array, yukawa)
+        res = hboson_cross_section(lumi_gg .atx. tau)!, iloop_array, mass_array, yukawa)
       case (id_Z)
         res = vboson_cross_section(lumi_qqbar .atx. tau)
       case (id_bbH)
@@ -95,7 +91,6 @@ contains
 ! as a function of rapidity y for the specified process 
 
   function dsigma_dptdy(y) result(res)
-    
     real(dp), intent(in) :: y
 
     real(dp) :: res
@@ -125,11 +120,9 @@ contains
     select case(iproc)
       case (id_H)
         if (cpodd) then
-          call hboson_cpodd_Msquared(s, t, u, iloop_array, & 
-                 & mass_array, yukawa, wtqq, wtqg, wtgq, wtgg)
+           call hboson_cpodd_Msquared(s, t, u, wtqq, wtqg, wtgq, wtgg)
         else
-          call hboson_Msquared(s, t, u, iloop_array, & 
-                 & mass_array, yukawa, wtqq, wtqg, wtgq, wtgg)
+           call hboson_Msquared(s, t, u, wtqq, wtqg, wtgq, wtgg)
         end if
       case (id_Z)
         call vboson_Msquared(s, t, u, wtgg, wtqg, wtgq, wtqq)
