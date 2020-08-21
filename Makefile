@@ -24,9 +24,10 @@ endif
 LIBS= `$(HOPPET_CONFIG) --ldflags` `$(LHAPDF_CONFIG) --ldflags`
 
 #CHAPLIN= `locate libchaplin.a | tail -1 | sed s/libchaplin.a//`
-#CHAPLIN=/its/home/al629/scratch/heptools/chaplin-1.2/chaplin-install/lib
-#LDFLAGS = -L$(CHAPLIN) -lchaplin
-LDFLAGS = -lchaplin 
+#CHAPLIN = /its/home/al629/scratch/heptools/chaplin-1.2/chaplin-install/lib 
+CHAPLIN =
+LDFLAGS = -L$(CHAPLIN)
+LDLIBS = -lchaplin 
 
 # Select between smallR version of the code and the svn one
 SOURCEDIR  = $(PWD)/src
@@ -35,9 +36,9 @@ VPATH = $(USERPATH):$(SOURCEDIR):$(PWD)/obj
 
 PROG = h1jet 
 
-SRCS = scalar_integrals.f90 dgset.f dgquad.f d107d1.f frcgauss.f90 vboson.f90 pdfs_tools.f90 ew_parameters.f90 io_utils.f90 lcl_dec.f90 hboson.f90 input.f90 cross_sections.f90 user_interface.f90 banner.f90 common_vars.f90 
+SRCS = scalar_integrals.f90 vboson.f90 pdfs_tools.f90 ew_parameters.f90 io_utils.f90 lcl_dec.f90 hboson.f90 input.f90 cross_sections.f90 user_interface.f90 banner.f90 common_vars.f90 gauss_integrator.f90 
 
-OBJS = scalar_integrals.o dgset.o dgquad.o d107d1.o frcgauss.o vboson.o pdfs_tools.o ew_parameters.o io_utils.o lcl_dec.o hboson.o input.o cross_sections.o user_interface.o banner.o common_vars.o 
+OBJS = scalar_integrals.o vboson.o pdfs_tools.o ew_parameters.o io_utils.o lcl_dec.o hboson.o input.o cross_sections.o user_interface.o banner.o common_vars.o gauss_integrator.o 
 
 # Trick to enable old 'make PROG=xxx' form to still work
 ALL: $(PROG)__
@@ -45,7 +46,7 @@ ALL: $(PROG)__
 $(PROG)__: $(PROG)
 
 h1jet: h1jet.o $(OBJS) 
-	$(FC)  -o $@ obj/$@.o $(patsubst %,obj/%,$(OBJS)) $(LIBS) $(LDFLAGS)
+	$(FC)  -o $@ obj/$@.o $(patsubst %,obj/%,$(OBJS)) $(LIBS) $(LDFLAGS) $(LDLIBS) 
 
 libclean:
 	rm -f   obj/*.o  
@@ -62,17 +63,10 @@ distclean: clean
 	@ mkdir -p obj modules 
 	$(FC) $(FFLAGS)  $(INCLUDE) -c -o obj/$@ $<
 
-%.o: %.f
-	@ mkdir -p obj modules 
-	$(FC) $(FFLAGS) $(INCLUDE) -c -o obj/$@ $<
-
-d107d1.o:
-dgquad.o: d107d1.o
-dgset.o: dgquad.o d107d1.o
 ew_parameters.o: 
 common_vars.o: 
-frcgauss.o: dgset.o 
-h1jet.o: pdfs_tools.o io_utils.o frcgauss.o input.o cross_sections.o banner.o common_vars.o 
+gauss_integrator.o: 
+h1jet.o: pdfs_tools.o io_utils.o input.o cross_sections.o banner.o common_vars.o gauss_integrator.o 
 hboson.o: scalar_integrals.o
 io_utils.o: lcl_dec.o
 pdfs_tools.o: ew_parameters.o hboson.o user_interface.o common_vars.o 

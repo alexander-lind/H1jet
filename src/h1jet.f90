@@ -10,7 +10,6 @@ program h1jet
 
   use pdfs_tools 
   use hoppet_v1
-  use frcgauss_intrfc
   use sub_defs_io
   use ew_parameters
   use hboson
@@ -19,6 +18,7 @@ program h1jet
   use banner
   use common_vars 
   use warnings_and_errors
+  use gauss_integrator 
   
   implicit none
 
@@ -30,7 +30,6 @@ program h1jet
   integer :: max_warns = 3
   ! Local kinematical variables
   real(dp) :: lnpt, xmom, ymin, ymax
-  
 
   ! Print help message or version number if invoked 
   if (log_val_opt('-h') .or. log_val_opt('--help')) then
@@ -153,7 +152,7 @@ program h1jet
     xmom = (roots**2 - M**2) / roots / pt
     ymax = log(xmom * half + half * sqrt(xmom**2 - four))
     ymin = -ymax
-    dsigmadpt = frcgauss(dsigma_dptdy, ymin, ymax, accuracy)
+    dsigmadpt = gauss_integrate(dsigma_dptdy, ymin, ymax, accuracy)
 
     ! Include couplings and prefactors
     dsigmadpt = dsigmadpt * ew_prefactor * alphas**(as_pow + 1) 
