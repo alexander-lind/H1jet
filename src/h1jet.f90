@@ -29,7 +29,15 @@ program h1jet
   ! Maximum number of warnings
   integer :: max_warns = 3
   ! Local kinematical variables
-  real(dp) :: lnpt, xmom, ymin, ymax
+  real(dp) :: lnpt, xmom, ymin, ymax 
+  ! Pointer to mb(mb) for bbH 
+  real(dp), pointer :: mb0
+  ! Histogram related variables 
+  real(dp), allocatable :: binmin(:), binmed(:), binmax(:)
+  real(dp) :: bin_width
+  ! Cross-sections 
+  real(dp), allocatable :: dsigma_dpt(:), sigma(:)
+  real(dp) :: dsigmadpt, ew_prefactor
 
   ! Print help message or version number if invoked 
   if (log_val_opt('-h') .or. log_val_opt('--help')) then

@@ -32,27 +32,23 @@ module common_vars
 
   ! Loop approximation
   ! AB we need to decide how to treat quark loops
-!  character(len=8), public :: approx 
+  !character(len=8), public :: approx 
 
   ! Monte Carlo integration accuracy
-  ! This is an input to other subroutines, so it should  not be made public
+  ! This is an input to other subroutines, so it should not be made public
   real(dp), public :: accuracy
 
   ! Kinematics related variables 
   real(dp), public :: M
   real(dp), public :: roots, pt 
 
-!  ! Model parameters 
-  real(dp), pointer, public :: mb0
+  ! Model parameter 
   real(dp), public :: mass
 
-  ! Histogram related variables 
+  ! Number of bins 
   integer, public :: nbins 
-  real(dp), allocatable, public :: binmin(:), binmed(:), binmax(:)
-  real(dp), public :: bin_width
 
-  ! alpha_ew and alpha_s couplings 
-  real(dp), public :: alphaw 
+  ! Strong coupling alpha_s 
   real(dp), public :: alphas 
   integer, public :: as_pow = 0
   real(dp), public :: as0
@@ -69,10 +65,8 @@ module common_vars
   character(len=30), public :: pdf_name
   integer, public :: pdf_mem
 
-  ! Cross-sections 
-  real(dp), allocatable, public :: dsigma_dpt(:), sigma(:)
-  real(dp), public :: sigma0, sigma_bbH
-  real(dp), public :: jakob, dsigmadpt, ew_prefactor
+  ! Total born-level cross-section 
+  real(dp), public :: sigma0 
 
 end module common_vars 
 
