@@ -31,7 +31,7 @@ To compile with a custom user interface:
 ./configure USERPATH=/path/to/custom/user_interface.f90 
 make
 ```
-(See the User's Manual for more information on the 
+See the User's Manual for more information on the implementation of a custom user interface. 
 
 ## Use 
 To run H1jet: 
