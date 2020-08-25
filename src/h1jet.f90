@@ -30,8 +30,10 @@ program h1jet
   integer :: max_warns = 3
   ! Local kinematical variables
   real(dp) :: lnpt, xmom, ymin, ymax 
-  ! Pointer to mb(mb) for bbH 
+  ! Variables related to bbH 
   real(dp), pointer :: mb0
+  real(dp) :: running_mb
+  real(dp) :: as0
   ! Histogram related variables 
   real(dp), allocatable :: binmin(:), binmed(:), binmax(:)
   real(dp) :: bin_width
@@ -101,14 +103,14 @@ program h1jet
     as0 = RunningCoupling(mb0)
 
     ! Calculate running bottom mass 
-    mass = RunningMass(muR, mb0, alphas, as0)
+    running_mb = RunningMass(muR, mb0, alphas, as0)
 
     write(idev,*) ! Blank line for nicer output 
-    write(idev,*) "m_b(mu_R)      =", mass
+    write(idev,*) "m_b(mu_R)      =", running_mb
     write(idev,*) "as(MuRbbh)     =", as0
 
     ! Scale born-level cross-section with running bottom mass 
-    sigma0 = sigma0 * mass**2
+    sigma0 = sigma0 * running_mb**2
 
   end if
 
@@ -165,8 +167,8 @@ program h1jet
     ! Include couplings and prefactors
     dsigmadpt = dsigmadpt * ew_prefactor * alphas**(as_pow + 1) 
     if (iproc == id_bbH) then
-      mass = RunningMass(muR, mb0, alphas, as0)
-      dsigmadpt = dsigmadpt * mass**2
+      running_mb = RunningMass(muR, mb0, alphas, as0)
+      dsigmadpt = dsigmadpt * running_mb**2
     end if
 
     dsigma_dpt(i) = dsigmadpt

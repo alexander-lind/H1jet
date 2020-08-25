@@ -42,16 +42,12 @@ module common_vars
   real(dp), public :: M
   real(dp), public :: roots, pt 
 
-  ! Model parameter 
-  real(dp), public :: mass
-
   ! Number of bins 
   integer, public :: nbins 
 
   ! Strong coupling alpha_s 
   real(dp), public :: alphas 
   integer, public :: as_pow = 0
-  real(dp), public :: as0
 
   ! Scales related variables 
   character(len=2), public :: scale_strategy
