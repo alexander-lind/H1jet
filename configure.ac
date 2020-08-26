@@ -24,10 +24,13 @@ AC_MSG_CHECKING([for LIBS from LHAPDF])
 AC_SUBST([LHAPDF_LIBS], [`lhapdf-config --libs`])
 AC_MSG_RESULT([yes])
 
-AC_MSG_CHECKING([for USERPATH])
-AC_SUBST([USERPATH])
-AS_IF([test ! -z "$USERPATH"], AC_MSG_RESULT([yes]), AC_MSG_RESULT([no]))
-AM_CONDITIONAL([USERPATH_SET], [test ! -z "$USERPATH"])
+
+AC_MSG_CHECKING([for USERFILE])
+AC_SUBST([USERFILE])
+AS_IF([test ! -z "$USERFILE"], AC_MSG_RESULT([yes]), AC_MSG_RESULT([no]))
+AM_CONDITIONAL([USERFILE_SET], [test ! -z "$USERFILE"])
+
+AC_SUBST([USERFILE_OBJ], [$(patsubst %.f90,%.o,$USERFILE)])
 
 AC_CONFIG_COMMANDS([mkdirbin], [$MKDIR_P bin])
 

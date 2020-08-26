@@ -110,8 +110,7 @@ am___top_builddir__bin_h1jet_OBJECTS = $(am__objects_1)
 __top_builddir__bin_h1jet_OBJECTS =  \
 	$(am___top_builddir__bin_h1jet_OBJECTS)
 am__DEPENDENCIES_1 =
-@USERPATH_SET_FALSE@am__DEPENDENCIES_2 = user_interface.f90
-@USERPATH_SET_TRUE@am__DEPENDENCIES_2 = $(am__DEPENDENCIES_1)
+@USERFILE_SET_FALSE@am__DEPENDENCIES_2 = user_interface.o
 am__dirstamp = $(am__leading_dot)dirstamp
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -208,7 +207,7 @@ PATH_SEPARATOR = @PATH_SEPARATOR@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
-USERPATH = @USERPATH@
+USERFILE = @USERFILE@
 VERSION = @VERSION@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
@@ -273,15 +272,17 @@ SOURCES = h1jet.f90\
 	  io_utils.f90\
 	  gauss_integrator.f90
 
-@USERPATH_SET_FALSE@USER_INTERFACE_SOURCE = user_interface.f90
-@USERPATH_SET_TRUE@USER_INTERFACE_SOURCE = ${USERPATH}
+@USERFILE_SET_FALSE@USER_INTERFACE_SOURCE = user_interface.f90
+@USERFILE_SET_TRUE@USER_INTERFACE_SOURCE = ${USERFILE}
+@USERFILE_SET_FALSE@USER_INTERFACE_OBJ = user_interface.o
+@USERFILE_SET_TRUE@USER_INTERFACE_OBJ = ${USERFILE_OBJ}
 __top_builddir__bin_h1jet_SOURCES = $(SOURCES)  
 EXTRA___top_builddir__bin_h1jet_SOURCES = user_interface.f90 
 AM_FCFLAGS = -fPIC ${HOPPET_FCFLAGS}
 AM_FFLAGS = -fPIC ${HOPPET_FCFLAGS}
 __top_builddir__bin_h1jet_LDADD = ${HOPPET_LIBS} ${LHAPDF_LIBS} \
-	-lchaplin $(USER_INTERFACE_SOURCE)
-__top_builddir__bin_h1jet_DEPENDENCIES = $(USER_INTERFACE_SOURCE)
+	-lchaplin $(USER_INTERFACE_OBJ)
+__top_builddir__bin_h1jet_DEPENDENCIES = $(USER_INTERFACE_OBJ)
 all: all-am
 
 .SUFFIXES:
@@ -592,13 +593,13 @@ gauss_integrator.o:
 h1jet.o: pdfs_tools.o io_utils.o input.o cross_sections.o banner.o common_vars.o gauss_integrator.o 
 hboson.o: scalar_integrals.o
 io_utils.o: lcl_dec.o
-pdfs_tools.o: ew_parameters.o hboson.o user_interface.o common_vars.o 
+pdfs_tools.o: ew_parameters.o hboson.o common_vars.o $(USER_INTERFACE_OBJ)
 scalar_integrals.o:
 vboson.o: ew_parameters.o
 input.o: ew_parameters.o io_utils.o hboson.o pdfs_tools.o common_vars.o 
 user_interface.o: ew_parameters.o common_vars.o  
-cross_sections.o: vboson.o io_utils.o hboson.o input.o user_interface.o 
-banner.o: user_interface.o common_vars.o 
+cross_sections.o: vboson.o io_utils.o hboson.o input.o $(USER_INTERFACE_OBJ)
+banner.o: common_vars.o $(USER_INTERFACE_OBJ)
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

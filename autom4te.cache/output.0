@@ -588,9 +588,9 @@ ac_subst_vars='am__EXEEXT_FALSE
 am__EXEEXT_TRUE
 LTLIBOBJS
 LIB@&t@OBJS
-USERPATH_SET_FALSE
-USERPATH_SET_TRUE
-USERPATH
+USERFILE_SET_FALSE
+USERFILE_SET_TRUE
+USERFILE
 LHAPDF_LIBS
 HOPPET_LIBS
 HOPPET_FCFLAGS
@@ -3289,22 +3289,22 @@ LHAPDF_LIBS=`lhapdf-config --libs`
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
 
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for USERPATH" >&5
-$as_echo_n "checking for USERPATH... " >&6; }
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for USERFILE" >&5
+$as_echo_n "checking for USERFILE... " >&6; }
 
-if test ! -z "$USERPATH"; then :
+if test ! -z "$USERFILE"; then :
   { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
 else
   { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
 $as_echo "no" >&6; }
 fi
- if test ! -z "$USERPATH"; then
-  USERPATH_SET_TRUE=
-  USERPATH_SET_FALSE='#'
+ if test ! -z "$USERFILE"; then
+  USERFILE_SET_TRUE=
+  USERFILE_SET_FALSE='#'
 else
-  USERPATH_SET_TRUE='#'
-  USERPATH_SET_FALSE=
+  USERFILE_SET_TRUE='#'
+  USERFILE_SET_FALSE=
 fi
 
 
@@ -3477,8 +3477,8 @@ else
   am__EXEEXT_FALSE=
 fi
 
-if test -z "${USERPATH_SET_TRUE}" && test -z "${USERPATH_SET_FALSE}"; then
-  as_fn_error $? "conditional \"USERPATH_SET\" was never defined.
+if test -z "${USERFILE_SET_TRUE}" && test -z "${USERFILE_SET_FALSE}"; then
+  as_fn_error $? "conditional \"USERFILE_SET\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 
