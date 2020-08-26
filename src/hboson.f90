@@ -10,7 +10,6 @@ module hboson
   use hoppet_v1
   use ew_parameters
   use scalar_integrals
-!  use mass_helper
   
   implicit none
 

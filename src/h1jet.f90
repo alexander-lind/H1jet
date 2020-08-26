@@ -40,6 +40,10 @@ program h1jet
   ! Cross-sections 
   real(dp), allocatable :: dsigma_dpt(:), sigma(:)
   real(dp) :: dsigmadpt, ew_prefactor
+  ! Integration accuracy 
+  real(dp) :: accuracy
+  ! tau = M^2 / s 
+  type(gdval) :: tau
 
   ! Print help message or version number if invoked 
   if (log_val_opt('-h') .or. log_val_opt('--help')) then
@@ -60,8 +64,15 @@ program h1jet
   ! Print welcome banner
   call print_welcome_banner(idev)
 
+  ! Print commandline options
+  write(idev,'(a)') 'Provided command options: '
+  write(idev,'(a)') '# '//trim(command_line()) 
+  write(idev,*) ! Blank line for nicer output 
+
   ! Handle user input 
   call input_handler(idev) 
+  ! Set the desired integration accuracy 
+  accuracy = dble_val_opt('--accuracy', 1e-3_dp) 
 
   ! Set up PDFs 
   call init_pdfs_from_LHAPDF(pdf_name, pdf_mem)
@@ -87,7 +98,7 @@ program h1jet
   tau = (M**2 / roots**2) .with. grid 
 
   ! Calculate born-level cross-section 
-  call luminosities(lumi_gg, lumi_qg, lumi_gq, lumi_qqbar)
+  call luminosities(muF, collider, lumi_gg, lumi_qg, lumi_gq, lumi_qqbar)
   sigma0 = cross_section(lumi_gg, lumi_qg, lumi_gq, lumi_qqbar, tau)
   if (iproc /= id_user) then 
     sigma0 = sigma0 * alphas**as_pow
@@ -147,13 +158,13 @@ program h1jet
     end if
 
     ! Update factorisation and renormalisation scales with new pT 
-    muF = set_scale(scale_strategy, pt)
+    muF = set_scale(pt)
     muR = muF
 
     muF = muF * xmuf
     muR = muR * xmur
     
-    call luminosities(lumi_gg, lumi_qg, lumi_gq, lumi_qqbar)
+    call luminosities(muF, collider, lumi_gg, lumi_qg, lumi_gq, lumi_qqbar)
 
     ! Update running alpha_s 
     alphas = RunningCoupling(muR)

@@ -9,14 +9,17 @@ module cross_sections
 
   use hoppet_v1 
   use pdfs_tools
-  use input 
+  use input, only : gen_momenta 
   use common_vars
   use hboson; use vboson; use user_interface 
   
   implicit none
 
-!  private
+  !private
+  
   real(dp), pointer :: lumi_gg(:), lumi_qg(:), lumi_gq(:), lumi_qqbar(:)
+
+  !public :: h1jet_prefactor, cross_section, dsigma_dptdy  
 
 contains
 

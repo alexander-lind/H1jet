@@ -8,14 +8,18 @@
 module user_interface 
 
   use ew_parameters
-!  use mass_helper
   use hoppet_v1 
   use common_vars 
   
   implicit none
   
+  private 
+
   integer, parameter :: idef = selected_int_kind(8)
   
+  public :: user_included, user_cross_section, user_Msquared, user_luminosities, &
+            & user_help_message 
+
 contains
   
 !=======================================================================================

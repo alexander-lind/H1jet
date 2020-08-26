@@ -4,11 +4,9 @@
 !--------------------------------------------------------
 !========================================================
 
-! AB think about getting the default values from an input file
 module input
 
   use hoppet_v1 
-!  use mass_helper
   use sub_defs_io
   use common_vars 
 
@@ -16,13 +14,44 @@ module input
 
   private
 
+  ! The process as a character string -- only used here 
+  ! iproc (defined in common_vars.f90) is used in the code instead 
   character(len=8) :: proc 
 
-  public :: input_handler, gen_momenta, set_scale, print_settings 
+  ! Strategy for the setting of the scales mu_R and mu_F 
+  character(len=2) :: scale_strategy
+
+  ! Loop approximation
+  ! AB we need to decide how to treat quark loops
+  !character(len=8) :: approx 
+
+  ! Collider type (pp or ppbar) (only needed here and in h1jet.f90) 
+  character(len=5), public :: collider 
+  ! pt_min and pt_max of the histogram (only needed here and in h1jet.f90) 
   real(dp), public :: ptmin, ptmax
+  ! Number of bins (only needed here and h1jet in.f90)
+  integer, public :: nbins 
+  ! Strong coupling alpha_s (only needed here and in h1jet.f90) 
+  real(dp), public :: alphas 
+  ! Strong coupling exponent power (only needed here and in h1jet.f90) 
+  integer, public :: as_pow = 0
+  ! Total born-level cross-section (only needed here and in h1jet.f90) 
+  real(dp), public :: sigma0 
+  ! Factorisation and renormalisation factors (only needed here and in h1jet.f90) 
+  real(dp), public :: muF, muR
+  ! Scale factors (only needed here and in h1jet.f90) 
+  real(dp), public :: xmur, xmuf
+  ! PDF related variables (only needed here and in h1jet.f90) 
+  character(len=30), public :: pdf_name
+  integer, public :: pdf_mem
+
+  ! Model dependent parameters 
   real(dp) :: tbeta, sth2
-  
-  integer, parameter :: M1_5=1, M1_14=2, M4_5=3, M4_14=4
+ 
+  ! Identifiers for specific composite Higgs models  
+  integer, parameter :: M1_5 = 1, M1_14 = 2, M4_5 = 3, M4_14 = 4
+
+  public :: input_handler, gen_momenta, set_scale, print_settings 
 
 contains
 
@@ -32,11 +61,6 @@ contains
   subroutine input_handler(idev)
     use hboson; use ew_parameters 
     integer, intent(in) :: idev
-
-    ! Print commandline options
-    write(idev,'(a)') 'Provided command options: '
-    write(idev,'(a)') '# '//trim(command_line()) 
-    write(idev,*) ! Blank line for nicer output 
 
     ! Process 
     proc = trim(string_val_opt('--proc', 'H'))
@@ -92,7 +116,7 @@ contains
     ! Set up factorisation and renormalisation scales 
     scale_strategy = trim(string_val_opt('--scale_strategy', 'HT'))
 
-    muF = set_scale(scale_strategy, zero)
+    muF = set_scale(zero)
     muR = muF
 
     xmur = dble_val_opt('--xmur', 0.5_dp)
@@ -110,9 +134,6 @@ contains
       call wae_error('handle_input', 'Set minimum pT value (with --ptmin) &
                     &when using --log')
     end if
-
-    ! Set the desired integration accuracy 
-    accuracy = dble_val_opt('--accuracy', 1e-3_dp)
 
   end subroutine input_handler
   
@@ -163,9 +184,7 @@ contains
 ! Function to set the factorisation and renormalisation scales according to the 
 ! specified scale strategy and given pT 
 
-  function set_scale(scale_strategy, ptval) result(res)
-
-    character(len=*), intent(in) :: scale_strategy
+  function set_scale(ptval) result(res)
     real(dp), intent(in) :: ptval
     real(dp) :: res
 
@@ -181,7 +200,7 @@ contains
 
   end function set_scale
 
-!=======================================================================================
+!======================================================================================= 
 ! Function to set the relevant masses and parameters depending on the selected process 
 
   subroutine set_masses_and_couplings
@@ -211,9 +230,9 @@ contains
         M = dble_val_opt('--mH', mh) ! Higgs mass 
         yt = dble_val_opt('--yt', one) ! Top Yukawa factor 
         if (cpodd) then
-           yb = dble_val_opt('--yb', one) ! Bottom Yukawa factor
+          yb = dble_val_opt('--yb', one) ! Bottom Yukawa factor
         else
-           yb = dble_val_opt('--yb', zero) ! Bottom CP-odd Yukawa factor
+          yb = dble_val_opt('--yb', zero) ! Bottom CP-odd Yukawa factor
         end if
         sth2 = dble_val_opt('--sth2', zero) ! Stop/Top-partner mixing angle 
 
@@ -235,21 +254,23 @@ contains
 
         if (log_val_opt('--in') .or. log_val_opt('-i')) then
 
-           if (mst1  /= zero) then 
-              call wae_error('set_masses_and_couplings', 'Simoultaneous top partners &
+          if (mst1 /= zero) then 
+            call wae_error('set_masses_and_couplings', 'Simoultaneous top partners &
                     &and stops not allowed') 
-           end if
+          end if
 
-           if (log_val_opt('--in') ) then
-              indev = idev_open_opt('--in',status="old")
-           else if (log_val_opt('-i')) then
-              indev = idev_open_opt('-i',status="old")
-           end if
+          if (log_val_opt('--in') ) then
+            indev = idev_open_opt('--in',status="old")
+          else if (log_val_opt('-i')) then
+            indev = idev_open_opt('-i',status="old")
+          end if
 
-           read(indev,*,iostat=ios) nq_eq, nq
-           if (ios /= 0) call wae_error('input','incorrect file format, see SM.dat for an example')
+          read(indev,*,iostat=ios) nq_eq, nq
+          if (ios /= 0) then 
+            call wae_error('set_masses_and_couplings', 'Incorrect file format, see SM.dat for an example')
+          end if 
            
-           call read_top_partners(indev,nq)
+          call read_top_partners(indev, nq)
 
         else if (mtp /= zero) then
           ! Include top partner in quark loops 
@@ -259,17 +280,17 @@ contains
 
           ! The inverse of fscale
           if (log_val_opt('--fscale')) then
-             invfscale = one/dble_val_opt('--fscale',zero)
+            invfscale = one/dble_val_opt('--fscale', zero)
           else
-             invfscale = zero
-             yt = yt * (one - sth2)
-             ytp = ytp * sth2
+            invfscale = zero
+            yt = yt * (one - sth2)
+            ytp = ytp * sth2
           end if
 
           if (invfscale /= zero) then
-             model = int_val_opt('--model',M1_5)
-             imc1 = dble_val_opt('-imc1',zero)
-             call set_yukawas(model, invfscale,imc1,mtp,yt,yb,ytp)
+            model = int_val_opt('--model',M1_5)
+            imc1 = dble_val_opt('-imc1',zero)
+            call set_yukawas(model, invfscale,imc1,mtp,yt,yb,ytp)
           end if
 
           yukawa_array = (/yt, yb, ytp/)
@@ -350,120 +371,134 @@ contains
 
       case default
 
-        call wae_error('proc_to_id', 'Unrecognised process ', proc)
+        call wae_error('set_masses_and_couplings', 'Unrecognised process ', proc)
 
     end select
 
   end subroutine set_masses_and_couplings
 
-  !==============================================================================
-  ! Set Yukawa couplings for specific composite Higgs models
-  subroutine set_yukawas(model,invfscale,imc1,mtp,yt,ytp,yb)
-    use hboson; use ew_parameters
+!======================================================================================= 
+! Set Yukawa couplings for specific composite Higgs models
+
+  subroutine set_yukawas(model, invfscale, imc1, mtp, yt, ytp, yb)
+    use hboson
+    use ew_parameters
     integer, intent(in)  :: model
     real(dp), intent(in) :: invfscale, imc1, mtp
-  real(dp), intent(inout) :: yt, ytp,yb
+    real(dp), intent(inout) :: yt, ytp,yb
     !-----------------------------------------  
     real(dp) :: seps, ceps
     real(dp) :: sthRsq, cthRsq,tanthRsq
     real(dp) :: sthLsq, cthLsq,tanthLsq
 
+    seps = higgs_vev_in*invfscale
+    ceps = sqrt(one-seps**2)
 
-  seps = higgs_vev_in*invfscale
-  ceps = sqrt(one-seps**2)
-  select case(model)
-  case(M1_5)
-     sthLsq = sth2            
-     cthLsq = one-sth2 
-     if (cpodd) then
-        yt=zero
-        ytp=zero
-     else
-        yt = yt*cthLsq*ceps
-        ytp = ytp*sthLsq*ceps
-        yb = yb*ceps
-     end if
-  case(M1_14)
-     sthLsq = sth2            
-     cthLsq = one-sth2 
-     if (cpodd) then
-        yt=zero
-        ytp=zero
-        yb = zero
-     else
-        yt = yt*cthLsq*(two*ceps**2-one)/ceps
-        ytp = ytp*sthLsq*(two*ceps**2-one)/ceps
-        yb = yb*(two*ceps**2-one)/ceps
-     end if
-     
-  case(M4_5)
-     sthRsq = sth2            
-     cthRsq = one-sth2 
-     tanthLsq = (mtp/mt)**2*sthRsq/cthRsq
-     cthLsq = one/(one+tanthLsq)
-     sthLsq = one-cthLsq 
-     if (cpodd) then
-        yt=four*ceps*seps/sqrt(two*(one+ceps**2))*&
-             &imc1*sqrt(sthRsq*cthRsq)
-        ytp=-yt
-        yb = zero
-     else
-        yt=yt*ceps*(cthRsq-seps**2/(one+ceps**2)*(cthLsq-cthRsq))
-        ytp=ytp*ceps*(sthRsq-seps**2/(one+ceps**2)*(sthLsq-sthRsq))
-        yb = yb*ceps
-     end if
-  case(M4_14)
-     sthRsq = sth2            
-     cthRsq = one-sth2 
-     tanthLsq = (mtp/mt)**2*sthRsq/cthRsq
-     cthLsq = one/(one+tanthLsq)
-     sthLsq = one-cthLsq 
-     if (cpodd) then
-        yt=four*seps*(one-two*seps**2)/&
-             &sqrt(two*(four*ceps**4-three*ceps**2+one))*&
-             &imc1*sqrt(sthRsq*cthRsq)
-        ytp=-yt
-        yb = zero
-     else
-        yt=yt*(cthRsq*(two*ceps**2-one)/ceps-&
-             &seps**2*ceps/(four*ceps**4-three*ceps**2+one)*&
-             &(8._dp*ceps**2-three)*(cthLsq-cthRsq))
-        ytp=ytp*(sthRsq*(two*ceps**2-one)/ceps-&
-             &seps**2*ceps/(four*ceps**4-three*ceps**2+one)*&
-             &(8._dp*ceps**2-three)*(sthLsq-sthRsq))
-        yb = yb*(two*ceps**2-one)/ceps
-     end if
-  case default
-     call wae_error('set_yukawas','unrecognised model: ',&
-          &intval=model)
-  end select
+    select case(model)
 
-end subroutine set_yukawas
+      case(M1_5)
+        sthLsq = sth2            
+        cthLsq = one-sth2 
+        if (cpodd) then
+          yt = zero
+          ytp = zero
+        else
+          yt = yt*cthLsq*ceps
+          ytp = ytp*sthLsq*ceps
+          yb = yb*ceps
+        end if
 
-subroutine read_top_partners(indev,nq)
-  use hboson
-  integer, intent(in) :: indev, nq
-  !---------------------------
-  integer :: i, ios
-  real(dp) :: kappa, kappa_tilde
-  
-  allocate(mass_array(nq),yukawa_array(nq),iloop_array(nq))
+      case(M1_14)
+        sthLsq = sth2            
+        cthLsq = one-sth2 
+        if (cpodd) then
+          yt = zero
+          ytp = zero
+          yb = zero
+        else
+          yt = yt*cthLsq*(two*ceps**2-one)/ceps
+          ytp = ytp*sthLsq*(two*ceps**2-one)/ceps
+          yb = yb*(two*ceps**2-one)/ceps
+        end if
+        
+      case(M4_5)
+        sthRsq = sth2            
+        cthRsq = one-sth2 
+        tanthLsq = (mtp/mt)**2*sthRsq/cthRsq
+        cthLsq = one/(one+tanthLsq)
+        sthLsq = one-cthLsq 
+        if (cpodd) then
+          yt = four*ceps*seps/sqrt(two*(one+ceps**2))*&
+                &imc1*sqrt(sthRsq*cthRsq)
+          ytp = -yt
+          yb = zero
+        else
+          yt = yt*ceps*(cthRsq-seps**2/(one+ceps**2)*(cthLsq-cthRsq))
+          ytp = ytp*ceps*(sthRsq-seps**2/(one+ceps**2)*(sthLsq-sthRsq))
+          yb = yb*ceps
+        end if
 
-  do i=1,nq
-     read(indev,*,iostat=ios) mass_array(i), kappa, kappa_tilde, iloop_array(i)
-     if (ios /= 0) call wae_error('read_top_partners','incorrect file format, see SM.dat for an example')
-     if (cpodd) then
+      case(M4_14)
+        sthRsq = sth2            
+        cthRsq = one-sth2 
+        tanthLsq = (mtp/mt)**2*sthRsq/cthRsq
+        cthLsq = one/(one+tanthLsq)
+        sthLsq = one-cthLsq 
+        if (cpodd) then
+          yt = four*seps*(one-two*seps**2)/&
+                &sqrt(two*(four*ceps**4-three*ceps**2+one))*&
+                &imc1*sqrt(sthRsq*cthRsq)
+          ytp = -yt
+          yb = zero
+        else
+          yt = yt*(cthRsq*(two*ceps**2-one)/ceps-&
+                &seps**2*ceps/(four*ceps**4-three*ceps**2+one)*&
+                &(8._dp*ceps**2-three)*(cthLsq-cthRsq))
+          ytp = ytp*(sthRsq*(two*ceps**2-one)/ceps-&
+                &seps**2*ceps/(four*ceps**4-three*ceps**2+one)*&
+                &(8._dp*ceps**2-three)*(sthLsq-sthRsq))
+          yb = yb*(two*ceps**2-one)/ceps
+        end if
+
+      case default
+        call wae_error('set_yukawas', 'Unrecognised model: ', &
+              & intval = model)
+
+    end select
+
+  end subroutine set_yukawas
+
+!======================================================================================= 
+! Read top partners from input file 
+
+  subroutine read_top_partners(indev, nq)
+    use hboson
+    integer, intent(in) :: indev, nq
+    !---------------------------
+    integer :: i, ios
+    real(dp) :: kappa, kappa_tilde
+    
+    allocate(mass_array(nq), yukawa_array(nq), iloop_array(nq))
+
+    do i = 1, nq
+      read(indev,*,iostat=ios) mass_array(i), kappa, kappa_tilde, iloop_array(i)
+
+      if (ios /= 0) then 
+        call wae_error('read_top_partners', 'Incorrect file format, see SM.dat for an example')
+      end if 
+
+      if (cpodd) then
         yukawa_array(i) = kappa_tilde
-     else
+      else
         yukawa_array(i) = kappa
-     end if
-  end do
-  close(indev)
+      end if
+    end do
 
-end subroutine read_top_partners
+    close(indev)
 
+  end subroutine read_top_partners
 
-!=======================================================================================
+!======================================================================================= 
 ! Print the settings from user input 
 
   subroutine print_settings(idev)

@@ -7,7 +7,6 @@
 !========================================================
 
 module pdfs_tools
-
   ! If using LHAPDF, rename a couple of hoppet functions which
   ! would otherwise conflict with LHAPDF 
   use hoppet_v1, EvolvePDF_hoppet => EvolvePDF, InitPDF_hoppet => InitPDF
@@ -33,7 +32,6 @@ contains
 ! (just the memory allocation -- it gets filled below) 
 
   subroutine init_grid_and_dglap(Qmax) 
-
     real(dp), intent(in), optional :: Qmax
     type(grid_def) ::  gdarray(4) ! grid 
     integer :: pdf_fit_order, nf_lcl
@@ -69,7 +67,6 @@ contains
 ! Initialise Hoppet's PDF table from LHAPDF
    
   subroutine init_pdfs_from_LHAPDF(pdf_name, pdf_set)
-
     use ew_parameters ! For mz and mz_in 
 
     character(len=*), intent(in) :: pdf_name
@@ -105,7 +102,6 @@ contains
 ! at some reference scale.
 
   subroutine init_pdfs_hoppet_evolution(pdf_name, pdf_set, ref_Q, alphas_Q, rts)
-
     character(len=*), intent(in) :: pdf_name
     integer,          intent(in) :: pdf_set
     real(dp),         intent(in) :: ref_Q, alphas_Q, rts
@@ -143,7 +139,6 @@ contains
 !=======================================================================================
 
   function lumi_all_x(pdf1, pdf2) result(res)
-
     real(dp), intent(in) :: pdf1(:,-6:), pdf2(:,-6:)
     real(dp) :: res(size(pdf1, 1))
 
@@ -159,7 +154,6 @@ contains
 ! based on the two input PDFs
 
   function lumi_at_x(pdf1, pdf2, rtshat, rts) result(res)
-
     real(dp), intent(in) :: pdf1(:,-6:), pdf2(:,-6:)
     real(dp), intent(in) :: rtshat, rts
     real(dp) :: res, shat_rts2
@@ -196,7 +190,6 @@ contains
 ! unpolarized evolution (as used in hep-ph/0511119).
 
   function unpolarized_dummy_pdf(xvals) result(pdf)
-
     real(dp), intent(in) :: xvals(:)
     real(dp)             :: pdf(size(xvals), ncompmin:ncompmax)
     real(dp) :: uv(size(xvals)), dv(size(xvals))
@@ -233,15 +226,14 @@ contains
 ! Returns NLO luminosities for Higgs production (or call user defined function) 
 ! Evaluated at shat/s
 
-  subroutine luminosities(lumi_gg, lumi_qg, lumi_gq, lumi_qqbar)
-
-    use ew_parameters
-    use hboson
-    use user_interface 
+  subroutine luminosities(muF, collider, lumi_gg, lumi_qg, lumi_gq, lumi_qqbar)
+    use ew_parameters, only : gv2_ga2 
+    !use hboson
+    use user_interface, only : user_luminosities 
     use common_vars 
 
-    !real(dp), intent(in) :: muF
-    !character(len=*), intent(in) :: collider
+    real(dp), intent(in) :: muF
+    character(len=*), intent(in) :: collider
     !integer, intent(in) :: iproc
 
     real(dp), intent(out) :: lumi_gg(0:), lumi_qg(0:), lumi_gq(0:), lumi_qqbar(0:)

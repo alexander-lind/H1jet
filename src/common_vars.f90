@@ -26,43 +26,9 @@ module common_vars
   integer, public, parameter :: id_missingTotXsec = 1 
   integer, public, parameter :: id_fullImplementation = 2
 
-  ! Collider type (pp or ppbar)
-  ! This is an input of get_pdfs, so maybe avoid making it public
-  character(len=5), public :: collider 
-
-  ! Loop approximation
-  ! AB we need to decide how to treat quark loops
-  !character(len=8), public :: approx 
-
-  ! Monte Carlo integration accuracy
-  ! This is an input to other subroutines, so it should not be made public
-  real(dp), public :: accuracy
-
   ! Kinematics related variables 
   real(dp), public :: M
   real(dp), public :: roots, pt 
-
-  ! Number of bins 
-  integer, public :: nbins 
-
-  ! Strong coupling alpha_s 
-  real(dp), public :: alphas 
-  integer, public :: as_pow = 0
-
-  ! Scales related variables 
-  character(len=2), public :: scale_strategy
-  real(dp), public :: muF, muR
-  real(dp), public :: xmur, xmuf
-
-  ! tau = M^2 / s 
-  type(gdval), public :: tau
-
-  ! PDF related variables 
-  character(len=30), public :: pdf_name
-  integer, public :: pdf_mem
-
-  ! Total born-level cross-section 
-  real(dp), public :: sigma0 
 
 end module common_vars 
 
