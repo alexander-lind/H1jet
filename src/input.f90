@@ -21,10 +21,6 @@ module input
   ! Strategy for the setting of the scales mu_R and mu_F 
   character(len=2) :: scale_strategy
 
-  ! Loop approximation
-  ! AB we need to decide how to treat quark loops
-  !character(len=8) :: approx 
-
   ! Collider type (pp or ppbar) (only needed here and in h1jet.f90) 
   character(len=5), public :: collider 
   ! pt_min and pt_max of the histogram (only needed here and in h1jet.f90) 
@@ -103,14 +99,6 @@ contains
     pdf_name = trim(string_val_opt('--pdf_name', 'MSTW2008nlo68cl')) !//'.LHgrid'
     pdf_mem  = int_val_opt('--pdf_mem', 0)
 
-    ! Approximation for quark loops AB ideally you might want to
-    ! select a different approximation for each loop, how do you
-    ! achieve it?
-    !    approx = trim(string_val_opt('--approx', 'none'))
-    !    if (approx /= 'none' .and. approx /= 'sml' .and. approx /= 'iml') then
-    !      call wae_error('handle_input', 'Unrecognised approximation type: ', approx)
-    !    end if 
-
     call set_masses_and_couplings
 
     ! Set up factorisation and renormalisation scales 
@@ -158,7 +146,24 @@ contains
 
   end function proc_to_id
   
+  function model_to_id(model) result(res)
+    character(len=*) :: model
+    integer :: res
 
+    if (model == 'M1_5') then
+      res = M1_5
+    else if (model == 'M1_14') then
+      res = M1_14
+    else if (proc == 'M4_5') then
+      res = M4_5
+    else  if (proc == 'M4_14') then
+      res = M4_14
+    else
+      call wae_error('model_to_id', 'Unrecognised model ', model)
+    end if
+    
+  end function model_to_id
+  
 !=======================================================================================
 ! Function to set the factorisation and renormalisation scales according to the 
 ! specified scale strategy and given pT 
@@ -267,25 +272,15 @@ contains
           end if
 
           if (invfscale /= zero) then
-            model = int_val_opt('--model',M1_5)
+            model = model_to_id(string_val_opt('--model','M1_5'))
             imc1 = dble_val_opt('-imc1',zero)
             call set_yukawas(model, invfscale,imc1,mtp,yt,yb,ytp)
           end if
 
           yukawa_array = (/yt, yb, ytp/)
 
-          ! AB we need to decide what we do with approx
-!          select case(approx)
-!            case('sml')
-!              ! Small mass limit 
-!              iloop_array = (/0, 0, 0/)
-!            case('iml')
-!              ! Infinite mass limit 
-!              iloop_array = (/2, 2, 2/)
-!            case default 
-              ! Exact result -- equivalent to approx=none 
           iloop_array = iloop_fm_fermion
-!          end select
+
         else if (mst1 /= zero) then
           ! Include SUSY stop squark in loops 
           cth2 = one - sth2
@@ -297,38 +292,20 @@ contains
           allocate(mass_array(4), yukawa_array(4), iloop_array(4))
           mass_array = (/mt_in, mb_in, mst1, mst2/)
           yukawa_array = (/yt, yb, yst1, yst2/)
-          ! AB we need to decide what to do with approx
-!          select case(approx)
-!            case('sml')
-!              ! Small mass limit 
-!              iloop_array = (/0, 0, 3, 3/)
-!            case('iml')
-!              ! Infinite mass limit 
-!              iloop_array = (/2, 2, 4, 4/)
-!            case default 
-!              ! Exact result -- equivalent to approx=none 
           iloop_array(1:2) = iloop_fm_fermion
           iloop_array(3:4) = iloop_fm_scalar
- !         end select 
         else
           ! SM, only bottom and top in quark loops 
           allocate(mass_array(2), yukawa_array(2), iloop_array(2))
           mass_array = (/mt_in, mb_in/)
           yukawa_array = (/yt, yb/)
-          ! AB we need to decide what to do with approx
-!          select case(approx)
-!            case('sml')
-!              ! Small mass limit 
-!              iloop_array = (/0, 0/)
-!            case('iml')
-!              ! Infinite mass limit 
-!              iloop_array = (/2, 2/)
-!            case default 
-!              ! Exact result -- equivalent to approx=none 
           iloop_array = iloop_fm_fermion
-!          end select 
         end if
 
+        ! Reset approximation used to compute loops of particles, the
+        ! user needs to know the meaning of the various approximations
+        call reset_iloop_array
+        
       ! pp -> Z + jet   
       case(id_Z)
 
@@ -477,6 +454,26 @@ contains
 
   end subroutine read_top_partners
 
+  !======================================================================================
+  ! Change approximations used to compute loops in Higgs production
+  ! The user needs to change those at compile time, because knowledge
+  ! of the meaning of the approximation is strictly required
+  
+  subroutine reset_iloop_array
+    use hboson
+    
+    !! Example: effective theory with SM top and bottom, and one
+    !! infinitely heavy top partner, equivalent to adding a dimension-6
+    !! contact interaction
+    !    if (size(iloop_array) == 3) then
+    !       iloop_array = (/ iloop_fm_fermion, iloop_fm_fermion, iloop_lm_fermion /)
+    !    else
+    !       call wae_error('reset_iloop_array','Expected size of iloop_array is 3, whereas actual &
+    !            &one is', intval=size(iloop_array))
+    !    end if
+    
+  end subroutine reset_iloop_array
+  
 !======================================================================================= 
 ! Print the settings from user input 
 
