@@ -51,7 +51,7 @@ module input
   ! Identifiers for specific composite Higgs models  
   integer, parameter :: M1_5 = 1, M1_14 = 2, M4_5 = 3, M4_14 = 4
 
-  public :: input_handler, gen_momenta, set_scale, print_settings 
+  public :: input_handler, set_scale, print_settings 
 
 contains
 
@@ -158,27 +158,6 @@ contains
 
   end function proc_to_id
   
-!=======================================================================================
-! Generate particle momenta in the centre-of-mass frame 
-
-  subroutine gen_momenta(y, p)
-    real(dp), intent(in) :: y
-    real(dp), intent(out) :: p(4,4)
-
-    real(dp) :: E, pz, Eb, Ebeam
-
-    E = pt * cosh(y) 
-    pz = pt * sinh(y)
-    p(3,:) = (/zero, pt, pz, E/)
-    Eb = sqrt(M**2 + E**2)
-    p(4,:) = (/zero, -pt, -pz, Eb/)
-
-    Ebeam = E + Eb
-
-    p(1,:) = Ebeam / two * (/zero, zero, one, one/)
-    p(2,:) = Ebeam / two * (/zero, zero, -one, one/)
-  
-  end subroutine gen_momenta
 
 !=======================================================================================
 ! Function to set the factorisation and renormalisation scales according to the 

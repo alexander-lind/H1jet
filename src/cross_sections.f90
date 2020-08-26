@@ -9,7 +9,6 @@ module cross_sections
 
   use hoppet_v1 
   use pdfs_tools
-  use input, only : gen_momenta 
   use common_vars
   use hboson; use vboson; use user_interface 
   
@@ -89,6 +88,29 @@ contains
 
   end function cross_section
 
+!=======================================================================================
+! Generate particle momenta in the centre-of-mass frame 
+
+  subroutine gen_momenta(y, p)
+    real(dp), intent(in) :: y
+    real(dp), intent(out) :: p(4,4)
+
+    real(dp) :: E, pz, Eb, Ebeam
+
+    E = pt * cosh(y) 
+    pz = pt * sinh(y)
+    p(3,:) = (/zero, pt, pz, E/)
+    Eb = sqrt(M**2 + E**2)
+    p(4,:) = (/zero, -pt, -pz, Eb/)
+
+    Ebeam = E + Eb
+
+    p(1,:) = Ebeam / two * (/zero, zero, one, one/)
+    p(2,:) = Ebeam / two * (/zero, zero, -one, one/)
+  
+  end subroutine gen_momenta
+
+  
 !=======================================================================================
 ! Calculate the differential cross-section dsigma / dpT dy 
 ! as a function of rapidity y for the specified process 
