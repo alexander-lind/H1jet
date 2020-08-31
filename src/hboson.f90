@@ -245,7 +245,7 @@ contains
 
   end function qqbarxgH_amp_scalars
 
-!====================================================================================================
+!=======================================================================================
 ! The exact +++ CP-odd helicity amplitude for gg -> gH 
   function ggxgH_cpodd_pppamp_fermions(s, t, u, m2, mq2, i, j, k, i1, j1, k1, BI, CI, DI) result(res)
    
@@ -263,8 +263,7 @@ contains
     
   end function ggxgH_cpodd_pppamp_fermions
 
-
-  !====================================================================================================
+!=======================================================================================
 ! The exact ++- CP-odd helicity amplitude for gg -> gH 
   function ggxgH_cpodd_ppmamp_fermions(s, t, u, m2, mq2, i, j, k, i1, j1, k1, BI, CI, DI) result(res)
    
@@ -282,7 +281,7 @@ contains
     
   end function ggxgH_cpodd_ppmamp_fermions
 
-    !====================================================================================================
+!=======================================================================================
 ! The exact -++ CP-odd helicity amplitude for gg -> gH 
   function ggxgH_cpodd_mppamp_fermions(s, t, u, m2, mq2, i, j, k, i1, j1, k1, BI, CI, DI) result(res)
    
@@ -300,7 +299,7 @@ contains
     
   end function ggxgH_cpodd_mppamp_fermions
 
-  !=======================================================================================
+!=======================================================================================
 ! The exact amplitude for CP-odd qqbar -> gH 
   function qqbarxgH_cpodd_amp_fermions(s, t, u, m2, mq2, i, j, k, i1, j1, k1, BI, CI, DI) result(res)
 
@@ -528,14 +527,15 @@ contains
 
   end subroutine hboson_Msquared
 
-  !=======================================================================================
+!=======================================================================================
 ! Matrix element squared for CP-odd pp -> H + jet 
 ! Subprocesses: 
 !    gg -> gH 
 !    qqbar -> gH 
 !    qg -> qH (obtained by permutation of the qqbar amplitude) 
 !    gqbar -> qbar H (obtained by permutation of the qqbar amplitude) 
-! Modified code from Herwig 6.521 
+! Modified code from Herwig 6.521
+
   subroutine hboson_cpodd_Msquared(s, t, u,  wtqq, wtqg, wtgq, wtgg)
     real(dp), intent(in) :: s, t, u
     real(dp), intent(out) :: wtqq, wtqg, wtgq, wtgg
@@ -771,8 +771,7 @@ contains
   end subroutine bbH_Msquared
 
 !=======================================================================================
-
-  ! Calculate the running quark mass 
+! Calculate the running quark mass 
 
   function RunningMass(muR, m0, as, as0) result(res)
     real(dp), intent(in) :: muR, m0, as, as0

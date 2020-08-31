@@ -33,7 +33,7 @@ contains
     write(stderr,'(a)') 
     write(stderr,'(a)') 'Options:'
     write(stderr,'(a)') '  -o, --out <file>       Direct output to <file>'
-    write(stderr,'(a)') '  --collider <arg>       Specify collider type (pp, ppbar), default = pp'
+    write(stderr,'(a)') '  --collider <arg>       Specify the collider type (pp, ppbar), default = pp'
     write(stderr,'(a)') '  --roots <value>        Center-of-mass energy in [GeV], default = 13 TeV'
     write(stderr,'(a)') '  --proc <arg>           Specify the process (H, bbH, Z, user)'
     write(stderr,'(a)') '                         H    : pp -> Higgs + jet (default)' 
@@ -54,8 +54,8 @@ contains
     write(stderr,'(a)') '  --ptmin <value>        Minimum pT value, default = 0 (set to nonzero if --log is enabled)'
     write(stderr,'(a)') '  --ptmax <value>        Maximum pT value, default = 4000 GeV'
     write(stderr,'(a)') '  --accuracy <value>     The desired Monte Carlo integration accuracy, default = 0.001'
-    write(stderr,'(a)') '  --cppodd               Toggle for pseudoscalar Higgs' 
-    write(stderr,'(a)') '  --mass <value>         Relevant mass in user process for muR/muF [GeV], default = 0 GeV' 
+    write(stderr,'(a)') '  --cpodd                Toggle for CP-odd Higgs' 
+    write(stderr,'(a)') '  --mass <value>         Relevant mass in user process [GeV], default = 0 GeV' 
     write(stderr,'(a)') '  --mH <value>           Higgs mass [GeV], default = 125 GeV'
     write(stderr,'(a)') '  --mZ <value>           Z boson mass [GeV], default = 91.1876 GeV'
     write(stderr,'(a)') '  --mW <value>           W boson mass [GeV], default = 80.385 GeV'
@@ -71,6 +71,16 @@ contains
     write(stderr,'(a)') '  --sth2 <value>         Stop (or top-partner) mixing angle, sin^2(theta), default = 0'
     write(stderr,'(a)') '  --tbeta <value>        Ratio of VEVs in MHDMs, tan(beta), default = 0'
     write(stderr,'(a)') '  --mbmb <value>         MSbar bottom mass mb(mb) [GeV], default = 4.18 GeV'
+    write(stderr,'(a)') '  -i, --in <file>        Include input file with top-partner masses and Yukawas' 
+    write(stderr,'(a)') '                         See SM.dat for an example, and the manual for more information'
+    write(stderr,'(a)') '  --model <arg>          Specify top-partner model' 
+    write(stderr,'(a)') '                         M1_5  (default)'
+    write(stderr,'(a)') '                         M1_14 '
+    write(stderr,'(a)') '                         M4_5  '
+    write(stderr,'(a)') '                         M4_14 '
+    write(stderr,'(a)') '                         See arXiv:1905.12747 for more information on the models'
+    write(stderr,'(a)') '  --imc1 <value>         Imaginary part of the c_1 coefficients, default = 0'
+    write(stderr,'(a)') '  --fscale <value>       Top-partner confinement scale [GeV], default = 0 GeV'
     write(stderr,'(a)') 
 
     call user_help_message 

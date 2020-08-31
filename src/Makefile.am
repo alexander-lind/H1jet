@@ -24,7 +24,6 @@ USER_INTERFACE_SOURCE = user_interface.f90
 USER_INTERFACE_OBJ = user_interface.o
 endif
 
-
 __top_builddir__bin_h1jet_SOURCES = $(SOURCES)  
 EXTRA___top_builddir__bin_h1jet_SOURCES = user_interface.f90 
 

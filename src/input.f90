@@ -146,6 +146,9 @@ contains
 
   end function proc_to_id
   
+!======================================================================================= 
+! Convert --model command option argument to internal id 
+
   function model_to_id(model) result(res)
     character(len=*) :: model
     integer :: res
@@ -201,7 +204,6 @@ contains
     real(dp) :: delta, alpha1, alpha2, c2beta
     real(dp) :: mst1, mst2 
 
-
     select case(iproc)
 
       ! pp -> H + jet 
@@ -214,9 +216,9 @@ contains
         M = dble_val_opt('--mH', mh) ! Higgs mass 
         yt = dble_val_opt('--yt', one) ! Top Yukawa factor 
         if (cpodd) then
-          yb = dble_val_opt('--yb', one) ! Bottom Yukawa factor
-        else
           yb = dble_val_opt('--yb', zero) ! Bottom CP-odd Yukawa factor
+        else
+          yb = dble_val_opt('--yb', one) ! Bottom Yukawa factor
         end if
         sth2 = dble_val_opt('--sth2', zero) ! Stop/Top-partner mixing angle 
 
@@ -272,9 +274,9 @@ contains
           end if
 
           if (invfscale /= zero) then
-            model = model_to_id(string_val_opt('--model','M1_5'))
-            imc1 = dble_val_opt('-imc1',zero)
-            call set_yukawas(model, invfscale,imc1,mtp,yt,yb,ytp)
+            model = model_to_id(string_val_opt('--model', 'M1_5'))
+            imc1 = dble_val_opt('--imc1', zero)
+            call set_yukawas(model, invfscale, imc1, mtp, yt, yb, ytp)
           end if
 
           yukawa_array = (/yt, yb, ytp/)
@@ -454,10 +456,10 @@ contains
 
   end subroutine read_top_partners
 
-  !======================================================================================
-  ! Change approximations used to compute loops in Higgs production
-  ! The user needs to change those at compile time, because knowledge
-  ! of the meaning of the approximation is strictly required
+!======================================================================================
+! Change approximations used to compute loops in Higgs production
+! The user needs to change those at compile time, because knowledge
+! of the meaning of the approximation is strictly required
   
   subroutine reset_iloop_array
     use hboson

@@ -24,15 +24,20 @@ AC_MSG_CHECKING([for LIBS from LHAPDF])
 AC_SUBST([LHAPDF_LIBS], [`lhapdf-config --libs`])
 AC_MSG_RESULT([yes])
 
-
 AC_MSG_CHECKING([for USERFILE])
 AC_SUBST([USERFILE])
-AS_IF([test ! -z "$USERFILE"], AC_MSG_RESULT([yes]), AC_MSG_RESULT([no]))
+AS_IF([test ! -z "$USERFILE"], AC_MSG_RESULT([$USERFILE]), AC_MSG_RESULT([no]))
 AM_CONDITIONAL([USERFILE_SET], [test ! -z "$USERFILE"])
 
-AC_SUBST([USERFILE_OBJ], [$(patsubst %.f90,%.o,$USERFILE)])
+dnl AC_SUBST([USERFILE_OBJ], [$(patsubst %.f90,%.o,$USERFILE)])
+dnl AC_SUBST([USERFILE_OBJ], [`if [ test ! -z $USERFILE ]; then echo ${USERFILE%.f90}.o; fi`])
+USERFILE_OBJ="`AS_ECHO("$USERFILE") | sed 's/.f90/.o/g'`" dnl yes the nested double quotes are correct 
+AC_SUBST([USERFILE_OBJ])
+dnl AS_IF([test ! -z "$USERFILE"], AC_MSG_RESULT([$USERFILE_OBJ]), AC_MSG_RESULT([no]))
 
 AC_CONFIG_COMMANDS([mkdirbin], [$MKDIR_P bin])
+
+dnl AC_CONFIG_MACRO_DIRS([m4])
 
 AC_MSG_NOTICE([ ---------- Creating Makefiles])
 dnl AC_CONFIG_HEADERS([config.h])
