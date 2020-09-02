@@ -16,15 +16,15 @@ module hboson
   private
 
   ! Some useful identifiers
-  integer, public, parameter :: iloop_sm_fermion=0
-  integer, public, parameter :: iloop_fm_fermion=1
-  integer, public, parameter :: iloop_lm_fermion=2
-  integer, public, parameter :: iloop_fm_scalar =3
-  integer, public, parameter :: iloop_lm_scalar =4
+  integer, public, parameter :: iloop_sm_fermion = 0
+  integer, public, parameter :: iloop_fm_fermion = 1
+  integer, public, parameter :: iloop_lm_fermion = 2
+  integer, public, parameter :: iloop_fm_scalar  = 3
+  integer, public, parameter :: iloop_lm_scalar  = 4
   
   real(dp), public :: mh2 ! Higgs mass squared
 
-    ! Constant default heavy quark masses 
+  ! Constant default heavy quark masses 
   real(dp), parameter, public :: mb = 4.65_dp  ! from PDG 2012
   real(dp), parameter, public :: mt = 173.5_dp ! from PDG 2012
   real(dp), parameter, public :: mbmb = 4.18_dp
@@ -49,8 +49,8 @@ contains
 !=======================================================================================
 ! The exact +++ helicity amplitude for gg -> gH 
 ! See eq. (A.15) in Baur and Glover, Nucl.Phys. B339 (1990) 38-66 
+
   function ggxgH_pppamp_fermions(s, t, u, m2, mq2, i, j, k, i1, j1, k1, BI, CI, DI) result(res)
-   
     real(dp) :: s, t, u, m2, mq2
     integer :: i, j, k, i1, j1, k1
     complex(dp) :: res
@@ -76,8 +76,8 @@ contains
 !=======================================================================================
 ! The exact ++- helicity amplitude for gg -> gH 
 ! See eq. (A.16) in Baur and Glover, Nucl.Phys. B339 (1990) 38-66 
-  function ggxgH_ppmamp_fermions(s, t, u, m2, mq2, i, j, k, i1, j1, k1, BI, CI, DI) result(res)
 
+  function ggxgH_ppmamp_fermions(s, t, u, m2, mq2, i, j, k, i1, j1, k1, BI, CI, DI) result(res)
     real(dp) :: s, t, u, m2, mq2
     integer :: i, j, k, i1, j1, k1
     complex(dp) :: res
@@ -98,8 +98,8 @@ contains
 !=======================================================================================
 ! The exact amplitude for qqbar -> gH 
 ! See eq. (A.19) in Baur and Glover, Nucl.Phys. B339 (1990) 38-66 
-  function qqbarxgH_amp_fermions(s, t, u, m2, mq2, i, j, k, i1, j1, k1, BI, CI, DI) result(res)
 
+  function qqbarxgH_amp_fermions(s, t, u, m2, mq2, i, j, k, i1, j1, k1, BI, CI, DI) result(res)
     real(dp) :: s, t, u, m2, mq2
     integer :: i, j, k, i1, j1, k1
     complex(dp) :: res
@@ -114,8 +114,8 @@ contains
 !=======================================================================================
 ! The +++ helicity amplitude for gg -> gH in the small mass limit for the loops 
 ! See eq. (A.15) in Baur and Glover, Nucl.Phys. B339 (1990) 38-66 
-  function ggxgH_pppamp_fermions_sml(s, t, u, m2, mq2, i, j, k, i1, j1, k1, BI, CI, DI) result(res)
 
+  function ggxgH_pppamp_fermions_sml(s, t, u, m2, mq2, i, j, k, i1, j1, k1, BI, CI, DI) result(res)
     real(dp) :: s, t, u, m2, mq2
     integer :: i, j, k, i1, j1, k1
     complex(dp) :: res
@@ -141,8 +141,8 @@ contains
 !=======================================================================================
 ! The ++- helicity amplitude for gg -> gH in the small mass limit for the loops 
 ! See eq. (A.16) in Baur and Glover, Nucl.Phys. B339 (1990) 38-66 
-  function ggxgH_ppmamp_fermions_sml(s, t, u, m2, mq2, i, j, k, i1, j1, k1, BI, CI, DI) result(res)
 
+  function ggxgH_ppmamp_fermions_sml(s, t, u, m2, mq2, i, j, k, i1, j1, k1, BI, CI, DI) result(res)
     real(dp) :: s, t, u, m2, mq2
     integer :: i, j, k, i1, j1, k1
     complex(dp) :: res
@@ -164,8 +164,8 @@ contains
 !=======================================================================================
 ! The amplitude for qqbar -> gH in the small mass limit for the loops 
 ! See eq. (A.19) in Baur and Glover, Nucl.Phys. B339 (1990) 38-66 
-  function qqbarxgH_amp_fermions_sml(s, t, u, m2, mq2, i, j, k, i1, j1, k1, BI, CI, DI) result(res)
 
+  function qqbarxgH_amp_fermions_sml(s, t, u, m2, mq2, i, j, k, i1, j1, k1, BI, CI, DI) result(res)
     real(dp) :: s, t, u, m2, mq2
     integer :: i, j, k, i1, j1, k1
     complex(dp) :: res
@@ -180,8 +180,8 @@ contains
 !=======================================================================================
 ! The exact +++ helicity amplitude for gg -> gH 
 ! with scalars instead of fermions in the loop 
-  function ggxgH_pppamp_scalars(s, t, u, m2, mq2, i, j, k, i1, j1, k1, BI, CI, DI) result(res)
 
+  function ggxgH_pppamp_scalars(s, t, u, m2, mq2, i, j, k, i1, j1, k1, BI, CI, DI) result(res)
     real(dp) :: s, t, u, m2, mq2
     integer :: i, j, k, i1, j1, k1
     complex(dp) :: res
@@ -209,7 +209,6 @@ contains
 ! with scalars instead of fermions in the loop 
 
   function ggxgH_ppmamp_scalars(s, t, u, m2, mq2, i, j, k, i1, j1, k1, BI, CI, DI) result(res)
-
     real(dp):: s, t, u, m2, mq2
     integer :: i, j, k, i1, j1, k1
     complex(dp) :: res
@@ -232,7 +231,6 @@ contains
 ! with scalars instead of fermions in the loop 
 
   function qqbarxgH_amp_scalars(s, t, u, m2, mq2, i, j, k, i1, j1, k1, BI, CI, DI) result(res)
-
     real(dp):: s, t, u, m2, mq2
     integer :: i, j, k, i1, j1, k1
     complex(dp) :: res
@@ -246,9 +244,9 @@ contains
   end function qqbarxgH_amp_scalars
 
 !=======================================================================================
-! The exact +++ CP-odd helicity amplitude for gg -> gH 
+! The exact +++ CP-odd helicity amplitude for gg -> gH
+
   function ggxgH_cpodd_pppamp_fermions(s, t, u, m2, mq2, i, j, k, i1, j1, k1, BI, CI, DI) result(res)
-   
     real(dp) :: s, t, u, m2, mq2, Gst, Gus, Gut
     integer :: i, j, k, i1, j1, k1
     complex(dp) :: res
@@ -265,8 +263,8 @@ contains
 
 !=======================================================================================
 ! The exact ++- CP-odd helicity amplitude for gg -> gH 
+
   function ggxgH_cpodd_ppmamp_fermions(s, t, u, m2, mq2, i, j, k, i1, j1, k1, BI, CI, DI) result(res)
-   
     real(dp) :: s, t, u, m2, mq2, Gst, Gus, Gut
     integer :: i, j, k, i1, j1, k1
     complex(dp) :: res
@@ -282,9 +280,9 @@ contains
   end function ggxgH_cpodd_ppmamp_fermions
 
 !=======================================================================================
-! The exact -++ CP-odd helicity amplitude for gg -> gH 
+! The exact -++ CP-odd helicity amplitude for gg -> gH
+
   function ggxgH_cpodd_mppamp_fermions(s, t, u, m2, mq2, i, j, k, i1, j1, k1, BI, CI, DI) result(res)
-   
     real(dp) :: s, t, u, m2, mq2, Gst, Gus, Gut
     integer :: i, j, k, i1, j1, k1
     complex(dp) :: res
@@ -301,8 +299,8 @@ contains
 
 !=======================================================================================
 ! The exact amplitude for CP-odd qqbar -> gH 
-  function qqbarxgH_cpodd_amp_fermions(s, t, u, m2, mq2, i, j, k, i1, j1, k1, BI, CI, DI) result(res)
 
+  function qqbarxgH_cpodd_amp_fermions(s, t, u, m2, mq2, i, j, k, i1, j1, k1, BI, CI, DI) result(res)
     real(dp) :: s, t, u, m2, mq2
     integer :: i, j, k, i1, j1, k1
     complex(dp) :: res
@@ -317,7 +315,6 @@ contains
 ! Cross-section for gg -> H + jet 
 
   function hboson_cross_section(lumigg) result(res)
-
     real(dp) :: nc = three  
     real(dp) :: res, lumigg
 !    integer, intent(in) :: iloop_array(:)
@@ -331,38 +328,44 @@ contains
     
     do i = 1, size(iloop_array)
 
-       if (mass_array(i) == zero) cycle
+      if (mass_array(i) == zero) then 
+        cycle
+      end if
 
-       tau = mh2 / (four * mass_array(i)**2)
+      tau = mh2 / (four * mass_array(i)**2)
    
-       select case(iloop_array(i))
-       case(iloop_fm_fermion) ! fermion
+      select case(iloop_array(i))
+        case(iloop_fm_fermion) ! fermion
           if (cpodd) then
              amp = amp + F12_cpodd(tau) * yukawa_array(i)
           else
              amp = amp + F12(tau) * yukawa_array(i) 
           end if
-       case(iloop_lm_fermion)
+        case(iloop_lm_fermion)
           if (cpodd) then
              amp = amp + two * yukawa_array(i)
           else
              amp = amp + four / three * yukawa_array(i) 
           end if
-       case(iloop_fm_scalar) ! scalar 
-          if (cpodd) call wae_error('hboson_cross_section',&
+        case(iloop_fm_scalar) ! scalar 
+          if (cpodd) then 
+            call wae_error('hboson_cross_section',&
                &'CP-odd Higgs with scalar loops not yet implemented')
+          end if 
           amp = amp + half * F0(tau) * yukawa_array(i) 
-       case(iloop_lm_scalar)
-          if (cpodd) call wae_error('hboson_cross_section',&
+        case(iloop_lm_scalar)
+          if (cpodd) then 
+            call wae_error('hboson_cross_section',&
                &'CP-odd Higgs with scalar loops not yet implemented')
+          end if
           amp = amp + one / three * yukawa_array(i) 
-       case default
-          call wae_error('hboson_cross_section','unknown iloop',intval=iloop_array(i))
+        case default
+          call wae_error('hboson_cross_section', 'Unknown iloop ', intval = iloop_array(i))
       end select
-   end do
+    end do
 
-   res = res / pi / (nc**2 - 1) / 72._dp / higgs_vev_in**2
-!    res = res * born_ampsquare(iloop_array, mass_array, yukawa)
+    res = res / pi / (nc**2 - 1) / 72._dp / higgs_vev_in**2
+    !res = res * born_ampsquare(iloop_array, mass_array, yukawa)
     res = res * lumigg
     res = res * invGev2_to_nb
 
@@ -403,7 +406,9 @@ contains
     do imass = 1, size(iloop_array)
     
       mq2 = mass_array(imass)**2
-      if (mq2 == zero) cycle
+      if (mq2 == zero) then 
+        cycle
+      end if 
 
       yukawa = yukawa_array(imass)
       
@@ -440,64 +445,60 @@ contains
 
       select case(iloop)
 
-      case(iloop_sm_fermion)
+        case(iloop_sm_fermion)
+          ! Small mass limit in loops 
+          amp(1) = ggxgH_pppamp_fermions_sml(s, t, u, mh2, mq2, 1, 2, 3, 4, 5, 6, BI, CI, DI)
+          amp(2) = ggxgH_ppmamp_fermions_sml(s, t, u, mh2, mq2, 1, 2, 3, 0, 0, 0, BI, CI, DI)
+          amp(3) = ggxgH_pppamp_fermions_sml(t, s, u, mh2, mq2, 2, 1, 3, 5, 4, 6, BI, CI, DI)
+          amp(4) = ggxgH_pppamp_fermions_sml(u, t, s, mh2, mq2, 3, 2, 1, 6, 5, 4, BI, CI, DI)
+          amp(5) = qqbarxgH_amp_fermions_sml(s, t, u, mh2, mq2, 1, 0, 4, 0, 0, 0, BI, CI, DI)
+          amp(6) = qqbarxgH_amp_fermions_sml(t, s, u, mh2, mq2, 2, 0, 5, 0, 0, 0, BI, CI, DI)
+          amp(7) = qqbarxgH_amp_fermions_sml(u, t, s, mh2, mq2, 3, 0, 6, 0, 0, 0, BI, CI, DI)
 
-         ! Small mass limit in loops 
-        amp(1) = ggxgH_pppamp_fermions_sml(s, t, u, mh2, mq2, 1, 2, 3, 4, 5, 6, BI, CI, DI)
-        amp(2) = ggxgH_ppmamp_fermions_sml(s, t, u, mh2, mq2, 1, 2, 3, 0, 0, 0, BI, CI, DI)
-        amp(3) = ggxgH_pppamp_fermions_sml(t, s, u, mh2, mq2, 2, 1, 3, 5, 4, 6, BI, CI, DI)
-        amp(4) = ggxgH_pppamp_fermions_sml(u, t, s, mh2, mq2, 3, 2, 1, 6, 5, 4, BI, CI, DI)
-        amp(5) = qqbarxgH_amp_fermions_sml(s, t, u, mh2, mq2, 1, 0, 4, 0, 0, 0, BI, CI, DI)
-        amp(6) = qqbarxgH_amp_fermions_sml(t, s, u, mh2, mq2, 2, 0, 5, 0, 0, 0, BI, CI, DI)
-        amp(7) = qqbarxgH_amp_fermions_sml(u, t, s, mh2, mq2, 3, 0, 6, 0, 0, 0, BI, CI, DI)
+        case(iloop_fm_fermion)
+          ! Exact result for loops 
+          amp(1) = ggxgH_pppamp_fermions(s, t, u, mh2, mq2, 1, 2, 3, 4, 5, 6, BI, CI, DI)
+          amp(2) = ggxgH_ppmamp_fermions(s, t, u, mh2, mq2, 1, 2, 3, 0, 0, 0, BI, CI, DI)
+          amp(3) = ggxgH_pppamp_fermions(t, s, u, mh2, mq2, 2, 1, 3, 5, 4, 6, BI, CI, DI)
+          amp(4) = ggxgH_pppamp_fermions(u, t, s, mh2, mq2, 3, 2, 1, 6, 5, 4, BI, CI, DI)
+          amp(5) = qqbarxgH_amp_fermions(s, t, u, mh2, mq2, 1, 0, 4, 0, 0, 0, BI, CI, DI)
+          amp(6) = qqbarxgH_amp_fermions(t, s, u, mh2, mq2, 2, 0, 5, 0, 0, 0, BI, CI, DI)
+          amp(7) = qqbarxgH_amp_fermions(u, t, s, mh2, mq2, 3, 0, 6, 0, 0, 0, BI, CI, DI)
 
-     case(iloop_fm_fermion)
-
-        ! Exact result for loops 
-        amp(1) = ggxgH_pppamp_fermions(s, t, u, mh2, mq2, 1, 2, 3, 4, 5, 6, BI, CI, DI)
-        amp(2) = ggxgH_ppmamp_fermions(s, t, u, mh2, mq2, 1, 2, 3, 0, 0, 0, BI, CI, DI)
-        amp(3) = ggxgH_pppamp_fermions(t, s, u, mh2, mq2, 2, 1, 3, 5, 4, 6, BI, CI, DI)
-        amp(4) = ggxgH_pppamp_fermions(u, t, s, mh2, mq2, 3, 2, 1, 6, 5, 4, BI, CI, DI)
-        amp(5) = qqbarxgH_amp_fermions(s, t, u, mh2, mq2, 1, 0, 4, 0, 0, 0, BI, CI, DI)
-        amp(6) = qqbarxgH_amp_fermions(t, s, u, mh2, mq2, 2, 0, 5, 0, 0, 0, BI, CI, DI)
-        amp(7) = qqbarxgH_amp_fermions(u, t, s, mh2, mq2, 3, 0, 6, 0, 0, 0, BI, CI, DI)
-
-     case(iloop_lm_fermion)
-
-        ! Infinite mass limit in loops 
-        amp(1) = -two * four / three * sqrt(two * s * t * u) * s**2 / (s * t * u)
-        amp(2) = two * four / three * sqrt(two * s * t * u) * mh2**2 / (s * t * u)
-        amp(3) = -two * four / three * sqrt(two * s * t * u) * t**2 / (s * t * u)
-        amp(4) = -two * four / three * sqrt(two * s * t * u) * u**2 / (s * t * u)
-        amp(5) = -(s - mh2) / three
-        amp(6) = -(t - mh2) / three
-        amp(7) = -(u - mh2) / three
+        case(iloop_lm_fermion)
+          ! Infinite mass limit in loops 
+          amp(1) = -two * four / three * sqrt(two * s * t * u) * s**2 / (s * t * u)
+          amp(2) = two * four / three * sqrt(two * s * t * u) * mh2**2 / (s * t * u)
+          amp(3) = -two * four / three * sqrt(two * s * t * u) * t**2 / (s * t * u)
+          amp(4) = -two * four / three * sqrt(two * s * t * u) * u**2 / (s * t * u)
+          amp(5) = -(s - mh2) / three
+          amp(6) = -(t - mh2) / three
+          amp(7) = -(u - mh2) / three
 
         case(iloop_fm_scalar)
+          ! Exact result for scalar particles in loops 
+          amp(1) = ggxgH_pppamp_scalars(s, t, u, mh2, mq2, 1, 2, 3, 4, 5, 6, BI, CI, DI)
+          amp(2) = ggxgH_ppmamp_scalars(s, t, u, mh2, mq2, 1, 2, 3, 0, 0, 0, BI, CI, DI)
+          amp(3) = ggxgH_pppamp_scalars(t, s, u, mh2, mq2, 2, 1, 3, 5, 4, 6, BI, CI, DI)
+          amp(4) = ggxgH_pppamp_scalars(u, t, s, mh2, mq2, 3, 2, 1, 6, 5, 4, BI, CI, DI)
+          amp(5) = qqbarxgH_amp_scalars(s, t, u, mh2, mq2, 1, 0, 4, 0, 0, 0, BI, CI, DI)
+          amp(6) = qqbarxgH_amp_scalars(t, s, u, mh2, mq2, 2, 0, 5, 0, 0, 0, BI, CI, DI)
+          amp(7) = qqbarxgH_amp_scalars(u, t, s, mh2, mq2, 3, 0, 6, 0, 0, 0, BI, CI, DI)
 
-        ! Exact result for scalar particles in loops 
-        amp(1) = ggxgH_pppamp_scalars(s, t, u, mh2, mq2, 1, 2, 3, 4, 5, 6, BI, CI, DI)
-        amp(2) = ggxgH_ppmamp_scalars(s, t, u, mh2, mq2, 1, 2, 3, 0, 0, 0, BI, CI, DI)
-        amp(3) = ggxgH_pppamp_scalars(t, s, u, mh2, mq2, 2, 1, 3, 5, 4, 6, BI, CI, DI)
-        amp(4) = ggxgH_pppamp_scalars(u, t, s, mh2, mq2, 3, 2, 1, 6, 5, 4, BI, CI, DI)
-        amp(5) = qqbarxgH_amp_scalars(s, t, u, mh2, mq2, 1, 0, 4, 0, 0, 0, BI, CI, DI)
-        amp(6) = qqbarxgH_amp_scalars(t, s, u, mh2, mq2, 2, 0, 5, 0, 0, 0, BI, CI, DI)
-        amp(7) = qqbarxgH_amp_scalars(u, t, s, mh2, mq2, 3, 0, 6, 0, 0, 0, BI, CI, DI)
-
-     case(iloop_lm_scalar)
-
-        ! Infinite mass limit for scalar particles in loops 
-        amp(1) = -one / three * sqrt(two * s * t * u) * s**2 / (s * t * u)
-        amp(2) = one / three * sqrt(two * s * t * u) * mh2**2 / (s * t * u)
-        amp(3) = -one / three * sqrt(two * s * t * u) * t**2 / (s * t * u)
-        amp(4) = -one / three * sqrt(two * s * t * u) * u**2 / (s * t * u)
-        amp(5) = -(s - mh2) / 24._dp
-        amp(6) = -(t - mh2) / 24._dp
-        amp(7) = -(u - mh2) / 24._dp
+        case(iloop_lm_scalar)
+          ! Infinite mass limit for scalar particles in loops 
+          amp(1) = -one / three * sqrt(two * s * t * u) * s**2 / (s * t * u)
+          amp(2) = one / three * sqrt(two * s * t * u) * mh2**2 / (s * t * u)
+          amp(3) = -one / three * sqrt(two * s * t * u) * t**2 / (s * t * u)
+          amp(4) = -one / three * sqrt(two * s * t * u) * u**2 / (s * t * u)
+          amp(5) = -(s - mh2) / 24._dp
+          amp(6) = -(t - mh2) / 24._dp
+          amp(7) = -(u - mh2) / 24._dp
         
-     case default
-        call wae_error('hboson_Msquared',':unrecognised loop type',intval=iloop)
-     end select
+        case default
+          call wae_error('hboson_Msquared', 'Unrecognised loop type ', intval = iloop)
+
+      end select
 
       do i = 1, 7
         amp_imag(i) = amp_imag(i) + dreal(amp(i)) * yukawa 
@@ -562,7 +563,9 @@ contains
     do imass = 1, size(iloop_array)
     
       mq2 = mass_array(imass)**2
-      if (mq2 == zero) cycle
+      if (mq2 == zero) then 
+        cycle
+      end if 
 
       yukawa = yukawa_array(imass)
       
@@ -597,19 +600,19 @@ contains
       ! Compute the complex amplitudes
       select case(iloop)
          
-      case(iloop_fm_fermion)
-
-         ! Exact result for loops 
-         amp(1) = ggxgH_cpodd_pppamp_fermions(s, t, u, mh2, mq2, 1, 2, 3, 4, 5, 6, BI, CI, DI)
-         amp(2) = ggxgH_cpodd_ppmamp_fermions(s, t, u, mh2, mq2, 1, 2, 3, 0, 0, 0, BI, CI, DI)
-         amp(3) = ggxgH_cpodd_pppamp_fermions(t, s, u, mh2, mq2, 2, 1, 3, 5, 4, 6, BI, CI, DI)
-         amp(4) = ggxgH_cpodd_mppamp_fermions(u, t, s, mh2, mq2, 3, 2, 1, 6, 5, 4, BI, CI, DI)
-         amp(5) = qqbarxgH_cpodd_amp_fermions(s, t, u, mh2, mq2, 1, 0, 4, 0, 0, 0, BI, CI, DI)
-         amp(6) = qqbarxgH_cpodd_amp_fermions(t, s, u, mh2, mq2, 2, 0, 5, 0, 0, 0, BI, CI, DI)
-         amp(7) = qqbarxgH_cpodd_amp_fermions(u, t, s, mh2, mq2, 3, 0, 6, 0, 0, 0, BI, CI, DI)
+        case(iloop_fm_fermion)
+          ! Exact result for loops 
+          amp(1) = ggxgH_cpodd_pppamp_fermions(s, t, u, mh2, mq2, 1, 2, 3, 4, 5, 6, BI, CI, DI)
+          amp(2) = ggxgH_cpodd_ppmamp_fermions(s, t, u, mh2, mq2, 1, 2, 3, 0, 0, 0, BI, CI, DI)
+          amp(3) = ggxgH_cpodd_pppamp_fermions(t, s, u, mh2, mq2, 2, 1, 3, 5, 4, 6, BI, CI, DI)
+          amp(4) = ggxgH_cpodd_mppamp_fermions(u, t, s, mh2, mq2, 3, 2, 1, 6, 5, 4, BI, CI, DI)
+          amp(5) = qqbarxgH_cpodd_amp_fermions(s, t, u, mh2, mq2, 1, 0, 4, 0, 0, 0, BI, CI, DI)
+          amp(6) = qqbarxgH_cpodd_amp_fermions(t, s, u, mh2, mq2, 2, 0, 5, 0, 0, 0, BI, CI, DI)
+          amp(7) = qqbarxgH_cpodd_amp_fermions(u, t, s, mh2, mq2, 3, 0, 6, 0, 0, 0, BI, CI, DI)
          
-      case default
-         call wae_error('hboson_Msquared',':unrecognised loop type',intval=iloop)
+        case default
+          call wae_error('hboson_Msquared', 'Unrecognised loop type ', intval = iloop)
+
       end select
 
       do i = 1, 7
@@ -644,7 +647,6 @@ contains
 ! Eq. (2.4) 
 
   function f(tau) result(res)
-
     real(dp), intent(in) :: tau
     complex(dp) :: res
   
@@ -667,6 +669,8 @@ contains
 
   end function F12
 
+!=======================================================================================
+
   function F12_cpodd(t) result(res)
     real(dp), intent(in) :: t
     complex(dp) :: res
@@ -678,7 +682,6 @@ contains
 !=======================================================================================
 
   function F0(t) result(res)
-
     real(dp), intent(in) :: t
     complex(dp) :: res
 
@@ -689,7 +692,6 @@ contains
 !=======================================================================================
 
   function born_ampsquare(iloop_in, mass_array, yukawa_array) result(res)
-
     integer, intent(in) :: iloop_in(:)
     real(dp), intent(in) :: mass_array(:), yukawa_array(:)
     real(dp) :: res  
@@ -709,23 +711,27 @@ contains
       select case(iloop_in(i))
         case(iloop_fm_fermion) ! fermion
           if (cpodd) then
-             amp = amp + F12_cpodd(tau) * yukawa_array(i)
+            amp = amp + F12_cpodd(tau) * yukawa_array(i)
           else
-             amp = amp + F12(tau) * yukawa_array(i) 
+            amp = amp + F12(tau) * yukawa_array(i) 
           end if
        case(iloop_lm_fermion)
           if (cpodd) then
-             amp = amp + two * yukawa_array(i)
+            amp = amp + two * yukawa_array(i)
           else
-             amp = amp + four / three * yukawa_array(i) 
+            amp = amp + four / three * yukawa_array(i) 
           end if
        case(iloop_fm_scalar) ! scalar 
-          if (cpodd) call wae_error('born_ampsquare',&
+          if (cpodd) then 
+            call wae_error('born_ampsquare',&
                &'CP-odd Higgs with scalar loops not yet implemented')
+          end if 
           amp = amp + half * F0(tau) * yukawa_array(i) 
        case(iloop_lm_scalar)
-          if (cpodd) call wae_error('born_ampsquare',&
+          if (cpodd) then
+            call wae_error('born_ampsquare',&
                &'CP-odd Higgs with scalar loops not yet implemented')
+          end if 
           amp = amp + one / three * yukawa_array(i) 
        case default
           call wae_error('born_ampsquare','unknown iloop',intval=iloop_in(i))
@@ -744,7 +750,6 @@ contains
 ! Cross-section for bbH 
 
   function bbH_cross_section(lumiqqbar) result(res)
-
     real(dp) :: lumiqqbar
     real(dp) :: res
     
@@ -758,7 +763,6 @@ contains
 ! Matrix element squared for bbH  
 
   subroutine bbH_Msquared(s, t, u, wtqq, wtqg, wtgq, wtgg)
-
     real(dp), intent(in) :: s, t, u
 
     real(dp), intent(out) :: wtqq, wtqg, wtgq, wtgg

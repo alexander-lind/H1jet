@@ -1,3 +1,8 @@
+2020-09-02  Alexander Lind  <A.Lind@sussex.ac.uk>
+
+	* src/hboson.f90: Minor cleaning up. 
+	* bin/PlotH1jet.py: Updated from Python 2 to 3 and made small improvements. 
+
 2020-08-31  Alexander Lind  <A.Lind@sussex.ac.uk>
 
 	* src/input.f90: Minor cleaning up and bug fixes. 
