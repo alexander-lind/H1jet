@@ -32,6 +32,13 @@ To compile with a custom user interface:
 make
 ```
 See the User's Manual for more information on the implementation of a custom user interface. 
+To install in a specific location: 
+```
+./configure --prefix=/path/to/installation
+make
+make install 
+```
+By default the prefix is set to /usr/local. 
 
 ## Use 
 To run H1jet: 
