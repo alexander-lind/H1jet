@@ -32,15 +32,19 @@ contains
     complex(dp) :: HPL1
     
     rat = (four * mq2) / s
-
+    
     if (rat > one) then
        z = half * (one + ii * sqrt(rat - one))
-       res = two - ii * sqrt(rat - one) * HPL1(0, z / (z - one))
+!       res = two - ii * sqrt(rat - one) * HPL1(0, z / (z - one))
     else
        z = half * (one + sqrt(one - rat))
-       res = two + sqrt(one - rat) * HPL1(0, (z - one) / z)
+!       res = two + sqrt(one - rat) * HPL1(0, (z - one) / z)
     end if
 
+    !    res = two+(two*z-one)*HPL1(0, (z - one) / z)
+    ! AB maybe?
+        res = two-(two*z-one)*HPL1(1, one/z)
+    
   end function B0
 
 !=======================================================================================
@@ -63,7 +67,9 @@ contains
        z = half * (one + sqrt(one - rat))
     end if
 
-    res = HPL2(0, 0, (z - one) / z) / s
+!    res = HPL2(0, 0, (z - one) / z) / s
+    res = HPL2(1, 1, one/ z) / s
+    
     
  end function C0
 
@@ -95,7 +101,9 @@ contains
     complex(dp) :: res
     complex(dp) :: z_in 
     complex(dp) :: HPL1, HPL2
-    complex(dp) :: tmp1, tmp2, tmp3 
+    !    complex(dp) :: tmp1, tmp2, tmp3
+    complex(dp) :: tmp(3)
+    integer :: imin
 
     ! Set imaginary part to zero if it's much smaller than the real part 
     z_in = z 
@@ -106,26 +114,29 @@ contains
     ! Each of the three tmp's are equal to Li2(z) 
     ! However, they use different regions of the argument so that CHAPLIN 
     ! will use different methods for evaluation  
-    tmp1 = -HPL2(0,1,one/z_in) - pi**two/6._dp - HPL2(0,0,-z_in)
-    tmp2 = -HPL2(0,-1,-z_in)
-    tmp3 = -HPL2(0,1,one-z_in) + pi**two/6._dp + HPL1(1,-z_in+one) * HPL1(-1,-z_in) 
+    tmp = (\ -HPL2(0,1,one/z_in) - pi**two/6._dp - HPL2(0,0,-z_in), &
+         &-HPL2(0,-1,-z_in),&
+         & -HPL2(0,1,one-z_in) + pi**two/6._dp + HPL1(1,-z_in+one) * HPL1(-1,-z_in) /)
 
     ! We will now check which of the methods give the smallest imaginary part 
     ! This does not matter if the imaginary part is non-zero
-    ! However, in the case that we have a infinitesimal imaginary part this is necessary 
-    if (abs(aimag(tmp1)) < abs(aimag(tmp2))) then
-      if (abs(aimag(tmp1)) < abs(aimag(tmp3))) then
-        res = tmp1
-      else 
-        res = tmp3 
-      end if
-    else 
-      if (abs(aimag(tmp2)) < abs(aimag(tmp3))) then
-        res = tmp2
-      else 
-        res = tmp3 
-      end if
-    end if 
+    ! However, in the case that we have a infinitesimal imaginary part this is necessary
+    imin = minloc(abs(aimag(tmp)))
+    res = tmp(imin)
+    
+!    if (abs(aimag(tmp1)) < abs(aimag(tmp2))) then
+!      if (abs(aimag(tmp1)) < abs(aimag(tmp3))) then
+!        res = tmp1
+!      else 
+!        res = tmp3 
+!      end if
+!    else 
+!      if (abs(aimag(tmp2)) < abs(aimag(tmp3))) then
+!        res = tmp2
+!      else 
+!        res = tmp3 
+!      end if
+!    end if 
 
   end function hpl_prescription_helper
 
@@ -146,7 +157,8 @@ contains
 
     rat = four * mq2 / v
 
-    if (v > 0 .and. v < (four * mq2)) then
+!    if (v > 0 .and. v < (four * mq2)) then
+    if (rat > one) then       
       y = half * (one + ii * dsqrt(rat - one))
     else
       y = half * (one + dsqrt(one - rat))
@@ -177,8 +189,11 @@ contains
 
     res = sp1 - sp2 + sp3 - sp4 
 
-    res = res + log(dcmplx(-xm / xp, zero)) * log(dcmplx(one - v * xm * xp / mq2, zero)) 
-
+    res = res + log(dcmplx(-xm / xp, zero)) * log(dcmplx(one - v * xm * xp / mq2, zero))
+! AB the above looks suspicious, maybe something on the line of what is below?
+    !    res = res - log(-xm / xp) * HPL(0,one/(one-v * xm * xp / mq2))
+    ! AB alternative
+    ! res = res - log(-xm / xp) * HPL(1,v * xm * xp / mq2)
   end function CI2
 
 !=======================================================================================

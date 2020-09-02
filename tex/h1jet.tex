@@ -162,8 +162,8 @@ continuing the square root, we use
 \begin{equation}
   \label{eq:z-implemented}
   z = \left\{\begin{split}
-      \frac{1}{2}\left(1+i\sqrt{\frac{4m^2}{s}-1}\right)\,,& \qquad s< 4m^2\\
-      \frac{1}{2}\left(1+\sqrt{1-\frac{4m^2}{s}}\right)\,,& \qquad s> 4m^2
+      \frac{1}{2}\left(1+\sqrt{1-\frac{4m^2}{s}}\right)\,,& \qquad \frac{4m^2}{s}<1\\
+      \frac{1}{2}\left(1+i\sqrt{\frac{4m^2}{s}-1}\right)\,,& \qquad \frac{4m^2}{s}>1
     \end{split}
     \right.
   \end{equation}
@@ -171,7 +171,8 @@ and implement the bubble as follows:
 \begin{equation}
   \label{eq:bubble-implemented}
   B_0(s)=
-    2 +(2 z-1) \,H\left(0,\frac{z}{z-1}\right) \,.
+%    2 +(2 z-1) \,H\left(0;\frac{z-1}{z}\right) \,.
+      2 -(2 z-1) \,H\left(1;\frac{1}{z}\right) \,.
 \end{equation}
 
  
@@ -183,10 +184,78 @@ and implement the bubble as follows:
 where $z$ is given in eq.~\eqref{eq:z}. Again, for $s>4m^2$, the argument of the logarithm has the opposite convention as CHAPLIN. Therefore, we invert again the argument of the logarithm, and using the definition of $z$ in eq.~\eqref{eq:z-implemented}, we implement the triangle as follows:
 \begin{equation}
   \label{eq:triangle-HPL}
-  s\,C_0(s) = H\left(0,0;\frac{z-1}{z}\right)\,.
+%  s\,C_0(s) = H\left(0,0;\frac{z-1}{z}\right)\,.
+  s\,C_0(s) = H\left(1,1;\frac{1}{z}\right)\,.
 \end{equation}
 
-\paragraph{Boxes.}
+\paragraph{Boxes.} The scalar four-point function with three massless (the gluons) and one massive (the Higgs boson) external lines are given by \cite{BAURGLOVER}, 
+\begin{multline}
+  \label{eq:box}
+	D(s, t) = \frac{1}{st} \int_{0}^{1} \frac{\mathrm{d}x}{x(1-x)+m^2u/(ts)} \left [- \ln\left ( 1 - i \varepsilon - \frac{m_H^2}{m^2} x (1-x) \right )\right. \\ \left.
+	+ \ln\left ( 1 - i \varepsilon - \frac{s}{m^2} x (1-x) \right ) + \ln\left ( 1 - i \varepsilon - \frac{t}{m^2} x (1-x) \right ) \right ] \,, 
+\end{multline}
+which can be expressed in terms of complex dilogarithms by using the exact result
+\begin{multline}
+  \label{eq:ci-dilogs}
+  \frac{1}{st} \int_{0}^{1} \frac{dx}{x(1-x)+m^2u/(ts)} \ln\left ( 1 - i \varepsilon - \frac{v}{m^2} x (1-x) \right )= \frac{2}{\sqrt{1+4m^2u/(ts)}} \times  \\ \times
+  \left[
+    \mathrm{Li}_2\left(\frac{x_-}{x_--y}\right)-\mathrm{Li}_2\left(\frac{x_+}{x_+-y}\right)
+    +\mathrm{Li}_2\left(\frac{x_-}{y-x_+}\right)-\mathrm{Li}_2\left(\frac{x_+}{y-x_-}\right)
+    \right.
+    \\ \left.
+    + \ln\left( \frac{-x_{-}}{x_{+}} \right) \ln\left ( 1 - i \varepsilon - \frac{v}{m^2}x_-x_+ \right )
+    \right]\,,
+  \end{multline}
+  where
+  \begin{equation}
+    \label{eq:xpm}
+    	x_{\pm} \equiv \frac{1}{2} \left ( 1 \pm \sqrt{1 + \frac{4m^2 u}{ts}} \right )
+  \end{equation}
+are real numbers, with $x_+>1$ and $x_-<-1$, and
+\begin{equation}
+  \label{eq:y-def}
+  y \equiv \frac{1}{2} \left ( 1 + \sqrt{1 - \frac{4(m^2 - i \varepsilon)}{v}} \right ) \,,
+\end{equation}
+is a complex number according to the value of $v$. In particular, keeping track of the imaginary part of $y$ yields
+\begin{equation}
+  \label{eq:y-implementation}
+y = \left\{
+  \begin{split}
+  \frac{1}{2}\left(1+\sqrt{1+\frac{4m^2}{|v|}}\right)-i\varepsilon\,,& \qquad v<0\\
+  \frac{1}{2}\left(1+i\sqrt{\frac{4m^2}{v}-1}\right)\,,& \qquad 0<v<4 m^2\\
+    \frac{1}{2}\left(1+\sqrt{1-\frac{4m^2}{v}}\right)+i\varepsilon\,,& \qquad v>4m^2
+  \end{split}
+  \right.
+\end{equation}
+From the above, we see that we do not have any problems for
+$0<v<4 m^2$, and we can use the dilogarithms as they are.
+
+For $v<0$, $x_-/(x_--y)$ and $x_+/(y-x_-)$ acquire a small positive imaginary part, whereas $x_+/(x_+-y)$ and $x_-/(y-x_+)$ a small negative imaginary part. The reverse happens for $v>4m^2$.
+
+Whenever the argument $z$ of the dilogarithm is complex, we just use the
+definitory relation $\mathrm{Li_2}(z)=H(0,1;z)$. When $z=x+i\varepsilon$, we use $\mathrm{Li_2}(x+i\varepsilon)=H(0,1;x)$, with $H(0,1;x)$ the complex number provided by CHAPLIN. If $z=x-i\varepsilon$, we use the identities
+\begin{equation}
+  \begin{split}
+\mathrm{Li}_{2}\left ( x-i\varepsilon \right )&= -H\left(0,1;\frac{1}{x} \right ) - \frac{\pi^2}{6} - H(0,0; -x)  = -H(0,-1;-x) = \\ & 
+= -H\left (0,1, 1-x \right )+ \frac{\pi^2}{6} + H(1;1-x) H(-1,-x)\,,
+  \end{split}
+\end{equation}
+and we select the one that gives the smallest imaginary part. This is
+crucial especially when the imaginary part should be zero but it is
+not because of the specific numerical methods employed by CHAPLIN.
+
+Last, we adopt the implementation {\bf [needed?]}
+\begin{equation}
+  \label{eq:log-implemented}
+  \ln\left ( 1 - i \varepsilon - \frac{v}{m^2}x_-x_+ \right ) =H\left(1,\frac{v}{m^2}x_-x_+\right)\,,
+\end{equation}
+which keeps track of the correct imaginary part.
+ 
+%as well as the property that for harmonic polylogarithms of weight $w = 2$ we have 
+%\begin{align}
+%	\mathrm{H}(0,1;x) &= \mathrm{Li}_{2}\left ( x \right ), \\ 
+%	\mathrm{H}(0,-1;x) &= -\mathrm{Li}_{2}\left ( -x \right ). 
+%\end{align} 
 
 \begin{thebibliography}{1}
    \bibitem{bib:h1jet} H1jet can be downloaded from: \\ \href{https://h1jet.hepforge.com}{https://h1jet.hepforge.com}
