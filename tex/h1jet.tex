@@ -111,15 +111,34 @@ where $\mathcal{L}_{ij}\left(\tau,\mu_F\right)$ is the partonic luminosity
 \section{Implementation of scalar integrals}
 \label{sec:scalar-integrals}
 
+This appendix contains the details of how H1jet computes one-loop
+scalar integrals that are relevant for Higgs production. These
+integrals depend on one internal mass, which we denot by $m$, and are
+functions of Lorentz invariant quantities, typically Mandelstam
+invariants.
+
+These integrals contains logarithms and dilogarithms of complex
+arguments, which require appropriate analytic continuations. We have
+decided to use CHAPLIN, and recast all relevant trascendental
+functions into harmonic polylogarithms $H(\vec a;z)$, with
+$\vec a=(a_1,\dots,a_n)$. For real values of the argument, CHAPLIN
+uses the $+i\varepsilon$ prescription, i.e.\ $H(\vec a;z)$ with $z$
+real is interpreted as $H(\vec a;z+i\varepsilon)$. Therefore, we need
+to make sure that the imaginary part of the argument of scalar
+integrals is consistent with CHAPLIN.
+
+The relevant one-loop integrals we need to deal with are of  three kinds, 
+bubbles, triangles and boxes.
+
 \paragraph{Bubbles.} The bubble integral is defined as
 \begin{equation}
   \label{eq:bubble}
-  B_0(s)=2 -\sqrt{1-\frac{4(m^2-i\epsilon)}{s}}\ln\left[-\frac{z}{1-z}\right]\,,
+  B_0(s)=2 -\sqrt{1-\frac{4(m^2-i\varepsilon)}{s}}\ln\left[-\frac{z}{1-z}\right]\,,
 \end{equation}
 where 
 \begin{equation}
   \label{eq:z}
-  z=\frac{1}{2}\left(1+\sqrt{1-\frac{4(m^2-i\epsilon)}{s}}\right)\,.
+  z=\frac{1}{2}\left(1+\sqrt{1-\frac{4(m^2-i\varepsilon)}{s}}\right)\,.
 \end{equation}
 The argument of the logarithm in eq.~\eqref{eq:bubble} has a different
 from according to the value of $s$:
@@ -130,26 +149,44 @@ from according to the value of $s$:
       &-\frac{1+\sqrt{1+\frac{4m^2}{|s|}}}{1-\sqrt{1+\frac{4m^2}{|s|}}}\,,\qquad \qquad s<0\,,\\
         & -\frac{1+i\sqrt{\frac{4m^2}{s}-1}}{1-i\sqrt{\frac{4m^2}{s}-1}}\,,\qquad \quad\>\> 0<s<4m^2\,,\\
         &
-        -\frac{1-\sqrt{1-\frac{4m^2}{s}}}{1-\sqrt{1-\frac{4m^2}{s}}}-i\epsilon\,,\qquad
+        -\frac{1-\sqrt{1-\frac{4m^2}{s}}}{1-\sqrt{1-\frac{4m^2}{s}}}-i\varepsilon\,,\qquad
         s>4m^2
     \end{split}
 \right.
 \end{equation}
 Note that the only case in which one needs a small imaginary part is
 the case $s>4m^2$. This imaginary part has the opposite convention as
-in CHAPLIN. As a solution, we invert the argument of the logarithm in that region, 
+in CHAPLIN. As a solution, we invert the argument of the logarithm and
+use the identity $\ln(1/z)=-\ln(z)$. Practically, analytically
+continuing the square root, we use
+\begin{equation}
+  \label{eq:z-implemented}
+  z = \left\{\begin{split}
+      \frac{1}{2}\left(1+i\sqrt{\frac{4m^2}{s}-1}\right)\,,& \qquad s< 4m^2\\
+      \frac{1}{2}\left(1+\sqrt{1-\frac{4m^2}{s}}\right)\,,& \qquad s> 4m^2
+    \end{split}
+    \right.
+  \end{equation}
+and implement the bubble as follows:
+\begin{equation}
+  \label{eq:bubble-implemented}
+  B_0(s)=
+    2 +(2 z-1) \,H\left(0,\frac{z}{z-1}\right) \,.
+\end{equation}
+
  
 \paragraph{Triangles.} The triangle integral $C_0(s)$ is defined as
 \begin{equation}
   \label{eq:triangle}
   C_0(s) = \frac{1}{2s}\ln^2\left[-\frac{z}{1-z}\right]\,,
 \end{equation}
-where $z$ is given in eq.~\eqref{eq:z}. 
-
+where $z$ is given in eq.~\eqref{eq:z}. Again, for $s>4m^2$, the argument of the logarithm has the opposite convention as CHAPLIN. Therefore, we invert again the argument of the logarithm, and using the definition of $z$ in eq.~\eqref{eq:z-implemented}, we implement the triangle as follows:
 \begin{equation}
   \label{eq:triangle-HPL}
   s\,C_0(s) = H\left(0,0;\frac{z-1}{z}\right)\,.
 \end{equation}
+
+\paragraph{Boxes.}
 
 \begin{thebibliography}{1}
    \bibitem{bib:h1jet} H1jet can be downloaded from: \\ \href{https://h1jet.hepforge.com}{https://h1jet.hepforge.com}
