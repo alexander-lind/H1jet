@@ -473,7 +473,7 @@ contains
     !       call wae_error('reset_iloop_array','Expected size of iloop_array is 3, whereas actual &
     !            &one is', intval=size(iloop_array))
     !    end if
-    
+
   end subroutine reset_iloop_array
   
 !======================================================================================= 
@@ -488,19 +488,19 @@ contains
     write(idev,*) 'roots(GeV)     =', roots
     write(idev,*) 'process        = ', proc
     select case(iproc)
-    case(id_user)
-       write(idev,*) 'model          = User-defined from included custom code' 
-    case(id_H)
-       if (cpodd) then
+      case(id_user)
+        write(idev,*) 'model          = User-defined from included custom code' 
+      case(id_H)
+        if (cpodd) then
           write(idev,*) 'model          = CP-odd Higgs'
-       else if (size(mass_array)==2) then
+        else if (size(mass_array)==2) then
           write(idev,*) 'model          = SM' 
-       else if (iloop_array(3) <= iloop_lm_fermion) then
+        else if (iloop_array(3) <= iloop_lm_fermion) then
           write(idev,*) 'model          = SM with top partners' 
-       else
+        else
           write(idev,*) 'model          = SUSY' 
-       end if
-    end select
+        end if
+      end select
     write(idev,*) 'mass           =', M
     write(idev,*) 'muR            =', muR
     write(idev,*) 'muF            =', muF
@@ -510,7 +510,7 @@ contains
       write(idev,*) 'masses         =', mass_array
       write(idev,*) 'tan(beta)      =', tbeta
       write(idev,*) 'sin^2(theta)   =', sth2
-   end if
+    end if
     write(idev,*) 'sigma0 [nb]    =', sigma0 
     write(idev,*) 'log            =', log_val_opt('--log')
     write(idev,*) ! Blank line for nicer output 

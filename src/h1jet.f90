@@ -92,7 +92,7 @@ program h1jet
   end if
 
   ! Evaluate the running alpha_s for the born-level cross-section 
-  alphas = RunningCoupling(muR) 
+  alphas = RunningCoupling(muR)
 
   ! Set tau needed for the luminosities 
   tau = (M**2 / roots**2) .with. grid 

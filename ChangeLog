@@ -1,3 +1,11 @@
+2020-09-29  Alexander Lind  <A.Lind@sussex.ac.uk>
+
+	* src/scalar_integrals.f90: Small changes and improvements to use of HPLs. 
+	* src/hboson.f90: Improvements to CP-odd amplitudes and addition of infinite mass limit for CP-odd case. 
+	* src/cross_sections.f90: Minor revisions. 
+	* src/input.f90: Minor revisions. 
+	* src/h1jet.f90: Minor revisions. 
+
 2020-09-02  Alexander Lind  <A.Lind@sussex.ac.uk>
 
 	* src/hboson.f90: Minor cleaning up. 

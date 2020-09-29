@@ -247,55 +247,39 @@ contains
 ! The exact +++ CP-odd helicity amplitude for gg -> gH
 
   function ggxgH_cpodd_pppamp_fermions(s, t, u, m2, mq2, i, j, k, i1, j1, k1, BI, CI, DI) result(res)
-    real(dp) :: s, t, u, m2, mq2, Gst, Gus, Gut
+    real(dp) :: s, t, u, m2, mq2
+    complex(dp) :: Gst, Gus, Gut 
     integer :: i, j, k, i1, j1, k1
     complex(dp) :: res
 
     complex(dp) :: BI(4), CI(7), DI(3)
 
-    Gst = s*t*DI(k)+two*s*CI(j1)+two*t*CI(i1)
-    Gus = u*s*DI(j)+two*u*CI(i1)+two*s*CI(k1)
-    Gut = u*t*DI(i)+two*u*CI(j1)+two*t*CI(k1)
-   
-    res = mq2 * sqrt(s * t * u)/(s*u)*(Gst-Gus+Gut)
+    Gst = s * t * DI(k) + two * s * CI(j1) + two * t * CI(i1)
+    Gus = u * s * DI(j) + two * u * CI(i1) + two * s * CI(k1)
+    Gut = u * t * DI(i) + two * u * CI(j1) + two * t * CI(k1)
+
+    res = mq2 * sqrt(t / (s * u)) * (Gst - Gus + Gut)
     
   end function ggxgH_cpodd_pppamp_fermions
 
 !=======================================================================================
-! The exact ++- CP-odd helicity amplitude for gg -> gH 
+! The exact -+- CP-odd helicity amplitude for gg -> gH 
 
-  function ggxgH_cpodd_ppmamp_fermions(s, t, u, m2, mq2, i, j, k, i1, j1, k1, BI, CI, DI) result(res)
-    real(dp) :: s, t, u, m2, mq2, Gst, Gus, Gut
+  function ggxgH_cpodd_mpmamp_fermions(s, t, u, m2, mq2, i, j, k, i1, j1, k1, BI, CI, DI) result(res)
+    real(dp) :: s, t, u, m2, mq2 
+    complex(dp) :: Gst, Gus, Gut
     integer :: i, j, k, i1, j1, k1
     complex(dp) :: res
 
     complex(dp) :: BI(4), CI(7), DI(3)
 
-    Gst = s*t*DI(k)+two*s*CI(j1)+two*t*CI(i1)
-    Gus = u*s*DI(j)+two*u*CI(i1)+two*s*CI(k1)
-    Gut = u*t*DI(i)+two*u*CI(j1)+two*t*CI(k1)
+    Gst = s * t * DI(k) + two * s * CI(j1) + two * t * CI(i1)
+    Gus = u * s * DI(j) + two * u * CI(i1) + two * s * CI(k1)
+    Gut = u * t * DI(i) + two * u * CI(j1) + two * t * CI(k1)
 
-    res = -mq2**2 * sqrt(s * t * u)/(s*t*u)*(Gst+Gus+Gut)
+    res = -mq2 * (m2 / sqrt(s * t * u)) * (Gst + Gus + Gut)
     
-  end function ggxgH_cpodd_ppmamp_fermions
-
-!=======================================================================================
-! The exact -++ CP-odd helicity amplitude for gg -> gH
-
-  function ggxgH_cpodd_mppamp_fermions(s, t, u, m2, mq2, i, j, k, i1, j1, k1, BI, CI, DI) result(res)
-    real(dp) :: s, t, u, m2, mq2, Gst, Gus, Gut
-    integer :: i, j, k, i1, j1, k1
-    complex(dp) :: res
-
-    complex(dp) :: BI(4), CI(7), DI(3)
-
-    Gst = s*t*DI(k)+two*s*CI(j1)+two*t*CI(i1)
-    Gus = u*s*DI(j)+two*u*CI(i1)+two*s*CI(k1)
-    Gut = u*t*DI(i)+two*u*CI(j1)+two*t*CI(k1)
-
-    res = mq2* sqrt(s * t * u)/(t*u)*(Gst+Gus-Gut)
-    
-  end function ggxgH_cpodd_mppamp_fermions
+  end function ggxgH_cpodd_mpmamp_fermions
 
 !=======================================================================================
 ! The exact amplitude for CP-odd qqbar -> gH 
@@ -317,14 +301,12 @@ contains
   function hboson_cross_section(lumigg) result(res)
     real(dp) :: nc = three  
     real(dp) :: res, lumigg
-!    integer, intent(in) :: iloop_array(:)
-!    real(dp), intent(in) :: mass_array(:), yukawa(:)
     !---------------------------------
     integer :: i
     real(dp) :: tau
     complex(dp) :: amp
 
-    amp = (zero,zero)
+    amp = (zero, zero)
     
     do i = 1, size(iloop_array)
 
@@ -364,8 +346,12 @@ contains
       end select
     end do
 
+    ! Divide off the large-mt limit
+    amp = amp / (four / three)
+
+    res = real(amp)**2 + aimag(amp)**2
+
     res = res / pi / (nc**2 - 1) / 72._dp / higgs_vev_in**2
-    !res = res * born_ampsquare(iloop_array, mass_array, yukawa)
     res = res * lumigg
     res = res * invGev2_to_nb
 
@@ -573,7 +559,7 @@ contains
       iloop = iloop_array(imass)
 
       ! Evaluate scalar loop integrals 
-         
+        
       ! Two-point function 
       BI(1) = B0(s, mq2) 
       BI(2) = B0(t, mq2) 
@@ -603,13 +589,23 @@ contains
         case(iloop_fm_fermion)
           ! Exact result for loops 
           amp(1) = ggxgH_cpodd_pppamp_fermions(s, t, u, mh2, mq2, 1, 2, 3, 4, 5, 6, BI, CI, DI)
-          amp(2) = ggxgH_cpodd_ppmamp_fermions(s, t, u, mh2, mq2, 1, 2, 3, 0, 0, 0, BI, CI, DI)
-          amp(3) = ggxgH_cpodd_pppamp_fermions(t, s, u, mh2, mq2, 2, 1, 3, 5, 4, 6, BI, CI, DI)
-          amp(4) = ggxgH_cpodd_mppamp_fermions(u, t, s, mh2, mq2, 3, 2, 1, 6, 5, 4, BI, CI, DI)
-          amp(5) = qqbarxgH_cpodd_amp_fermions(s, t, u, mh2, mq2, 1, 0, 4, 0, 0, 0, BI, CI, DI)
-          amp(6) = qqbarxgH_cpodd_amp_fermions(t, s, u, mh2, mq2, 2, 0, 5, 0, 0, 0, BI, CI, DI)
-          amp(7) = qqbarxgH_cpodd_amp_fermions(u, t, s, mh2, mq2, 3, 0, 6, 0, 0, 0, BI, CI, DI)
-         
+          amp(2) = ggxgH_cpodd_pppamp_fermions(s, u, t, mh2, mq2, 1, 3, 2, 4, 6, 5, BI, CI, DI)
+          amp(3) = ggxgH_cpodd_mpmamp_fermions(s, t, u, mh2, mq2, 1, 2, 3, 4, 5, 6, BI, CI, DI)
+          amp(4) = ggxgH_cpodd_pppamp_fermions(t, s, u, mh2, mq2, 2, 1, 3, 5, 4, 6, BI, CI, DI)
+          amp(5) = qqbarxgH_cpodd_amp_fermions(s, t, u, mh2, mq2, 0, 0, 4, 0, 0, 0, BI, CI, DI)
+          amp(6) = qqbarxgH_cpodd_amp_fermions(t, s, u, mh2, mq2, 0, 0, 5, 0, 0, 0, BI, CI, DI)
+          amp(7) = qqbarxgH_cpodd_amp_fermions(u, t, s, mh2, mq2, 0, 0, 6, 0, 0, 0, BI, CI, DI)
+        
+        case(iloop_lm_fermion)
+          ! Infinite mass limit in loops 
+          amp(1) = -two * t * sqrt(t / (s * u))  
+          amp(2) = -two * u * sqrt(u / (s * t))
+          amp(3) = two * mh2**2 / sqrt(s * t * u)
+          amp(4) = -two * s * sqrt(s / (t * u)) 
+          amp(5) = half  
+          amp(6) = half 
+          amp(7) = half 
+
         case default
           call wae_error('hboson_Msquared', 'Unrecognised loop type ', intval = iloop)
 
@@ -630,15 +626,15 @@ contains
            & + amp_real(3)**2 + amp_imag(3)**2 + amp_real(4)**2 + amp_imag(4)**2) * fluxgg
 
     ! Process: q qbar -> gH 
-    wtqq = two*float(nc**2-1) * (u**2 + t**2) / (s * mw2) &
+    wtqq = two * float(nc**2 - 1) * (u**2 + t**2) / (s * mw2) &
            & * (amp_real(5)**2 + amp_imag(5)**2) * fluxqq
 
     ! Crossed process: qg -> qH, eq. (A.21) 
-    wtqg = -two*float(nc**2-1) * (u**2 + s**2)  / (t * mw2) &
+    wtqg = -two * float(nc**2 - 1) * (u**2 + s**2)  / (t * mw2) &
            & * (amp_real(6)**2 + amp_imag(6)**2) * fluxgq
 
     ! Crossed process: g qbar -> qbar H, eq. (A.22) 
-    wtgq = -two*float(nc**2-1) * (s**2 + t**2) / (u * mw2) &
+    wtgq = -two * float(nc**2 - 1) * (s**2 + t**2) / (u * mw2) &
            & * (amp_real(7)**2 + amp_imag(7)**2) * fluxgq
 
   end subroutine hboson_cpodd_Msquared
@@ -690,6 +686,7 @@ contains
   end function F0
 
 !=======================================================================================
+! This function is not used anymore to calculate the born level cross-section 
 
   function born_ampsquare(iloop_in, mass_array, yukawa_array) result(res)
     integer, intent(in) :: iloop_in(:)

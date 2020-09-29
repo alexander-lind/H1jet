@@ -26,7 +26,6 @@ contains
 ! Dot product between two four-vectors 
 
   function dot(p, q) result(res)
-
     real(dp), intent(in) :: p(4), q(4)
     real(dp) :: res
 
@@ -38,7 +37,6 @@ contains
 ! Process-dependent Electroweak Prefactor 
 
   subroutine h1jet_prefactor(factor)
-
     real(dp), intent(out) :: factor
 
     select case(iproc)
