@@ -28,7 +28,7 @@ make
 ```
 To compile with a custom user interface: 
 ```
-./configure USERPATH=/path/to/custom/user_interface.f90 
+./configure USERFILE=/path/to/custom/user_interface.f90 
 make
 ```
 See the User's Manual for more information on the implementation of a custom user interface. 
