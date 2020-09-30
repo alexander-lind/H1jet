@@ -8,9 +8,6 @@
 module ew_parameters
 
   use hoppet_v1, EvolvePDF_hoppet => EvolvePDF, InitPDF_hoppet => InitPDF
-!  use types ! From hoppet_v1 
-!  use consts_dp ! From hoppet_v1 
-!  use qcd ! From hoppet_v1 
 
   implicit none
   

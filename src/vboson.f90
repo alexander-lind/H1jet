@@ -7,10 +7,8 @@
 
 module vboson
 
-  use types
-  use consts_dp
+  use hoppet_v1
   use ew_parameters
-  use qcd
 
   implicit none
 

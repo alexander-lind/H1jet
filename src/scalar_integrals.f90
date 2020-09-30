@@ -8,8 +8,6 @@
 
 module scalar_integrals
 
-  use types 
-  use consts_dp
   use hoppet_v1 
   
   implicit none
