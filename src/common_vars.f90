@@ -30,6 +30,10 @@ module common_vars
   real(dp), public :: M
   real(dp), public :: roots, pt 
 
+  ! Strong coupling alpha_s 
+  real(dp), public :: alphas 
+
 end module common_vars 
+
 
 

@@ -10,7 +10,8 @@ module user_interface
   use ew_parameters
   use hoppet_v1 
   use common_vars 
-  
+  use sub_defs_io
+
   implicit none
   
   private 

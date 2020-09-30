@@ -54,7 +54,8 @@ pdfs_tools.o: ew_parameters.o hboson.o common_vars.o $(USER_INTERFACE_OBJ)
 scalar_integrals.o:
 vboson.o: ew_parameters.o
 input.o: ew_parameters.o io_utils.o hboson.o pdfs_tools.o common_vars.o 
-user_interface.o: ew_parameters.o common_vars.o  
+user_interface.o: ew_parameters.o common_vars.o io_utils.o 
 cross_sections.o: vboson.o io_utils.o hboson.o input.o $(USER_INTERFACE_OBJ)
 banner.o: common_vars.o $(USER_INTERFACE_OBJ)
+$(USER_INTERFACE_OBJ): ew_parameters.o common_vars.o io_utils.o 
 

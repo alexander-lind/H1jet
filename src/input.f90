@@ -27,8 +27,6 @@ module input
   real(dp), public :: ptmin, ptmax
   ! Number of bins (only needed here and h1jet in.f90)
   integer, public :: nbins 
-  ! Strong coupling alpha_s (only needed here and in h1jet.f90) 
-  real(dp), public :: alphas 
   ! Strong coupling exponent power (only needed here and in h1jet.f90) 
   integer, public :: as_pow = 0
   ! Total born-level cross-section (only needed here and in h1jet.f90) 

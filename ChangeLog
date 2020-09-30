@@ -1,3 +1,9 @@
+2020-09-30  Alexander Lind  <A.Lind@sussex.ac.uk>
+
+	* src/user_interface.f90: Added dependency. 
+	* src/Makefile.am: Fixed compilation of user interface. 
+	* src/input.f90: Moved alphas to common_vars.f90, as it will be used by the user interface. 
+
 2020-09-29  Alexander Lind  <A.Lind@sussex.ac.uk>
 
 	* src/scalar_integrals.f90: Small changes and improvements to use of HPLs. 
