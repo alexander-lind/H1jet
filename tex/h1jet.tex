@@ -35,6 +35,49 @@
 
 \section{The method}
 \label{sec:method}
+Before explaining how H1jet works, we consider first the Born cross
+section for producing a colour singlet $X$, e.g.\ a Higgs, of mass
+$m_X$. This will allow us to set the notation for the rest of the
+paper. We consider the $2\to 1$ process $p_1 p_2 \to X$, where
+$p_1,p_2$ are the two incoming partons and $p_X$ is the momentum of
+the considered colour singlet. From momentum conservation we have of course
+\begin{equation}
+  \label{eq:mom-conservation}
+  \hat s = (p_1+p_2)^2=m_X^2\,.
+\end{equation}
+There can be various partonic subprocesses that can contribute to $X$
+production. Let us denote with $M_{ij}$ (with
+$i,j=g,q_f,\bar q_{\bar f}$) the amplitude for the subprocess
+$ij\to X$ (e.g. $q_f \bar q_f \to Z$). The Born partonic cross section for
+this subprocess is
+\begin{equation}
+  \label{eq:Born-xsct}
+  \hat\sigma_{ij}=\frac{1}{2\hat s} |M_{ij}(m_X^2)|^2(2\pi) \delta\left(\hat s-m_X^2\right)=\frac{\pi}{m_X^2} |M_{ij}(m_X^2)|^2 \delta\left(\hat s-m_X^2\right)\,.
+\end{equation}
+The corresponding hadronic cross section is given by
+\begin{equation}
+  \label{eq:Born-had}
+  \begin{split}
+  \sigma& =\sum_{i,j} \int_0^1 dx_1\, f_{i/p}(x_1,\mu_F)\int_0^1 dx_2 \, f_{i/p}(x_1,\mu_F)\sum_{i,j}
+\frac{\pi}{m_X^2} |M_{ij}(m_X^2)|^2 \delta\left(x_1 x_2 s-m_X^2\right)\\
+   & = \frac{\pi}{m_X^4} \sum_{i,j} |M_{ij}(m_X^2)|^2 \mathcal{L}_{ij}\left(\frac{m_X^2}{s},\mu_F\right)
+  \,,
+    \end{split}
+\end{equation}
+where $\mathcal{L}_{ij}\left(\tau,\mu_F\right)$ is the partonic luminosity
+\begin{equation}
+  \label{eq:hoppet-lumi}
+  \mathcal{L}_{ij}\left(\tau,\mu_F\right) = \tau \int_\tau^1 \frac{dx}{x}\, f_{i/p}(x,\mu_F)\, f_{j/p}\left(\frac{\tau}{x},\mu_F\right)\,.
+\end{equation}
+If we are able to obtain the luminosity
+$\mathcal{L}_{ij}\left(m_X^2/s,\mu_F\right)$ from somewhere, we are
+able to obtain a numerical prediction for the cross section from a
+simple multiplication. There are indeed numerical tools that are able
+to compute, tabulate and interpolate luminosities with incredible efficiency, for instance the
+program HOPPET. Through a simple interface with HOPPET, we are able to
+compute the Born cross-section given $M_{ij}$. This procedure is the
+same adopted in the program JetVHeto computing cross sections for
+colour singlets with a veto on additional jets.
 
 We consider here a generic $2\to 2$ partonic process
 $p_1 p_2 \to p_3 X$, where $p_1,p_2,p_3$ are partons, and $p_X$ is a
@@ -68,7 +111,7 @@ centre-of-mass frame. The {\em partonic} $p_T$ spectrum for the
 process initiated by partons $ij$ is given by
 \begin{equation}
   \label{eq:partonic-pt}
-  \frac{d\hat \sigma_{ij}}{dp_T} = \frac{p_T}{16\pi}\int d\eta \frac{M^2_{ij}(\hat s,\hat t,\hat u)}{E_X \hat s} \delta\left(\sqrt{\hat s} - p_T\cosh\eta-\sqrt{m_X^2+p^2_T\cosh^2\eta}\right)\,, 
+  \frac{d\hat \sigma_{ij}}{dp_T} = \frac{p_T}{16\pi}\int d\eta \frac{|M_{ij}(\hat s,\hat t,\hat u)|^2}{E_X \hat s} \delta\left(\sqrt{\hat s} - p_T\cosh\eta-\sqrt{m_X^2+p^2_T\cosh^2\eta}\right)\,, 
 \end{equation}
 with $E_x=\sqrt{m_X^2+p^2_T\cosh^2\eta}$ the energy of the non-QCD
 particle $p_X$.  The above equation selects two values of $\eta$, as
@@ -93,12 +136,8 @@ manipulations,
 \label{eq:hadronic-pt-lumi}
   \frac{d\sigma}{dp_T} = \frac{p_T}{8 \pi}\int_{-\eta_M}^{\eta_M}\!d\eta\, \sum_{i,j}  \left[\frac{M^2_{ij}\left(\hat s,-p_T e^{-\eta}\sqrt {\hat s}  ,- p_T e^{\eta}\sqrt{\hat s}\right)}{E_X \hat s^{3/2}}\mathcal{L}_{ij}\left(\frac{\hat s}{s},\mu_F\right) \right]_{\hat s=\left(p_T\cosh\eta+\sqrt{m_X^2+p^2_T\cosh^2\eta}\right)^2}\,,
 \end{equation}
-where $\mathcal{L}_{ij}\left(\tau,\mu_F\right)$ is the partonic luminosity
-\begin{equation}
-  \label{eq:hoppet-lumi}
-  \mathcal{L}_{ij}\left(\tau,\mu_F\right) = \tau \int_\tau^1 \frac{dx}{x}\, f_{i/p}(x,\mu_F)\, f_{j/p}\left(\frac{\tau}{x},\mu_F\right)\,.
-\end{equation}
-
+where again $\mathcal{L}_{ij}$ is the partonic luminosity for the $ij$
+incoming channel as defined in eq.~\eqref{eq:hoppet-lumi}
 \input{manual}
 
 \section{Conclusions}
