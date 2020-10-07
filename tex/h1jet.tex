@@ -166,7 +166,7 @@ spectra.
 This section describes the most important technical details of H1jet, including its installation and usage. 
 
 \subsection{Installation} 
-A tarball with the source files of H1jet can be obtained from ref.\ \cite{bib:h1jet}. Unpacking will result in a main directory \texttt{H1jet} with the following subdirectories: 
+A tarball with the source files of H1jet can be obtained from ref.~\cite{h1jet}. Unpacking will result in a main directory \texttt{H1jet} with the following subdirectories: 
 \begin{description}[labelindent=\parindent, labelwidth =\widthof{\bfseries9999}, leftmargin = !]
 	\item[\texttt{bin} :] contains the executable program \texttt{h1jet} after compilation, as well as the Python 3 helper scripts \texttt{PlotH1jet.py} and \texttt{DressUserAmpCode.py}. 
 	\item[\texttt{src} :] source files. 
@@ -179,9 +179,9 @@ In the main directory, run the configure script:
 \end{lstlisting}
 It will attempt to find a Fortran compiler (\texttt{gfortran} or \texttt{ifort}), as well as the dependencies on your machine. If you wish to specify a specific compiler and/or compiler flags, you can do so with the options \texttt{./configure FC=<compiler>} and \texttt{./configure FFLAGS=<flags>}. H1jet has a number of external dependencies which it must be linked to: 
 \begin{itemize}
-	\item LHAPDF \cite{bib:lhapdf}: Provides the PDF sets for H1jet. 
-	\item \textsc{HOPPET} \cite{bib:hoppet}: For QCD DGLAP evolution of PDFs. 
-	\item \textsc{Chaplin} \cite{bib:chaplin}: For complex harmonic polylogarithms. 
+	\item LHAPDF~\cite{Buckley:2014ana}: Provides the PDF sets for H1jet. 
+	\item \textsc{HOPPET}~\cite{Salam:2008qg}: For QCD DGLAP evolution of PDFs. 
+	\item \textsc{Chaplin}~\cite{Buehler:2011ev}: For complex harmonic polylogarithms. 
 \end{itemize} 
 For the \textsc{Chaplin} library, it may be necessary to explicitly state the path to the library files with:
 \begin{lstlisting}
@@ -312,7 +312,7 @@ The top-partner specific options are:
 	\item[\texttt{--ytp <value>}] Top-partner Yukawa factor, $y_T$. \\ Default: 1. 
 	\item[\texttt{--sth2 <value>}] Top-partner mixing angle, $\sin^2 \theta_T$. \\ Default: 0. 
 \end{description} 
-The top-partner can also be considered in the composite Higgs models as described in \cite{}. There are four different models, $\textbf{M1}_{\textbf{5}}$, $\textbf{M1}_{\textbf{14}}$, $\textbf{M4}_{\textbf{5}}$, and $\textbf{M4}_{\textbf{14}}$, which modifies the Yukawa coupling factors in the following way: 
+The top-partner can also be considered in the composite Higgs models as described in ref.~\cite{Banfi:2019xai}. There are four different models, $\textbf{M1}_{\textbf{5}}$, $\textbf{M1}_{\textbf{14}}$, $\textbf{M4}_{\textbf{5}}$, and $\textbf{M4}_{\textbf{14}}$, which modifies the Yukawa coupling factors in the following way: 
 \begin{eqnarray}
 	\textbf{M1}_{\textbf{5}}: && \hspace{5mm} \begin{array}{l} 
 		y_b \rightarrow y_b c_\varepsilon \\ 
@@ -369,7 +369,7 @@ The composite Higgs top-partner model specific options are:
 \paragraph{Multiple top-partners models}
 To include multiple top-partners in the quark loops, it will be necessary to specify an input file with the masses and Yukawa coupling factors for each top-partner. This can be done with the following option: 
 \begin{description}[labelindent=\parindent, labelwidth =\widthof{\bfseries9999999999999999999999}, leftmargin = !] 
-	\item[\texttt{-i, --i <file>}] Include input file with top-partner masses and Yukawas. See the file \texttt{SM.dat} for an example. 
+	\item[\texttt{-i, --in <file>}] Include input file with top-partner masses and Yukawas. See the file \texttt{SM.dat} for an example. 
 \end{description} 
 The first line of the input file should specify the number of top-partners, e.g.: 
 \begin{lstlisting}
@@ -429,7 +429,7 @@ All of the MSSM specific options are:
 \end{description}
 Note that the top partner mass $m_{T}$ and MSSM stop mass $m_{\tilde{t}_1}$ can not both be set non-zero at the same time. 
 
-The MSSM implementation described here is in the decoupling limit, $m_A \gg m_Z$, of ref.\ \cite{bib:mssm1} and \cite{bib:mssm2}. 
+The MSSM implementation described here is in the decoupling limit, $m_A \gg m_Z$, of ref.~\cite{Gunion:2002zf} and~\cite{Banfi:2018pki}. 
 
 \subsubsection{Relevant Options for Process: \texttt{bbH}}
 If process \texttt{bbH}, i.e.\ 
@@ -509,14 +509,14 @@ A resulting example plot with default settings in H1jet is shown in \autoref{fig
 
 \newpage 
 
-\section{Benchmarking} \label{sec:benchmarking} 
-The various process implementations in H1jet have been compared to those of \textsc{SusHi} \cite{bib:sushi}, and have all been found to be in agreement. \\ 
+\section{Benchmarking} \label{sec:benchmarking}
+The various process implementations in H1jet have been compared to those of \textsc{SusHi}~\cite{Harlander:2012pb,Harlander:2016hcx}, and have all been found to be in agreement. 
 
-The relative ratio between the H1jet result and the \textsc{SusHi} result for the $p_T$ distribution for the CP-odd Higgs are shown in \autoref{fig:cpoddratio}, and is found to be in agreement within the Monte Carlo error of \textsc{SusHi} for a large range of $p_T$ values. Smaller deviations may be due to the different handling of PDF evolution between the two programs. For low $p_T$ values, the larger deviation may be due to numerical issues in the calculation of the harmonic polylogarithms. Overall the agreement with \textsc{SusHi} is within $3 \times 10^{-4}$. \\ 
+The relative ratio between the H1jet result and the \textsc{SusHi} result for the $p_T$ distribution for the CP-odd Higgs are shown in \autoref{fig:cpoddratio}, and is found to be in agreement within the Monte Carlo error of \textsc{SusHi} for a large range of $p_T$ values. Smaller deviations may be due to the different handling of PDF evolution between the two programs. For low $p_T$ values, the larger deviation may be due to numerical issues in the calculation of the harmonic polylogarithms. Overall the agreement with \textsc{SusHi} is within $3 \times 10^{-4}$. 
 
 The low $p_T$ behaviour in \autoref{fig:cpoddratio} is due to possible numerical instability. The H1jet result can be further checked in the $p_{T} \rightarrow 0$ limit, by comparing it to the resummation expression, 
 \begin{equation}
-	\frac{\mathrm{d} \sigma}{\mathrm{d} p_T} \xrightarrow{p_T \rightarrow 0} \sigma_0 \left [ 4 C_A \frac{\alpha_s}{\pi} \frac{1}{p_T} \ln\left ( \frac{m_a}{p_T} \right ) + \mathcal{O} ( \alpha_s^2 ) \right ] \,, \label{eq:resum}
+	\frac{\mathrm{d} \sigma}{\mathrm{d} p_T} \xrightarrow{p_T \rightarrow 0} \sigma_0 \left [ 4 C_A \frac{\alpha_s}{\pi} \frac{1}{p_T} \left(\ln\left ( \frac{m_a}{p_T} \right ) + \mathcal{O} (1)\right) \right ] \,, \label{eq:resum}
 \end{equation}
 where $\sigma_0$ is the total born-level cross-section for $gg \rightarrow h$. In \autoref{fig:cpoddresum}, we show $\frac{p_T}{\sigma_0} \left ( \frac{\mathrm{d} \sigma}{\mathrm{d} p_T} \right )$ with the first term of \autoref{eq:resum} subtracted, as a function of $\ln \frac{p_T}{m_h}$. For $p_T \rightarrow 0$ this goes nicely towards a constant as expected. 
 
@@ -572,7 +572,11 @@ This is a tree-level process due to an effective ALP-gluon coupling,
 \begin{equation}
    \delta \mathcal{L}_a \supset -c_{\tilde{G}}\frac{a}{f_a} G_{\mu\nu}^{a} \tilde{G}^{a \mu\nu} \,. \label{eq:ggacoupling}
 \end{equation}
-The model and the \textsc{FeynRules} \cite{bib:feynrules} model files are described and provided in ref.\ \cite{bib:alp}. We will be using \textsc{FeynCalc} \cite{bib:feyncalc} to evaluate the amplitude from the model, so we will have to convert the \textsc{FeynRules} model to a \textsc{FeynArts} \cite{bib:feynarts} model in Mathematica: 
+The model and the \textsc{FeynRules}~\cite{Alloul:2013bka} model files
+are described and provided in ref.~\cite{Brivio:2017ije}. We will be
+using \textsc{FeynCalc}~\cite{Mertig:1990an,Shtabovenko:2016sxi,Shtabovenko:2020gxv} to evaluate the amplitude from
+the model, so we will have to convert the \textsc{FeynRules} model to
+a \textsc{FeynArts}~\cite{Hahn:2000kx} model in Mathematica:
 \begin{mmaCell}{Code}
 << FeynRules` 
 \end{mmaCell}
@@ -680,8 +684,11 @@ The result from the ALP implementation in H1jet is shown in \autoref{fig:alpresu
 \end{equation}
 The comparison is shown in \ref{fig:alpratio} where we see agreement within $4\times 10^{-6}$. 
 
-The result can also be compared to the same \textsc{FeynRules} model used with \textsc{MadGraph5\_aMC@NLO} \cite{bib:mg5}, where our code takes a second to run, while \textsc{MadGraph} can take up to several hours depending on the number of events, due to  \textsc{MadGraph} running a full Monte Carlo integration. 
-
+The result can also be compared to the same \textsc{FeynRules} model
+used with \textsc{MadGraph5\_aMC@NLO}~\cite{Alwall:2014hca}, where our
+code takes one second to run, while \textsc{MadGraph} can take up to
+several hours depending on the number of events, due to
+\textsc{MadGraph} running a full Monte Carlo integration.
 \begin{figure}[tbh] 
 \centering
 \begin{minipage}{.485\textwidth}
@@ -827,6 +834,12 @@ and implement the bubble as follows:
 %    2 +(2 z-1) \,H\left(0;\frac{z-1}{z}\right) \,.
       2 -(2 z-1) \,H\left(1;\frac{1}{z}\right) \,.
 \end{equation}
+Note that a logarithm of a negative number can be also correctly
+analytically continued by using the default FORTRAN implemementation
+of the complex logarithm. As for CHAPLIN, FORTRAN assumes that a
+negative number has a small positive imaginary part. Therefore, in
+case we have a small negative imaginary part, we can still use the
+relation $\ln z = -\ln(1/z)$, which gives the correct analytic continuation.
 
  
 \paragraph{Triangles.} The triangle integral $C_0(s)$ is defined as
@@ -841,7 +854,9 @@ where $z$ is given in eq.~\eqref{eq:z}. Again, for $s>4m^2$, the argument of the
   s\,C_0(s) = H\left(1,1;\frac{1}{z}\right)\,.
 \end{equation}
 
-\paragraph{Boxes.} The scalar four-point function with three massless (the gluons) and one massive (the Higgs boson) external lines is given by \cite{BAURGLOVER}, 
+\paragraph{Boxes.} The scalar four-point function with three massless
+(the gluons) and one massive (the Higgs boson) external lines is given
+by~\cite{Baur:1989cm},
 \begin{multline}
   \label{eq:box}
 	D(s, t) = \frac{1}{st} \int_{0}^{1} \frac{\mathrm{d}x}{x(1-x)+m^2u/(ts)} \left [- \ln\left ( 1 - i \varepsilon - \frac{m_H^2}{m^2} x (1-x) \right )\right. \\ \left.
@@ -908,12 +923,6 @@ Last, we adopt the implementation
 \end{equation}
 which keeps track of the correct imaginary part.
 
-Note that a logarithm of a negative number can be also correctly
-analytically continued by using the default FORTRAN implemementation
-of the complex logarithm. As for CHAPLIN, FORTRAN assumes that a
-negative number has a small positive imaginary part. Therefore, in
-case we have a small negative imaginary part, we can still use the
-relation $\ln z = -\ln(1/z)$, which gives the correct analytic continuation.
  
 %as well as the property that for harmonic polylogarithms of weight $w = 2$ we have 
 %\begin{align}
@@ -925,11 +934,11 @@ relation $\ln z = -\ln(1/z)$, which gives the correct analytic continuation.
 \bibliography{h1jet.bib}
 
 %\begin{thebibliography}{1}
-%   \bibitem{bib:h1jet} H1jet can be downloaded from: \\ \href{https://h1jet.hepforge.com}{https://h1jet.hepforge.com}
-%   \bibitem{bib:lhapdf} A.\ Buckley, J.\ Ferrando, S.\ Lloyd, K.\ Nordstrom, B.\ Page, M.\ Ruefenacht, M.\ Schoenherr, and G.\ Watt, \textit{LHAPDF6: parton density access in the LHC precision era}, Eur.\ Phys.\ J.\ \textbf{C75} (2015) 3, 132, [\href{https://arxiv.org/abs/1412.7420}{arXiv:1412.7420}]. 
-%   \bibitem{bib:hoppet} G.\ P.\ Salam and J.\ Rojo, \textit{A Higher Order Perturbative Parton Evolution Toolkit (HOPPET)}, Comput.\ Phys.\ Commun.\ \textbf{180} (2009) 120-156, [\href{https://arxiv.org/abs/0804.3755}{arXiv:0804.3755}]. 
-%   \bibitem{bib:chaplin} S.\ Buehler and C.\ Duhr, \textit{CHAPLIN - Complex Harmonic Polylogarithms in Fortran}, Comput.\ Phys.\ Commun.\ \textbf{185} (2014) 2703, [\href{https://arxiv.org/abs/1106.5739}{arXiv:1106.5739}]. 
-%   \bibitem{bib:alp} I.\ Brivio, M.\ B.\ Gavela, L.\ Merlo, K.\ Mimasu, J.\ M.\ No, R.\ del Rey, and V.\ Sanz, \textit{ALPs Effective Field Theory and Collider Signatures}, Eur.\ Phys.\ J.\ \textbf{C77} (2017) 572, [\href{https://arxiv.org/abs/1701.05379}{arXiv:1701.05379}]. The \textsc{FeynRules} model file is available here: \href{https://feynrules.irmp.ucl.ac.be/wiki/ALPsEFT}{https://feynrules.irmp.ucl.ac.be/wiki/ALPsEFT}. 
+%   \bibitem{h1jet} H1jet can be downloaded from: \\ \href{https://h1jet.hepforge.com}{https://h1jet.hepforge.com}
+%   \bibitem{lhapdf} A.\ Buckley, J.\ Ferrando, S.\ Lloyd, K.\ Nordstrom, B.\ Page, M.\ Ruefenacht, M.\ Schoenherr, and G.\ Watt, \textit{LHAPDF6: parton density access in the LHC precision era}, Eur.\ Phys.\ J.\ \textbf{C75} (2015) 3, 132, [\href{https://arxiv.org/abs/1412.7420}{arXiv:1412.7420}]. 
+%   \bibitem{hoppet} G.\ P.\ Salam and J.\ Rojo, \textit{A Higher Order Perturbative Parton Evolution Toolkit (HOPPET)}, Comput.\ Phys.\ Commun.\ \textbf{180} (2009) 120-156, [\href{https://arxiv.org/abs/0804.3755}{arXiv:0804.3755}]. 
+%   \bibitem{chaplin} S.\ Buehler and C.\ Duhr, \textit{CHAPLIN - Complex Harmonic Polylogarithms in Fortran}, Comput.\ Phys.\ Commun.\ \textbf{185} (2014) 2703, [\href{https://arxiv.org/abs/1106.5739}{arXiv:1106.5739}]. 
+%   \bibitem{alp} I.\ Brivio, M.\ B.\ Gavela, L.\ Merlo, K.\ Mimasu, J.\ M.\ No, R.\ del Rey, and V.\ Sanz, \textit{ALPs Effective Field Theory and Collider Signatures}, Eur.\ Phys.\ J.\ \textbf{C77} (2017) 572, [\href{https://arxiv.org/abs/1701.05379}{arXiv:1701.05379}]. The \textsc{FeynRules} model file is available here: \href{https://feynrules.irmp.ucl.ac.be/wiki/ALPsEFT}{https://feynrules.irmp.ucl.ac.be/wiki/ALPsEFT}. 
 %\end{thebibliography}
 
 \end{document}
