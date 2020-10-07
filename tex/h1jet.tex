@@ -35,17 +35,64 @@
 
 \section{The method}
 \label{sec:method}
+Before explaining how the H1jet method works, it is instructive to consider first how to compute the Born cross
+section for producing a colour singlet $X$, e.g.\ a Higgs, of mass
+$m_X$. This will also allow us to set the notation for the rest of the
+paper. We consider the $2\to 1$ process $p_1 p_2 \to X$, where
+$p_1,p_2$ are the two incoming partons and $p_X$ is the momentum of
+the considered colour singlet. From momentum conservation we have of course
+\begin{equation}
+  \label{eq:mom-conservation}
+  \hat s = (p_1+p_2)^2=m_X^2\,.
+\end{equation}
+There can be various partonic subprocesses that can contribute to the
+production of the particle $X$. Let us denote with $M_{ij}$ the
+amplitude for the subprocess $ij\to X$ (e.g. $gg \to H$), with
+$i,j=g,q_f,\bar q_{\bar f}$, where $f,\bar f$ denotes quark (or
+antiquark) flavours. The Born partonic cross section for each
+subprocess is
+\begin{equation}
+  \label{eq:Born-xsct}
+  \hat\sigma_{ij}=\frac{\pi}{m_X^2} |M_{ij}(m_X^2)|^2 \delta\left(\hat s-m_X^2\right)\,.
+\end{equation}
+The corresponding hadronic cross section is given by
+\begin{equation}
+  \label{eq:Born-had}
+  \begin{split}
+  \sigma& =\frac{\pi}{m_X^2}\sum_{i,j} \int_0^1 dx_1\, f_{i/p}(x_1,\mu_F)\int_0^1 dx_2 \, f_{i/p}(x_1,\mu_F)\sum_{i,j}
+ |M_{ij}(m_X^2)|^2 \delta\left(x_1 x_2 s-m_X^2\right)\\
+   & = \frac{\pi}{m_X^4} \sum_{i,j} |M_{ij}(m_X^2)|^2 \mathcal{L}_{ij}\left(\frac{m_X^2}{s},\mu_F\right)
+  \,,
+    \end{split}
+\end{equation}
+where $\mathcal{L}_{ij}\left(\tau,\mu_F\right)$ is the partonic luminosity
+\begin{equation}
+  \label{eq:hoppet-lumi}
+  \mathcal{L}_{ij}\left(\tau,\mu_F\right) = \tau \int_\tau^1 \frac{dx}{x}\, f_{i/p}(x,\mu_F)\, f_{j/p}\left(\frac{\tau}{x},\mu_F\right)\,.
+\end{equation}
+If we are able to obtain the luminosity
+$\mathcal{L}_{ij}\left(m_X^2/s,\mu_F\right)$, we are then
+able to obtain a numerical prediction for the cross section from a
+simple multiplication. There are indeed numerical tools that are able
+to compute, tabulate and interpolate luminosities with incredible efficiency, for instance the
+program HOPPET. Through a simple interface with HOPPET, we are able to
+compute the Born cross-section given the amplitudes $M_{ij}$. This procedure is the
+same adopted in the program JetVHeto, that computes cross sections for
+colour singlets with a veto on additional jets.
 
-We consider here a generic $2\to 2$ partonic process
-$p_1 p_2 \to p_3 X$, where $p_1,p_2,p_3$ are partons, and $p_X$ is a
-generic non-QCD particle $X$, e.g.\ a Higgs, of mass $m_X$. Our
-program computes $d\sigma/dp_T$, where $p_T$ is the transverse
-momentum of $p_X$ with respect to the beam axis, or the transverse
-momentum of the recoiling jet originated by $p_3$. The possible
-partonic subprocesses are $gg\to g X$, $q_f \bar q_{\bar f} \to g X$,
-$q_f g\to q_f X$, $gq_f \to q_fX$, where $f,\bar f$ denotes quark (or
-antiquark) flavours. The corresponding amplitudes $M_{ij}$ (with
-$i,j=g,q_f$) are functions of the three Mandelstam invariants
+A similar strategy can be devised to obtain a fast calculation of
+distribution in the transverse momentum of particle $X$. A non-zero
+transverse momentum for $X$ is obtained via a generic $2\to 2$
+partonic process $p_1 p_2 \to p_3 X$, where $p_1,p_2,p_3$ are massless
+partons, and $p_X$ is again the momentum of the colour singlet $X$. We
+wish to compute $d\sigma/dp_T$, where $p_T$ is the transverse momentum
+of $p_X$ with respect to the beam axis. At Born level only, $p_T$ is
+also the transverse momentum of the recoiling jet originated by
+$p_3$. The partonic subprocesses contributing to $d\sigma/dp_T$ are
+$gg\to g X$, $q_f \bar q_{\bar f} \to g X$, $q_f g\to q_f X$,
+$gq_f \to q_fX$. The corresponding amplitudes $M_{ij}$ (with
+$i,j=g,q_f,\bar q_{\bar f}$) are functions of the three Mandelstam
+invariants
 \begin{equation}
   \label{eq:Mandelstam}
   \begin{split}
@@ -63,21 +110,21 @@ partonic collision, we can parametrise momenta as follows
   p_2&=\frac{\sqrt s}{2}(1,0,0,1)\,,\qquad p_X = (\sqrt{m_X^2+p^2_T\cosh^2\eta},-1,0,-\sinh\eta)\,,
   \end{split}
 \end{equation}
-so that $\eta$ is in fact the rapidity of parton $p_3$ in the
+so that $\eta$ is the rapidity of parton $p_3$ in the
 centre-of-mass frame. The {\em partonic} $p_T$ spectrum for the
 process initiated by partons $ij$ is given by
 \begin{equation}
   \label{eq:partonic-pt}
-  \frac{d\hat \sigma_{ij}}{dp_T} = \frac{p_T}{16\pi}\int d\eta \frac{M^2_{ij}(\hat s,\hat t,\hat u)}{E_X \hat s} \delta\left(\sqrt{\hat s} - p_T\cosh\eta-\sqrt{m_X^2+p^2_T\cosh^2\eta}\right)\,, 
+  \frac{d\hat \sigma_{ij}}{dp_T} = \frac{p_T}{16\pi}\int d\eta \frac{|M_{ij}(\hat s,\hat t,\hat u)|^2}{E_X \hat s} \delta\left(\sqrt{\hat s} - p_T\cosh\eta-\sqrt{m_X^2+p^2_T\cosh^2\eta}\right)\,, 
 \end{equation}
-with $E_x=\sqrt{m_X^2+p^2_T\cosh^2\eta}$ the energy of the non-QCD
+with $E_X=\sqrt{m_X^2+p^2_T\cosh^2\eta}$ the energy of the colour-singlet
 particle $p_X$.  The above equation selects two values of $\eta$, as
 follows
 \begin{equation}
 \label{eq:eta-values}
   \eta = \ln(\hat x_M \pm \sqrt{\hat x_M^2-1})\,,\qquad \hat x_M\equiv\frac{\hat s-m_X^2}{2 p_T \sqrt{\hat s} }\,.
 \end{equation}
-The corresponding hadronic cross section reads, as usual
+The corresponding hadronic cross section reads
 \begin{equation}
 \label{eq:hadronic-pt}
   \frac{d\sigma}{dp_T} = \sum_{i,j} \int_0^1 dx_1\, f_{i/p}(x_1,\mu_F)\int_0^1 dx_2 \, f_{i/p}(x_1,\mu_F) \left[\frac{d\hat \sigma_{ij}}{dp_T} \Theta(s-\hat s) \Theta\left(\hat s-p_T-\sqrt{m_X^2+p^2_T}\right)  \right]_{\hat s=x_1x_2 s}\,.
@@ -93,11 +140,22 @@ manipulations,
 \label{eq:hadronic-pt-lumi}
   \frac{d\sigma}{dp_T} = \frac{p_T}{8 \pi}\int_{-\eta_M}^{\eta_M}\!d\eta\, \sum_{i,j}  \left[\frac{M^2_{ij}\left(\hat s,-p_T e^{-\eta}\sqrt {\hat s}  ,- p_T e^{\eta}\sqrt{\hat s}\right)}{E_X \hat s^{3/2}}\mathcal{L}_{ij}\left(\frac{\hat s}{s},\mu_F\right) \right]_{\hat s=\left(p_T\cosh\eta+\sqrt{m_X^2+p^2_T\cosh^2\eta}\right)^2}\,,
 \end{equation}
-where $\mathcal{L}_{ij}\left(\tau,\mu_F\right)$ is the partonic luminosity
-\begin{equation}
-  \label{eq:hoppet-lumi}
-  \mathcal{L}_{ij}\left(\tau,\mu_F\right) = \tau \int_\tau^1 \frac{dx}{x}\, f_{i/p}(x,\mu_F)\, f_{j/p}\left(\frac{\tau}{x},\mu_F\right)\,.
-\end{equation}
+where again $\mathcal{L}_{ij}$ is the partonic luminosity for the $ij$
+incoming channel as defined in eq.~\eqref{eq:hoppet-lumi}. If we are
+able to obtain the partonic luminosity $\mathcal{L}_{ij}$, say, from
+HOPPET, we can obtain the transverse momentum spectrum with a
+one-dimensional integration, which can be performed extremely fast
+with a gaussian numerical integrator.
+
+Summarising, by interfacing HOPPET with a code that provides
+amplitudes for $2\to 1$ and $2\to 2$ partonic subprocesses producing a
+colour singlet $X$, we are able to perform fast computations of total
+cross sections and transverse momentum spectra of $X$. In the
+following sections we describe our implementation of the method for
+Born processes. Note that if we are able to perform the analytic
+integration over the phase space of final-state partons, the method
+can also be applied to higher order cross sections and differential
+spectra.
 
 \input{manual}
 
@@ -114,20 +172,20 @@ where $\mathcal{L}_{ij}\left(\tau,\mu_F\right)$ is the partonic luminosity
 This appendix contains the details of how H1jet computes one-loop
 scalar integrals that are relevant for Higgs production. These
 integrals depend on one internal mass, which we denot by $m$, and are
-functions of Lorentz invariant quantities, typically Mandelstam
+functions of Mandelstam
 invariants.
 
-These integrals contains logarithms and dilogarithms of complex
-arguments, which require appropriate analytic continuations. We have
-decided to use CHAPLIN, and recast all relevant trascendental
+Scalar integrals can be written in terms of logarithms and dilogarithms of complex
+arguments, which require appropriate analytic continuations. Instead of performing such manipulations ourselves, we have
+decided to use the implementation of the library CHAPLIN, and recast all relevant trascendental
 functions into harmonic polylogarithms $H(\vec a;z)$, with
-$\vec a=(a_1,\dots,a_n)$. For real values of the argument, CHAPLIN
+$\vec a=(a_1,\dots,a_n)$. For real values of the argument of a polylogarithm, CHAPLIN
 uses the $+i\varepsilon$ prescription, i.e.\ $H(\vec a;z)$ with $z$
 real is interpreted as $H(\vec a;z+i\varepsilon)$. Therefore, we need
 to make sure that the imaginary part of the argument of scalar
-integrals is consistent with CHAPLIN.
+integrals is consistent with the convention of CHAPLIN.
 
-The relevant one-loop integrals we need to deal with are of  three kinds, 
+The relevant one-loop integrals we need to deal with are  
 bubbles, triangles and boxes.
 
 \paragraph{Bubbles.} The bubble integral is defined as
@@ -157,11 +215,11 @@ from according to the value of $s$:
 Note that the only case in which one needs a small imaginary part is
 the case $s>4m^2$. This imaginary part has the opposite convention as
 in CHAPLIN. As a solution, we invert the argument of the logarithm and
-use the identity $\ln(1/z)=-\ln(z)$. Practically, analytically
-continuing the square root, we use
+use the identity $\ln z = -\ln(1/z)$. In practice, after an appropriate analytic
+continuation of the square root, we define
 \begin{equation}
   \label{eq:z-implemented}
-  z = \left\{\begin{split}
+  z \equiv \left\{\begin{split}
       \frac{1}{2}\left(1+\sqrt{1-\frac{4m^2}{s}}\right)\,,& \qquad \frac{4m^2}{s}<1\\
       \frac{1}{2}\left(1+i\sqrt{\frac{4m^2}{s}-1}\right)\,,& \qquad \frac{4m^2}{s}>1
     \end{split}
@@ -181,14 +239,14 @@ and implement the bubble as follows:
   \label{eq:triangle}
   C_0(s) = \frac{1}{2s}\ln^2\left[-\frac{z}{1-z}\right]\,,
 \end{equation}
-where $z$ is given in eq.~\eqref{eq:z}. Again, for $s>4m^2$, the argument of the logarithm has the opposite convention as CHAPLIN. Therefore, we invert again the argument of the logarithm, and using the definition of $z$ in eq.~\eqref{eq:z-implemented}, we implement the triangle as follows:
+where $z$ is given in eq.~\eqref{eq:z}. Again, for $s>4m^2$, the argument of the logarithm has the opposite sign with respect to what is implicitly assumed by CHAPLIN. Therefore, we invert again the argument of the logarithm, and using the definition of $z$ in eq.~\eqref{eq:z-implemented}, we implement the triangle as follows:
 \begin{equation}
   \label{eq:triangle-HPL}
 %  s\,C_0(s) = H\left(0,0;\frac{z-1}{z}\right)\,.
   s\,C_0(s) = H\left(1,1;\frac{1}{z}\right)\,.
 \end{equation}
 
-\paragraph{Boxes.} The scalar four-point function with three massless (the gluons) and one massive (the Higgs boson) external lines are given by \cite{BAURGLOVER}, 
+\paragraph{Boxes.} The scalar four-point function with three massless (the gluons) and one massive (the Higgs boson) external lines is given by \cite{BAURGLOVER}, 
 \begin{multline}
   \label{eq:box}
 	D(s, t) = \frac{1}{st} \int_{0}^{1} \frac{\mathrm{d}x}{x(1-x)+m^2u/(ts)} \left [- \ln\left ( 1 - i \varepsilon - \frac{m_H^2}{m^2} x (1-x) \right )\right. \\ \left.
@@ -216,7 +274,7 @@ are real numbers, with $x_+>1$ and $x_-<-1$, and
   \label{eq:y-def}
   y \equiv \frac{1}{2} \left ( 1 + \sqrt{1 - \frac{4(m^2 - i \varepsilon)}{v}} \right ) \,,
 \end{equation}
-is a complex number according to the value of $v$. In particular, keeping track of the imaginary part of $y$ yields
+aquires an imaginary part according to the value of $v$. In particular, keeping track of the imaginary part of $y$ yields
 \begin{equation}
   \label{eq:y-implementation}
 y = \left\{
@@ -227,29 +285,40 @@ y = \left\{
   \end{split}
   \right.
 \end{equation}
-From the above, we see that we do not have any problems for
-$0<v<4 m^2$, and we can use the dilogarithms as they are.
+From the above, we see that w for $0<v<4 m^2$ we can use the
+dilogarithms as given by CHAPLIN.
+%
+For $v<0$, $x_-/(x_--y)$ and $x_+/(y-x_-)$ acquire a small positive
+imaginary part, whereas $x_+/(x_+-y)$ and $x_-/(y-x_+)$ a small
+negative imaginary part. The reverse happens for $v>4m^2$. Therefore,
+we need to perform some formal manipulations to use the harmonic
+polylogarithms provided by CHAPLIN.
 
-For $v<0$, $x_-/(x_--y)$ and $x_+/(y-x_-)$ acquire a small positive imaginary part, whereas $x_+/(x_+-y)$ and $x_-/(y-x_+)$ a small negative imaginary part. The reverse happens for $v>4m^2$.
-
-Whenever the argument $z$ of the dilogarithm is complex, we just use the
+In practice, whenever the argument $z$ of the dilogarithm is complex, we just use the
 definitory relation $\mathrm{Li_2}(z)=H(0,1;z)$. When $z=x+i\varepsilon$, we use $\mathrm{Li_2}(x+i\varepsilon)=H(0,1;x)$, with $H(0,1;x)$ the complex number provided by CHAPLIN. If $z=x-i\varepsilon$, we use the identities
 \begin{equation}
   \begin{split}
 \mathrm{Li}_{2}\left ( x-i\varepsilon \right )&= -H\left(0,1;\frac{1}{x} \right ) - \frac{\pi^2}{6} - H(0,0; -x)  = -H(0,-1;-x) = \\ & 
-= -H\left (0,1, 1-x \right )+ \frac{\pi^2}{6} + H(1;1-x) H(-1,-x)\,,
+= -H\left (0,1, 1-x \right )+ \frac{\pi^2}{6} + H(1;1-x) H(-1;-x)\,,
   \end{split}
 \end{equation}
-and we select the one that gives the smallest imaginary part. This is
-crucial especially when the imaginary part should be zero but it is
+and we select the one that gives the smallest imaginary part. This of course give numerically indistinguishable results when the imaginary part is large, but is of
+crucial importance when the imaginary part should be zero but it is
 not because of the specific numerical methods employed by CHAPLIN.
 
-Last, we adopt the implementation {\bf [needed?]}
+Last, we adopt the implementation 
 \begin{equation}
   \label{eq:log-implemented}
   \ln\left ( 1 - i \varepsilon - \frac{v}{m^2}x_-x_+ \right ) =H\left(1,\frac{v}{m^2}x_-x_+\right)\,,
 \end{equation}
 which keeps track of the correct imaginary part.
+
+Note that a logarithm of a negative number can be also correctly
+analytically continued by using the default FORTRAN implemementation
+of the complex logarithm. As for CHAPLIN, FORTRAN assumes that a
+negative number has a small positive imaginary part. Therefore, in
+case we have a small negative imaginary part, we can still use the
+relation $\ln z = -\ln(1/z)$, which gives the correct analytic continuation.
  
 %as well as the property that for harmonic polylogarithms of weight $w = 2$ we have 
 %\begin{align}
