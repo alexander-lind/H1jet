@@ -92,7 +92,8 @@ program h1jet
   end if
 
   ! Evaluate the running alpha_s for the born-level cross-section 
-  alphas = RunningCoupling(muR)
+  !alphas = RunningCoupling(muR)
+  alphas = 0.111651219_dp
 
   ! Set tau needed for the luminosities 
   tau = (M**2 / roots**2) .with. grid 
@@ -167,7 +168,8 @@ program h1jet
     call luminosities(muF, collider, lumi_gg, lumi_qg, lumi_gq, lumi_qqbar)
 
     ! Update running alpha_s 
-    alphas = RunningCoupling(muR)
+    !alphas = RunningCoupling(muR)
+    alphas = 0.111651219_dp
 
     ! Gaussian integration
     xmom = (roots**2 - M**2) / roots / pt

@@ -14,11 +14,10 @@ module cross_sections
   
   implicit none
 
-  !private
-  
-  real(dp), pointer :: lumi_gg(:), lumi_qg(:), lumi_gq(:), lumi_qqbar(:)
+  ! Only used here and in h1jet.f90 
+  real(dp), pointer, public :: lumi_gg(:), lumi_qg(:), lumi_gq(:), lumi_qqbar(:)
 
-  !public :: h1jet_prefactor, cross_section, dsigma_dptdy  
+  public :: h1jet_prefactor, cross_section, dsigma_dptdy  
 
 contains
 
@@ -55,7 +54,6 @@ contains
         call wae_error('h1jet_prefactor', 'Unrecognised process')
     end select
       
-    !factor = factor * invGev2_to_nb 
     factor = factor * invGev2_to_fb 
 
   end subroutine h1jet_prefactor
@@ -72,7 +70,7 @@ contains
     select case(iproc)
       case (id_H)
         mh2 = M**2
-        res = hboson_cross_section(lumi_gg .atx. tau)!, iloop_array, mass_array, yukawa)
+        res = hboson_cross_section(lumi_gg .atx. tau)
       case (id_Z)
         res = vboson_cross_section(lumi_qqbar .atx. tau)
       case (id_bbH)

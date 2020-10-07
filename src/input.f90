@@ -237,19 +237,19 @@ contains
         end if 
 
         if (log_val_opt('--in') .or. log_val_opt('-i')) then
-
+          ! Include multiple top-partners in quark loops 
           if (mst1 /= zero) then 
             call wae_error('set_masses_and_couplings', 'Simoultaneous top partners &
                     &and stops not allowed') 
           end if
 
-          if (log_val_opt('--in') ) then
-            indev = idev_open_opt('--in',status="old")
+          if (log_val_opt('--in')) then
+            indev = idev_open_opt('--in', status = "old")
           else if (log_val_opt('-i')) then
-            indev = idev_open_opt('-i',status="old")
+            indev = idev_open_opt('-i', status = "old")
           end if
 
-          read(indev,*,iostat=ios) nq_eq, nq
+          read(indev, *, iostat = ios) nq_eq, nq
           if (ios /= 0) then 
             call wae_error('set_masses_and_couplings', 'Incorrect file format, see SM.dat for an example')
           end if 
@@ -264,13 +264,14 @@ contains
 
           ! The inverse of fscale
           if (log_val_opt('--fscale')) then
-            invfscale = one/dble_val_opt('--fscale', zero)
+            invfscale = one / dble_val_opt('--fscale', zero)
           else
             invfscale = zero
             yt = yt * (one - sth2)
             ytp = ytp * sth2
           end if
 
+          ! In case of top partner for composite Higgs models 
           if (invfscale /= zero) then
             model = model_to_id(string_val_opt('--model', 'M1_5'))
             imc1 = dble_val_opt('--imc1', zero)
@@ -339,81 +340,81 @@ contains
   subroutine set_yukawas(model, invfscale, imc1, mtp, yt, ytp, yb)
     use hboson
     use ew_parameters
-    integer, intent(in)  :: model
+    integer, intent(in) :: model
     real(dp), intent(in) :: invfscale, imc1, mtp
-    real(dp), intent(inout) :: yt, ytp,yb
+    real(dp), intent(inout) :: yt, ytp, yb
     !-----------------------------------------  
     real(dp) :: seps, ceps
-    real(dp) :: sthRsq, cthRsq,tanthRsq
-    real(dp) :: sthLsq, cthLsq,tanthLsq
+    real(dp) :: sthRsq, cthRsq, tanthRsq
+    real(dp) :: sthLsq, cthLsq, tanthLsq
 
-    seps = higgs_vev_in*invfscale
-    ceps = sqrt(one-seps**2)
+    seps = higgs_vev_in * invfscale
+    ceps = sqrt(one - seps**2)
 
     select case(model)
 
       case(M1_5)
         sthLsq = sth2            
-        cthLsq = one-sth2 
+        cthLsq = one - sth2 
         if (cpodd) then
           yt = zero
           ytp = zero
         else
-          yt = yt*cthLsq*ceps
-          ytp = ytp*sthLsq*ceps
-          yb = yb*ceps
+          yt = yt * cthLsq * ceps
+          ytp = ytp * sthLsq * ceps
+          yb = yb * ceps
         end if
 
       case(M1_14)
         sthLsq = sth2            
-        cthLsq = one-sth2 
+        cthLsq = one - sth2 
         if (cpodd) then
           yt = zero
           ytp = zero
           yb = zero
         else
-          yt = yt*cthLsq*(two*ceps**2-one)/ceps
-          ytp = ytp*sthLsq*(two*ceps**2-one)/ceps
-          yb = yb*(two*ceps**2-one)/ceps
+          yt = yt * cthLsq * (two * ceps**2 - one) / ceps
+          ytp = ytp * sthLsq * (two * ceps**2 - one) / ceps
+          yb = yb * (two * ceps**2 - one) / ceps
         end if
         
       case(M4_5)
         sthRsq = sth2            
-        cthRsq = one-sth2 
-        tanthLsq = (mtp/mt)**2*sthRsq/cthRsq
-        cthLsq = one/(one+tanthLsq)
-        sthLsq = one-cthLsq 
+        cthRsq = one - sth2 
+        tanthLsq = (mtp / mt)**2 * sthRsq / cthRsq
+        cthLsq = one / (one + tanthLsq)
+        sthLsq = one - cthLsq 
         if (cpodd) then
-          yt = four*ceps*seps/sqrt(two*(one+ceps**2))*&
-                &imc1*sqrt(sthRsq*cthRsq)
+          yt = four * ceps * seps / sqrt(two * (one + ceps**2)) * &
+                & imc1 * sqrt(sthRsq * cthRsq)
           ytp = -yt
           yb = zero
         else
-          yt = yt*ceps*(cthRsq-seps**2/(one+ceps**2)*(cthLsq-cthRsq))
-          ytp = ytp*ceps*(sthRsq-seps**2/(one+ceps**2)*(sthLsq-sthRsq))
-          yb = yb*ceps
+          yt = yt * ceps * (cthRsq - seps**2 / (one + ceps**2) * (cthLsq - cthRsq))
+          ytp = ytp * ceps * (sthRsq - seps**2 / (one + ceps**2) * (sthLsq - sthRsq))
+          yb = yb * ceps
         end if
 
       case(M4_14)
         sthRsq = sth2            
-        cthRsq = one-sth2 
-        tanthLsq = (mtp/mt)**2*sthRsq/cthRsq
-        cthLsq = one/(one+tanthLsq)
-        sthLsq = one-cthLsq 
+        cthRsq = one - sth2 
+        tanthLsq = (mtp / mt)**2 * sthRsq / cthRsq
+        cthLsq = one / (one + tanthLsq)
+        sthLsq = one - cthLsq 
         if (cpodd) then
-          yt = four*seps*(one-two*seps**2)/&
-                &sqrt(two*(four*ceps**4-three*ceps**2+one))*&
-                &imc1*sqrt(sthRsq*cthRsq)
+          yt = four * seps * (one - two * seps**2) / &
+                & sqrt(two * (four * ceps**4 - three * ceps**2 + one)) * &
+                & imc1 * sqrt(sthRsq * cthRsq)
           ytp = -yt
           yb = zero
         else
-          yt = yt*(cthRsq*(two*ceps**2-one)/ceps-&
-                &seps**2*ceps/(four*ceps**4-three*ceps**2+one)*&
-                &(8._dp*ceps**2-three)*(cthLsq-cthRsq))
-          ytp = ytp*(sthRsq*(two*ceps**2-one)/ceps-&
-                &seps**2*ceps/(four*ceps**4-three*ceps**2+one)*&
-                &(8._dp*ceps**2-three)*(sthLsq-sthRsq))
-          yb = yb*(two*ceps**2-one)/ceps
+          yt = yt * (cthRsq * (two * ceps**2 - one) / ceps - &
+                & seps**2 * ceps / (four * ceps**4 - three * ceps**2 + one) * &
+                & (8._dp * ceps**2 - three) * (cthLsq - cthRsq))
+          ytp = ytp * (sthRsq * (two * ceps**2 - one) / ceps - &
+                & seps**2 * ceps / (four * ceps**4 - three * ceps**2 + one) * &
+                & (8._dp * ceps**2 - three) * (sthLsq - sthRsq))
+          yb = yb * (two * ceps**2 - one) / ceps
         end if
 
       case default
@@ -437,7 +438,7 @@ contains
     allocate(mass_array(nq), yukawa_array(nq), iloop_array(nq))
 
     do i = 1, nq
-      read(indev,*,iostat=ios) mass_array(i), kappa, kappa_tilde, iloop_array(i)
+      read(indev, *, iostat = ios) mass_array(i), kappa, kappa_tilde, iloop_array(i)
 
       if (ios /= 0) then 
         call wae_error('read_top_partners', 'Incorrect file format, see SM.dat for an example')
@@ -468,8 +469,8 @@ contains
     !    if (size(iloop_array) == 3) then
     !       iloop_array = (/ iloop_fm_fermion, iloop_fm_fermion, iloop_lm_fermion /)
     !    else
-    !       call wae_error('reset_iloop_array','Expected size of iloop_array is 3, whereas actual &
-    !            &one is', intval=size(iloop_array))
+    !       call wae_error('reset_iloop_array', 'Expected size of iloop_array is 3, whereas actual &
+    !            &one is', intval = size(iloop_array))
     !    end if
 
   end subroutine reset_iloop_array

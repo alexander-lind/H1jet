@@ -671,7 +671,7 @@ contains
     real(dp), intent(in) :: t
     complex(dp) :: res
 
-    res = two*f(t)/t
+    res = two * f(t) / t
 
   end function F12_cpodd
 
@@ -684,64 +684,6 @@ contains
     res = -(t - f(t)) / t**2
 
   end function F0
-
-!=======================================================================================
-! This function is not used anymore to calculate the born level cross-section 
-
-  function born_ampsquare(iloop_in, mass_array, yukawa_array) result(res)
-    integer, intent(in) :: iloop_in(:)
-    real(dp), intent(in) :: mass_array(:), yukawa_array(:)
-    real(dp) :: res  
-
-    real(dp) :: tau
-    integer :: i
-    complex(dp) :: amp
-
-    amp = zero
-
-    do i = 1, size(iloop_in)
-
-      if (mass_array(i) == zero) cycle
-
-      tau = mh2 / (four * mass_array(i)**2)
-   
-      select case(iloop_in(i))
-        case(iloop_fm_fermion) ! fermion
-          if (cpodd) then
-            amp = amp + F12_cpodd(tau) * yukawa_array(i)
-          else
-            amp = amp + F12(tau) * yukawa_array(i) 
-          end if
-       case(iloop_lm_fermion)
-          if (cpodd) then
-            amp = amp + two * yukawa_array(i)
-          else
-            amp = amp + four / three * yukawa_array(i) 
-          end if
-       case(iloop_fm_scalar) ! scalar 
-          if (cpodd) then 
-            call wae_error('born_ampsquare',&
-               &'CP-odd Higgs with scalar loops not yet implemented')
-          end if 
-          amp = amp + half * F0(tau) * yukawa_array(i) 
-       case(iloop_lm_scalar)
-          if (cpodd) then
-            call wae_error('born_ampsquare',&
-               &'CP-odd Higgs with scalar loops not yet implemented')
-          end if 
-          amp = amp + one / three * yukawa_array(i) 
-       case default
-          call wae_error('born_ampsquare','unknown iloop',intval=iloop_in(i))
-      end select
-
-    end do
-
-    ! Divide off the large-mt limit
-    amp = amp / (four / three)
-
-    res = real(amp)**2 + aimag(amp)**2
-
-  end function born_ampsquare
 
 !=======================================================================================
 ! Cross-section for bbH 
