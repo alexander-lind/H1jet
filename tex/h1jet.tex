@@ -36,12 +36,13 @@
 
 \section{The method}
 \label{sec:method}
-Before explaining how the H1jet method works, it is instructive to consider first how to compute the Born cross
-section for producing a colour singlet $X$, e.g.\ a Higgs, of mass
-$m_X$. This will also allow us to set the notation for the rest of the
-paper. We consider the $2\to 1$ process $p_1 p_2 \to X$, where
-$p_1,p_2$ are the two incoming partons and $p_X$ is the momentum of
-the considered colour singlet. From momentum conservation we have of course
+Before explaining how the H1jet method works, it is instructive to
+consider first how to compute the Born cross section for producing a
+colour singlet $X$, e.g.\ a Higgs, of mass $m_X$. This will also allow
+us to set the notation for the rest of the paper. We consider the
+$2\to 1$ process $p_1 p_2 \to X$, where $p_1,p_2$ are the two incoming
+partons and $p_X$ is the momentum of the considered colour
+singlet. From momentum conservation we have of course
 \begin{equation}
   \label{eq:mom-conservation}
   \hat s = (p_1+p_2)^2=m_X^2\,.
@@ -76,11 +77,12 @@ $\mathcal{L}_{ij}\left(m_X^2/s,\mu_F\right)$, we are then able to
 obtain a numerical prediction for the cross section from a simple
 multiplication. There are indeed numerical tools that are able to
 compute, tabulate and interpolate luminosities with incredible
-efficiency, for instance the program HOPPET~. Through a simple
-interface with HOPPET, we are able to compute the Born cross-section
-given the amplitudes $M_{ij}$. This procedure is the same adopted in
-the program JetVHeto, that computes cross sections for colour singlets
-with a veto on additional jets.
+efficiency, for instance the program
+HOPPET~\cite{Salam:2008qg}. Through an interface with HOPPET, we are
+able to compute the Born cross-section given the amplitudes
+$M_{ij}$. This procedure is the same adopted in the program
+JetVHeto~\cite{Banfi:2015pju}, that computes cross sections for colour
+singlets with a veto on additional jets.
 
 A similar strategy can be devised to obtain a fast calculation of
 distribution in the transverse momentum of particle $X$. A non-zero
@@ -764,7 +766,17 @@ Note here that
 \section{Conclusions}
 \label{sec:the-end}
 
-\paragraph{Acknowledgements.}
+
+\paragraph{Acknowledgements.} The idea of having a fast program to
+compute transverse momentum spectra started from the collaboration of
+AB on related topics with G.~Zanderighi, P.~F.~Monni and F.~Caola. AB
+acknowledges many useful discussions with them on the topic. AB also
+wishes to thank B.~Dillon and S.~Kvedarait\.e for contributions to a
+private preliminary version of H1jet. The studentship of AL is
+supported by the Science Technology and Facilities Council (STFC)
+under grant number ST/P000819/1. The work of AB is supported by the
+Science Technology and Facilities Council (STFC) under grants number
+ST/P000819/1 and ??????.
 
 \appendix
 
