@@ -766,6 +766,52 @@ Note here that
 \section{Conclusions}
 \label{sec:the-end}
 
+We have presented a method that allows a fast computation of the
+transverse momentum distribution of a colour singlet. The method is
+implemented in the program H1jet, which returns a transverse momentum
+spectrum for the specified colour singlet in about a second. H1jet is
+similar in spirit to SusHi, but is incomparably faster.
+
+The program implements various processes, including Higgs production
+both in gluon fusion and bottom-antibottom annihilation, as well as
+$Z$ production. Loop-induced Higgs production is implemented not only
+in the SM, but also in attractive BSM scenarions, such as SUSY or
+composite Higgs. For SUSY, we implement a simplified model with two
+stops, as done in ref.~\cite{Banfi:2018pki}. For composite Higgs, we
+implement both the simplified model of ref.~\cite{Banfi:2013yoa}, as
+well as some explicit models with one or more top
+partners~\cite{Banfi:2019xai}. Loop integrals can be computed either
+exactly or in the infinite-mass limit. The latter limit implements in
+practice a dimension-6 contact interaction between the Higgs and the
+gluon field. The program is very flexible, and the only
+process-dependent input is the corresponding amplitude in terms of
+Mandelstam invariants. This can be computed by the user either
+manually, or with the use of automated programs such as
+FeynCalc~\cite{Shtabovenko:2020gxv}, and connected to the program via
+a simple interface. As an example, we have included in the package the
+calculation of the transverse momentum distribution of an ALP starting
+from the general Feynman rules of ref.~\cite{Brivio:2017ije}.
+
+We stress that H1jet is not a replacement for a proper Monte Carlo
+analysis implementing realistic experimental cuts. However, we believe
+it will be unvaluable for BSM experts to assess whether a given model
+gives sizeable deviations from the SM. In fact, due to its fast
+implementation, H1jet makes it possible to perform parameter scans in
+seconds, and to take into account mass effects in specific
+models. Also, due to the fact that H1jet is not based on a Monte Carlo
+integration, one can separate interference between different
+contributions very precisely, something which is very difficult to
+achieve with Monte Carlo event generators.
+
+H1jet can be also useful to precision phenomenology. In fact, it makes
+it possible to easily perform theoretical studies of the transverse
+momentum distribution of a colour singlet, especially those involving
+the matching of resummed calculations with exaxct fixed order. Also,
+although the implemented cross sections are computed at the lowest
+order in QCD, nothing prevents to include higher orders, provided one
+integrated over all coloured particles.
+
+{\bf [We need to close with a word of hope.]}
 
 \paragraph{Acknowledgements.} The idea of having a fast program to
 compute transverse momentum spectra started from the collaboration of
