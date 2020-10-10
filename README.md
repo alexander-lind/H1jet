@@ -38,7 +38,7 @@ To install in a specific location:
 make
 make install 
 ```
-By default the prefix is set to /usr/local. 
+By default the prefix is set to the H1jet main directory. 
 
 ## Use 
 To run H1jet: 
