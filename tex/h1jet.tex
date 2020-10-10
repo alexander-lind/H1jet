@@ -1,10 +1,11 @@
 \documentclass[12pt,a4wide]{article}
 
-\usepackage[dvipsnames]{xcolor}
 \usepackage{a4wide,amsmath,amssymb,graphicx,color}
 
+\usepackage[dvipsnames]{xcolor}
 \usepackage{listings,enumitem,calc,hyperref,caption,mmacells} 
 \lstset{basicstyle=\small\ttfamily,breaklines=true,breakatwhitespace=true}
+\allowdisplaybreaks
 
 \definecolor{comment}{rgb}{0,0.3,0}
 \lstset{language=Fortran}
@@ -21,7 +22,6 @@
 }
 
 \title{H1jet, a fast program to compute transverse momentum distributions}
-
 
 \begin{document}
 
@@ -79,7 +79,7 @@ multiplication. There are indeed numerical tools that are able to
 compute, tabulate and interpolate luminosities with incredible
 efficiency, for instance the program
 HOPPET~\cite{Salam:2008qg}. Through an interface with HOPPET, we are
-able to compute the Born cross-section given the amplitudes
+able to compute the Born cross section given the amplitudes
 $M_{ij}$. This procedure is the same adopted in the program
 JetVHeto~\cite{Banfi:2015pju}, that computes cross sections for colour
 singlets with a veto on additional jets.
@@ -494,11 +494,16 @@ Here is an example snippet of Fortran code which could appear in the \texttt{res
 \end{lstlisting}
 
 \subsubsection{Output}
-H1jet will print out a brief summary of the settings and parameters used, as well as the born-level cross-section $\sigma_0$, followed by the $\mathrm{d}\sigma/\mathrm{d}p_{T}$ and $\sigma(p_{T})$ for each $p_T$ bin. \\ 
+H1jet will print out a brief summary of the settings and parameters used, as well as the Born cross section $\sigma_0$, followed by the $\mathrm{d}\sigma/\mathrm{d}p_{T}$ and $\sigma(p_{T})$ for each $p_T$ bin. \\ 
 
 The helper script \texttt{PlotH1jet.py} facilitates easy and quick plotting of the output from H1jet. The script requires Python 3 installed in order to run. Simply pipe the output from H1jet to the script: 
 \begin{lstlisting}
 	./h1jet [options] | python PlotH1jet.py 
+\end{lstlisting}
+Alternatively, the plotting script can run on an output file from H1jet: 
+\begin{lstlisting}
+	./h1jet [options] -o result.out 
+	python PlotH1jet.py result.out 
 \end{lstlisting}
 A resulting example plot with default settings in H1jet is shown in \autoref{fig:h1jetresult}. 
 
@@ -509,8 +514,6 @@ A resulting example plot with default settings in H1jet is shown in \autoref{fig
   \label{fig:h1jetresult}
 \end{figure}
 
-\newpage 
-
 \section{Benchmarking} \label{sec:benchmarking}
 The various process implementations in H1jet have been compared to those of \textsc{SusHi}~\cite{Harlander:2012pb,Harlander:2016hcx}, and have all been found to be in agreement. 
 
@@ -520,11 +523,9 @@ The low $p_T$ behaviour in \autoref{fig:cpoddratio} is due to possible numerical
 \begin{equation}
 	\frac{\mathrm{d} \sigma}{\mathrm{d} p_T} \xrightarrow{p_T \rightarrow 0} \sigma_0 \left [ 4 C_A \frac{\alpha_s}{\pi} \frac{1}{p_T} \left(\ln\left ( \frac{m_a}{p_T} \right ) + \mathcal{O} (1)\right) \right ] \,, \label{eq:resum}
 \end{equation}
-where $\sigma_0$ is the total born-level cross-section for $gg \rightarrow h$. In \autoref{fig:cpoddresum}, we show $\frac{p_T}{\sigma_0} \left ( \frac{\mathrm{d} \sigma}{\mathrm{d} p_T} \right )$ with the first term of \autoref{eq:resum} subtracted, as a function of $\ln \frac{p_T}{m_h}$. For $p_T \rightarrow 0$ this goes nicely towards a constant as expected. 
+where $\sigma_0$ is the total Born cross section for $gg \rightarrow h$. In \autoref{fig:cpoddresum}, we show $\frac{p_T}{\sigma_0} \left ( \frac{\mathrm{d} \sigma}{\mathrm{d} p_T} \right )$ with the first term of \autoref{eq:resum} subtracted, as a function of $\ln \frac{p_T}{m_h}$. For $p_T \rightarrow 0$ this goes nicely towards a constant as expected. 
 
-\newpage 
-
-\begin{figure}[h!] 
+\begin{figure}[tbh] 
 \centering
 \begin{minipage}{.485\textwidth}
   \centering
@@ -543,7 +544,7 @@ where $\sigma_0$ is the total born-level cross-section for $gg \rightarrow h$. I
 
 The relative ratio between the H1jet and \textsc{SusHi} results for the MSSM are shown in \autoref{fig:mssmratio} and is within $2 \times 10^{-4}$. Again the low $p_T$ behaviour can be checked by comparing to the resummed expression in \autoref{fig:mssmresum}. 
 
-\begin{figure}[h!] 
+\begin{figure}[tbh] 
 \centering
 \begin{minipage}{.485\textwidth}
   \centering
@@ -559,8 +560,6 @@ The relative ratio between the H1jet and \textsc{SusHi} results for the MSSM are
   \label{fig:mssmresum}
 \end{minipage}
 \end{figure}
-
-\newpage 
 
 \section{Adding new processes to H1jet} \label{sec:newprocs} 
 H1jet can be interfaced to use the squared matrix element evaluated from a custom Fortran code. The implementation may be most easily explained with a specific example. Please read this section carefully before attempting to use the interface. 
@@ -708,8 +707,8 @@ several hours depending on the number of events, due to
 \end{minipage}
 \end{figure}
 
-\subsubsection{The Total Cross-Section} \label{sec:alptotxsec} 
-While not strictly necessary for the user interface to run, it is still recommended to add the code for the evaluation of the total cross-section to the custom user interface. This is easy to do as well. We will here show it for the ALP model. 
+\subsubsection{The Total Cross Section} \label{sec:alptotxsec} 
+While not strictly necessary for the user interface to run, it is still recommended to add the code for the evaluation of the total cross section to the custom user interface. This is easy to do as well. We will here show it for the ALP model. 
 
 We start with considering the gluon-fusion ALP production, $gg \rightarrow a$. In Mathematica, create a tree-level $2 \rightarrow 1$ topology, and insert the fields: 
 \begin{mmaCell}{Code}
@@ -749,19 +748,27 @@ ampsquared = Simplify[
       (SUNSimplify[#1, Explicit -> True, SUNNToCACF -> False] & )[
         FeynAmpDenominatorExplicit[(1 / (SUNN^2 - 1)^2) * (amp * ComplexConjugate[amp])]]]]]
 \end{mmaCell}
-For a $2 \rightarrow 1$ process the parton-level cross-section is: 
-\begin{equation}
-	\hat{\sigma} = \frac{\pi}{s} \left \vert \mathcal{M} \right \vert^2 \delta \left ( s - m_a^2 \right ) 
-\end{equation}
+For a $2 \rightarrow 1$ process, the hadronic cross section is given in \autoref{eq:Born-had}, where the partonic luminosity $\mathcal{L}_{gg}$ is handled by H1jet. Hence, we need to multiply our squared matrix element with:
 \begin{mmaCell}{Code}
-xsec = Pi * ampsquared / mA^2 
+xsec = Pi * ampsquared / mA^4 
 \end{mmaCell}
-Finally, write the cross-section as a Fortran code file: 
+Finally, we can write the cross section as a Fortran code file: 
 \begin{mmaCell}{Code}
-Write2["ALP_xsec.f90", xsecgg = xsec, FormatType -> FortranForm, FortranFormatDoublePrecision -> False] 
+Write2["ALP_xsec.f90", xsgg = xsec, FormatType -> FortranForm, FortranFormatDoublePrecision -> False] 
 \end{mmaCell}
-Note here that 
+We again specify the gluon-gluon channel with the \texttt{xsgg = xsec}, but this time indicate with the leading \texttt{xs} that the code is for the Born cross section. Otherwise the same rules apply. Make sure to not save it in the same file as the squared amplitude code. 
 
+The new generated code \texttt{ALP\_xsec.f90} is provided to \texttt{DressUserAmpCode.py} along with the squared amplitude code: 
+\begin{lstlisting}
+	python DressUserAmpCode.py ALP_amp.f90 ALP_xsec.f90 
+\end{lstlisting}
+And H1jet can be recompiled to include the new source code: 
+\begin{lstlisting}
+	./configure USERFILE=/path/to/custom/user_interface.f90 
+	make clean
+	make 
+\end{lstlisting}
+After which H1jet will calculate the Born cross section for the custom process. 
 
 \section{Conclusions}
 \label{sec:the-end}

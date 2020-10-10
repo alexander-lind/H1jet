@@ -17,6 +17,9 @@ def main():
     # Container for amplitude code lines 
     amplitudelines = [] 
 
+    # Container for born cross section lines 
+    xseclines = [] 
+
     # Variables for channels used 
     channel_gg = False 
     channel_gu = False 
@@ -208,6 +211,8 @@ def main():
                 # The generated file is not very large so we can read the entire file at once 
                 lines = [line.rstrip('\n') for line in inputfile]
 
+                xsecline = False
+
                 # Loop over lines 
                 for i in range(len(lines)):
 
@@ -231,367 +236,367 @@ def main():
                     # Parse line 
 
                     # Substitute contributions 
-                    if (re.search('gg = ', modifiedline)): 
+                    if (modifiedline.startswith('gg = ')): 
                         channel_gg = True
                         modifiedline = re.sub('gg = ', '    wtgg = wtgg + ', modifiedline) 
-                    if (re.search('gu = ', modifiedline)): 
+                    if (modifiedline.startswith('gu = ')): 
                         channel_gu = True
                         modifiedline = re.sub('gu = ', '    wtgq = wtgq + ', modifiedline) 
-                    if (re.search('gd = ', modifiedline)): 
+                    if (modifiedline.startswith('gd = ')): 
                         channel_gd = True
                         modifiedline = re.sub('gd = ', '    wtgq = wtgq + ', modifiedline) 
-                    if (re.search('gc = ', modifiedline)): 
+                    if (modifiedline.startswith('gc = ')): 
                         channel_gc = True
                         modifiedline = re.sub('gc = ', '    wtgq = wtgq + ', modifiedline) 
-                    if (re.search('gs = ', modifiedline)): 
+                    if (modifiedline.startswith('gs = ')): 
                         channel_gs = True
                         modifiedline = re.sub('gs = ', '    wtgq = wtgq + ', modifiedline) 
-                    if (re.search('gb = ', modifiedline)): 
+                    if (modifiedline.startswith('gb = ')): 
                         channel_gb = True
                         modifiedline = re.sub('gb = ', '    wtgq = wtgq + ', modifiedline) 
-                    if (re.search('gubar = ', modifiedline)): 
+                    if (modifiedline.startswith('gubar = ')): 
                         channel_gubar = True
                         modifiedline = re.sub('gubar = ', '    wtgq = wtgq + ', modifiedline) 
-                    if (re.search('gdbar = ', modifiedline)): 
+                    if (modifiedline.startswith('gdbar = ')): 
                         channel_gdbar = True
                         modifiedline = re.sub('gdbar = ', '    wtgq = wtgq + ', modifiedline) 
-                    if (re.search('gcbar = ', modifiedline)): 
+                    if (modifiedline.startswith('gcbar = ')): 
                         channel_gcbar = True
                         modifiedline = re.sub('gcbar = ', '    wtgq = wtgq + ', modifiedline) 
-                    if (re.search('gsbar = ', modifiedline)): 
+                    if (modifiedline.startswith('gsbar = ')): 
                         channel_gsbar = True
                         modifiedline = re.sub('gsbar = ', '    wtgq = wtgq + ', modifiedline) 
-                    if (re.search('gbbar = ', modifiedline)): 
+                    if (modifiedline.startswith('gbbar = ')): 
                         channel_gbbar = True
                         modifiedline = re.sub('gbbar = ', '    wtgq = wtgq + ', modifiedline) 
-                    if (re.search('ug = ', modifiedline)): 
+                    if (modifiedline.startswith('ug = ')): 
                         channel_ug = True
                         modifiedline = re.sub('ug = ', '    wtqg = wtqg + ', modifiedline) 
-                    if (re.search('uu = ', modifiedline)): 
+                    if (modifiedline.startswith('uu = ')): 
                         channel_uu = True
                         modifiedline = re.sub('uu = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('ud = ', modifiedline)): 
+                    if (modifiedline.startswith('ud = ')): 
                         channel_ud = True
                         modifiedline = re.sub('ud = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('uc = ', modifiedline)): 
+                    if (modifiedline.startswith('uc = ')): 
                         channel_uc = True
                         modifiedline = re.sub('uc = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('us = ', modifiedline)): 
+                    if (modifiedline.startswith('us = ')): 
                         channel_us = True
                         modifiedline = re.sub('us = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('ub = ', modifiedline)): 
+                    if (modifiedline.startswith('ub = ')): 
                         channel_ub = True
                         modifiedline = re.sub('ub = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('uubar = ', modifiedline)): 
+                    if (modifiedline.startswith('uubar = ')): 
                         channel_uubar = True
                         modifiedline = re.sub('uubar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('udbar = ', modifiedline)): 
+                    if (modifiedline.startswith('udbar = ')): 
                         channel_udbar = True
                         modifiedline = re.sub('udbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('ucbar = ', modifiedline)): 
+                    if (modifiedline.startswith('ucbar = ')): 
                         channel_ucbar = True
                         modifiedline = re.sub('ucbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('usbar = ', modifiedline)): 
+                    if (modifiedline.startswith('usbar = ')): 
                         channel_usbar = True
                         modifiedline = re.sub('usbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('ubbar = ', modifiedline)): 
+                    if (modifiedline.startswith('ubbar = ')): 
                         channel_ubbar = True
                         modifiedline = re.sub('ubbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('dg = ', modifiedline)): 
+                    if (modifiedline.startswith('dg = ')): 
                         channel_dg = True
                         modifiedline = re.sub('dg = ', '    wtqg = wtqg + ', modifiedline) 
-                    if (re.search('du = ', modifiedline)): 
+                    if (modifiedline.startswith('du = ')): 
                         channel_du = True
                         modifiedline = re.sub('du = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('dd = ', modifiedline)): 
+                    if (modifiedline.startswith('dd = ')): 
                         channel_dd = True
                         modifiedline = re.sub('dd = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('dc = ', modifiedline)): 
+                    if (modifiedline.startswith('dc = ')): 
                         channel_dc = True
                         modifiedline = re.sub('dc = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('ds = ', modifiedline)): 
+                    if (modifiedline.startswith('ds = ')): 
                         channel_ds = True
                         modifiedline = re.sub('ds = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('db = ', modifiedline)): 
+                    if (modifiedline.startswith('db = ')): 
                         channel_db = True
                         modifiedline = re.sub('db = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('dubar = ', modifiedline)): 
+                    if (modifiedline.startswith('dubar = ')): 
                         channel_dubar = True
                         modifiedline = re.sub('dubar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('ddbar = ', modifiedline)): 
+                    if (modifiedline.startswith('ddbar = ')): 
                         channel_ddbar = True
                         modifiedline = re.sub('ddbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('dcbar = ', modifiedline)): 
+                    if (modifiedline.startswith('dcbar = ')): 
                         channel_dcbar = True
                         modifiedline = re.sub('dcbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('dsbar = ', modifiedline)): 
+                    if (modifiedline.startswith('dsbar = ')): 
                         channel_dsbar = True
                         modifiedline = re.sub('dsbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('dbbar = ', modifiedline)): 
+                    if (modifiedline.startswith('dbbar = ')): 
                         channel_dbbar = True
                         modifiedline = re.sub('dbbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('cg = ', modifiedline)): 
+                    if (modifiedline.startswith('cg = ')): 
                         channel_cg = True
                         modifiedline = re.sub('cg = ', '    wtqg = wtqg + ', modifiedline) 
-                    if (re.search('cu = ', modifiedline)): 
+                    if (modifiedline.startswith('cu = ')): 
                         channel_cu = True
                         modifiedline = re.sub('cu = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('cd = ', modifiedline)): 
+                    if (modifiedline.startswith('cd = ')): 
                         channel_cd = True
                         modifiedline = re.sub('cd = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('cc = ', modifiedline)): 
+                    if (modifiedline.startswith('cc = ')): 
                         channel_cc = True
                         modifiedline = re.sub('cc = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('cs = ', modifiedline)): 
+                    if (modifiedline.startswith('cs = ')): 
                         channel_cs = True
                         modifiedline = re.sub('cs = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('cb = ', modifiedline)): 
+                    if (modifiedline.startswith('cb = ')): 
                         channel_cb = True
                         modifiedline = re.sub('cb = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('cubar = ', modifiedline)): 
+                    if (modifiedline.startswith('cubar = ')): 
                         channel_cubar = True
                         modifiedline = re.sub('cubar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('cdbar = ', modifiedline)): 
+                    if (modifiedline.startswith('cdbar = ')): 
                         channel_cdbar = True
                         modifiedline = re.sub('cdbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('ccbar = ', modifiedline)): 
+                    if (modifiedline.startswith('ccbar = ')): 
                         channel_ccbar = True
                         modifiedline = re.sub('ccbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('csbar = ', modifiedline)): 
+                    if (modifiedline.startswith('csbar = ')): 
                         channel_csbar = True
                         modifiedline = re.sub('csbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('cbbar = ', modifiedline)): 
+                    if (modifiedline.startswith('cbbar = ')): 
                         channel_cbbar = True
                         modifiedline = re.sub('cbbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('sg = ', modifiedline)): 
+                    if (modifiedline.startswith('sg = ')): 
                         channel_sg = True
                         modifiedline = re.sub('sg = ', '    wtqg = wtqg + ', modifiedline) 
-                    if (re.search('su = ', modifiedline)): 
+                    if (modifiedline.startswith('su = ')): 
                         channel_su = True
                         modifiedline = re.sub('su = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('sd = ', modifiedline)): 
+                    if (modifiedline.startswith('sd = ')): 
                         channel_sd = True
                         modifiedline = re.sub('sd = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('sc = ', modifiedline)): 
+                    if (modifiedline.startswith('sc = ')): 
                         channel_sc = True
                         modifiedline = re.sub('sc = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('ss = ', modifiedline)): 
+                    if (modifiedline.startswith('ss = ')): 
                         channel_ss = True
                         modifiedline = re.sub('ss = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('sb = ', modifiedline)): 
+                    if (modifiedline.startswith('sb = ')): 
                         channel_sb = True
                         modifiedline = re.sub('sb = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('subar = ', modifiedline)): 
+                    if (modifiedline.startswith('subar = ')): 
                         channel_subar = True
                         modifiedline = re.sub('subar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('sdbar = ', modifiedline)): 
+                    if (modifiedline.startswith('sdbar = ')): 
                         channel_sdbar = True
                         modifiedline = re.sub('sdbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('scbar = ', modifiedline)): 
+                    if (modifiedline.startswith('scbar = ')): 
                         channel_scbar = True
                         modifiedline = re.sub('scbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('ssbar = ', modifiedline)): 
+                    if (modifiedline.startswith('ssbar = ')): 
                         channel_ssbar = True
                         modifiedline = re.sub('ssbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('sbbar = ', modifiedline)): 
+                    if (modifiedline.startswith('sbbar = ')): 
                         channel_sbbar = True
                         modifiedline = re.sub('sbbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('bg = ', modifiedline)): 
+                    if (modifiedline.startswith('bg = ')): 
                         channel_bg = True
                         modifiedline = re.sub('bg = ', '    wtqg = wtqg + ', modifiedline) 
-                    if (re.search('bu = ', modifiedline)): 
+                    if (modifiedline.startswith('bu = ')): 
                         channel_bu = True
                         modifiedline = re.sub('bu = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('bd = ', modifiedline)): 
+                    if (modifiedline.startswith('bd = ')): 
                         channel_bd = True
                         modifiedline = re.sub('bd = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('bc = ', modifiedline)): 
+                    if (modifiedline.startswith('bc = ')): 
                         channel_bc = True
                         modifiedline = re.sub('bc = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('bs = ', modifiedline)): 
+                    if (modifiedline.startswith('bs = ')): 
                         channel_bs = True
                         modifiedline = re.sub('bs = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('bb = ', modifiedline)): 
+                    if (modifiedline.startswith('bb = ')): 
                         channel_bb = True
                         modifiedline = re.sub('bb = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('bubar = ', modifiedline)): 
+                    if (modifiedline.startswith('bubar = ')): 
                         channel_bubar = True
                         modifiedline = re.sub('bubar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('bdbar = ', modifiedline)): 
+                    if (modifiedline.startswith('bdbar = ')): 
                         channel_bdbar = True
                         modifiedline = re.sub('bdbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('bcbar = ', modifiedline)): 
+                    if (modifiedline.startswith('bcbar = ')): 
                         channel_bcbar = True
                         modifiedline = re.sub('bcbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('bsbar = ', modifiedline)): 
+                    if (modifiedline.startswith('bsbar = ')): 
                         channel_bsbar = True
                         modifiedline = re.sub('bsbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('bbbar = ', modifiedline)): 
+                    if (modifiedline.startswith('bbbar = ')): 
                         channel_bbbar = True
                         modifiedline = re.sub('bbbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('ubarg = ', modifiedline)): 
+                    if (modifiedline.startswith('ubarg = ')): 
                         channel_ubarg = True
                         modifiedline = re.sub('ubarg = ', '    wtqg = wtqg + ', modifiedline) 
-                    if (re.search('ubaru = ', modifiedline)): 
+                    if (modifiedline.startswith('ubaru = ')): 
                         channel_ubaru = True
                         modifiedline = re.sub('ubaru = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('ubard = ', modifiedline)): 
+                    if (modifiedline.startswith('ubard = ')): 
                         channel_ubard = True
                         modifiedline = re.sub('ubard = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('ubarc = ', modifiedline)): 
+                    if (modifiedline.startswith('ubarc = ')): 
                         channel_ubarc = True
                         modifiedline = re.sub('ubarc = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('ubars = ', modifiedline)): 
+                    if (modifiedline.startswith('ubars = ')): 
                         channel_ubars = True
                         modifiedline = re.sub('ubars = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('ubarb = ', modifiedline)): 
+                    if (modifiedline.startswith('ubarb = ')): 
                         channel_ubarb = True
                         modifiedline = re.sub('ubarb = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('ubarubar = ', modifiedline)): 
+                    if (modifiedline.startswith('ubarubar = ')): 
                         channel_ubarubar = True
                         modifiedline = re.sub('ubarubar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('ubardbar = ', modifiedline)): 
+                    if (modifiedline.startswith('ubardbar = ')): 
                         channel_ubardbar = True
                         modifiedline = re.sub('ubardbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('ubarcbar = ', modifiedline)): 
+                    if (modifiedline.startswith('ubarcbar = ')): 
                         channel_ubarcbar = True
                         modifiedline = re.sub('ubarcbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('ubarsbar = ', modifiedline)): 
+                    if (modifiedline.startswith('ubarsbar = ')): 
                         channel_ubarsbar = True
                         modifiedline = re.sub('ubarsbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('ubarbbar = ', modifiedline)): 
+                    if (modifiedline.startswith('ubarbbar = ')): 
                         channel_ubarbbar = True
                         modifiedline = re.sub('ubarbbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('dbarg = ', modifiedline)): 
+                    if (modifiedline.startswith('dbarg = ')): 
                         channel_dbarg = True
                         modifiedline = re.sub('dbarg = ', '    wtqg = wtqg + ', modifiedline) 
-                    if (re.search('dbaru = ', modifiedline)): 
+                    if (modifiedline.startswith('dbaru = ')): 
                         channel_dbaru = True
                         modifiedline = re.sub('dbaru = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('dbard = ', modifiedline)): 
+                    if (modifiedline.startswith('dbard = ')): 
                         channel_dbard = True
                         modifiedline = re.sub('dbard = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('dbarc = ', modifiedline)): 
+                    if (modifiedline.startswith('dbarc = ')): 
                         channel_dbarc = True
                         modifiedline = re.sub('dbarc = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('dbars = ', modifiedline)): 
+                    if (modifiedline.startswith('dbars = ')): 
                         channel_dbars = True
                         modifiedline = re.sub('dbars = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('dbarb = ', modifiedline)): 
+                    if (modifiedline.startswith('dbarb = ')): 
                         channel_dbarb = True
                         modifiedline = re.sub('dbarb = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('dbarubar = ', modifiedline)): 
+                    if (modifiedline.startswith('dbarubar = ')): 
                         channel_dbarubar = True
                         modifiedline = re.sub('dbarubar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('dbardbar = ', modifiedline)): 
+                    if (modifiedline.startswith('dbardbar = ')): 
                         channel_dbardbar = True
                         modifiedline = re.sub('dbardbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('dbarcbar = ', modifiedline)): 
+                    if (modifiedline.startswith('dbarcbar = ')): 
                         channel_dbarcbar = True
                         modifiedline = re.sub('dbarcbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('dbarsbar = ', modifiedline)): 
+                    if (modifiedline.startswith('dbarsbar = ')): 
                         channel_dbarsbar = True
                         modifiedline = re.sub('dbarsbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('dbarbbar = ', modifiedline)): 
+                    if (modifiedline.startswith('dbarbbar = ')): 
                         channel_dbarbbar = True
                         modifiedline = re.sub('dbarbbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('cbarg = ', modifiedline)): 
+                    if (modifiedline.startswith('cbarg = ')): 
                         channel_cbarg = True
                         modifiedline = re.sub('cbarg = ', '    wtqg = wtqg + ', modifiedline) 
-                    if (re.search('cbaru = ', modifiedline)): 
+                    if (modifiedline.startswith('cbaru = ')): 
                         channel_cbaru = True
                         modifiedline = re.sub('cbaru = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('cbard = ', modifiedline)): 
+                    if (modifiedline.startswith('cbard = ')): 
                         channel_cbard = True
                         modifiedline = re.sub('cbard = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('cbarc = ', modifiedline)): 
+                    if (modifiedline.startswith('cbarc = ')): 
                         channel_cbarc = True
                         modifiedline = re.sub('cbarc = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('cbars = ', modifiedline)): 
+                    if (modifiedline.startswith('cbars = ')): 
                         channel_cbars = True
                         modifiedline = re.sub('cbars = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('cbarb = ', modifiedline)): 
+                    if (modifiedline.startswith('cbarb = ')): 
                         channel_cbarb = True
                         modifiedline = re.sub('cbarb = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('cbarubar = ', modifiedline)): 
+                    if (modifiedline.startswith('cbarubar = ')): 
                         channel_cbarubar = True
                         modifiedline = re.sub('cbarubar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('cbardbar = ', modifiedline)): 
+                    if (modifiedline.startswith('cbardbar = ')): 
                         channel_cbardbar = True
                         modifiedline = re.sub('cbardbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('cbarcbar = ', modifiedline)): 
+                    if (modifiedline.startswith('cbarcbar = ')): 
                         channel_cbarcbar = True
                         modifiedline = re.sub('cbarcbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('cbarsbar = ', modifiedline)): 
+                    if (modifiedline.startswith('cbarsbar = ')): 
                         channel_cbarsbar = True
                         modifiedline = re.sub('cbarsbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('cbarbbar = ', modifiedline)): 
+                    if (modifiedline.startswith('cbarbbar = ')): 
                         channel_cbarbbar = True
                         modifiedline = re.sub('cbarbbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('sbarg = ', modifiedline)): 
+                    if (modifiedline.startswith('sbarg = ')): 
                         channel_sbarg = True
                         modifiedline = re.sub('sbarg = ', '    wtqg = wtqg + ', modifiedline) 
-                    if (re.search('sbaru = ', modifiedline)): 
+                    if (modifiedline.startswith('sbaru = ')): 
                         channel_sbaru = True
                         modifiedline = re.sub('sbaru = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('sbard = ', modifiedline)): 
+                    if (modifiedline.startswith('sbard = ')): 
                         channel_sbard = True
                         modifiedline = re.sub('sbard = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('sbarc = ', modifiedline)): 
+                    if (modifiedline.startswith('sbarc = ')): 
                         channel_sbarc = True
                         modifiedline = re.sub('sbarc = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('sbars = ', modifiedline)): 
+                    if (modifiedline.startswith('sbars = ')): 
                         channel_sbars = True
                         modifiedline = re.sub('sbars = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('sbarb = ', modifiedline)): 
+                    if (modifiedline.startswith('sbarb = ')): 
                         channel_sbarb = True
                         modifiedline = re.sub('sbarb = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('sbarubar = ', modifiedline)): 
+                    if (modifiedline.startswith('sbarubar = ')): 
                         channel_sbarubar = True
                         modifiedline = re.sub('sbarubar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('sbardbar = ', modifiedline)): 
+                    if (modifiedline.startswith('sbardbar = ')): 
                         channel_sbardbar = True
                         modifiedline = re.sub('sbardbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('sbarcbar = ', modifiedline)): 
+                    if (modifiedline.startswith('sbarcbar = ')): 
                         channel_sbarcbar = True
                         modifiedline = re.sub('sbarcbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('sbarsbar = ', modifiedline)): 
+                    if (modifiedline.startswith('sbarsbar = ')): 
                         channel_sbarsbar = True
                         modifiedline = re.sub('sbarsbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('sbarbbar = ', modifiedline)): 
+                    if (modifiedline.startswith('sbarbbar = ')): 
                         channel_sbarbbar = True
                         modifiedline = re.sub('sbarbbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('bbarg = ', modifiedline)): 
+                    if (modifiedline.startswith('bbarg = ')): 
                         channel_bbarg = True
                         modifiedline = re.sub('bbarg = ', '    wtqg = wtqg + ', modifiedline) 
-                    if (re.search('bbaru = ', modifiedline)): 
+                    if (modifiedline.startswith('bbaru = ')): 
                         channel_bbaru = True
                         modifiedline = re.sub('bbaru = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('bbard = ', modifiedline)): 
+                    if (modifiedline.startswith('bbard = ')): 
                         channel_bbard = True
                         modifiedline = re.sub('bbard = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('bbarc = ', modifiedline)): 
+                    if (modifiedline.startswith('bbarc = ')): 
                         channel_bbarc = True
                         modifiedline = re.sub('bbarc = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('bbars = ', modifiedline)): 
+                    if (modifiedline.startswith('bbars = ')): 
                         channel_bbars = True
                         modifiedline = re.sub('bbars = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('bbarb = ', modifiedline)): 
+                    if (modifiedline.startswith('bbarb = ')): 
                         channel_bbarb = True
                         modifiedline = re.sub('bbarb = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('bbarubar = ', modifiedline)): 
+                    if (modifiedline.startswith('bbarubar = ')): 
                         channel_bbarubar = True
                         modifiedline = re.sub('bbarubar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('bbardbar = ', modifiedline)): 
+                    if (modifiedline.startswith('bbardbar = ')): 
                         channel_bbardbar = True
                         modifiedline = re.sub('bbardbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('bbarcbar = ', modifiedline)): 
+                    if (modifiedline.startswith('bbarcbar = ')): 
                         channel_bbarcbar = True
                         modifiedline = re.sub('bbarcbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('bbarsbar = ', modifiedline)): 
+                    if (modifiedline.startswith('bbarsbar = ')): 
                         channel_bbarsbar = True
                         modifiedline = re.sub('bbarsbar = ', '    wtqq = wtqq + ', modifiedline) 
-                    if (re.search('bbarbbar = ', modifiedline)): 
+                    if (modifiedline.startswith('bbarbbar = ')): 
                         channel_bbarbbar = True
                         modifiedline = re.sub('bbarbbar = ', '    wtqq = wtqq + ', modifiedline) 
                     if (modifiedline.startswith('gq = ')): 
@@ -930,11 +935,518 @@ def main():
                         channel_sbarsbar = True
                         channel_bbarbbar = True
                         modifiedline = re.sub('qbarqbar = ', '    wtqq = wtqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsgg = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsgg = ', '    xsgg = xsgg + ', modifiedline) 
+                    if (modifiedline.startswith('xsgu = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsgu = ', '    xsgq = xsgq + ', modifiedline) 
+                    if (modifiedline.startswith('xsgd = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsgd = ', '    xsgq = xsgq + ', modifiedline) 
+                    if (modifiedline.startswith('xsgc = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsgc = ', '    xsgq = xsgq + ', modifiedline) 
+                    if (modifiedline.startswith('xsgs = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsgs = ', '    xsgq = xsgq + ', modifiedline) 
+                    if (modifiedline.startswith('xsgb = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsgb = ', '    xsgq = xsgq + ', modifiedline) 
+                    if (modifiedline.startswith('xsgubar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsgubar = ', '    xsgq = xsgq + ', modifiedline) 
+                    if (modifiedline.startswith('xsgdbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsgdbar = ', '    xsgq = xsgq + ', modifiedline) 
+                    if (modifiedline.startswith('xsgcbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsgcbar = ', '    xsgq = xsgq + ', modifiedline) 
+                    if (modifiedline.startswith('xsgsbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsgsbar = ', '    xsgq = xsgq + ', modifiedline) 
+                    if (modifiedline.startswith('xsgbbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsgbbar = ', '    xsgq = xsgq + ', modifiedline) 
+                    if (modifiedline.startswith('xsug = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsug = ', '    xsqg = xsqg + ', modifiedline) 
+                    if (modifiedline.startswith('xsuu = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsuu = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsud = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsud = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsuc = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsuc = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsus = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsus = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsub = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsub = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsuubar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsuubar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsudbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsudbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsucbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsucbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsusbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsusbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsubbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsubbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsdg = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsdg = ', '    xsqg = xsqg + ', modifiedline) 
+                    if (modifiedline.startswith('xsdu = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsdu = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsdd = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsdd = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsdc = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsdc = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsds = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsds = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsdb = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsdb = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsdubar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsdubar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsddbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsddbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsdcbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsdcbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsdsbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsdsbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsdbbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsdbbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xscg = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xscg = ', '    xsqg = xsqg + ', modifiedline) 
+                    if (modifiedline.startswith('xscu = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xscu = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xscd = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xscd = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xscc = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xscc = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xscs = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xscs = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xscb = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xscb = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xscubar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xscubar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xscdbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xscdbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsccbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsccbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xscsbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xscsbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xscbbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xscbbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xssg = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xssg = ', '    xsqg = xsqg + ', modifiedline) 
+                    if (modifiedline.startswith('xssu = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xssu = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xssd = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xssd = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xssc = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xssc = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsss = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsss = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xssb = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xssb = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xssubar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xssubar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xssdbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xssdbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsscbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsscbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsssbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsssbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xssbbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xssbbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsbg = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsbg = ', '    xsqg = xsqg + ', modifiedline) 
+                    if (modifiedline.startswith('xsbu = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsbu = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsbd = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsbd = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsbc = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsbc = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsbs = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsbs = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsbb = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsbb = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsbubar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsbubar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsbdbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsbdbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsbcbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsbcbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsbsbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsbsbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsbbbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsbbbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsubarg = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsubarg = ', '    xsqg = xsqg + ', modifiedline) 
+                    if (modifiedline.startswith('xsubaru = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsubaru = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsubard = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsubard = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsubarc = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsubarc = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsubars = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsubars = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsubarb = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsubarb = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsubarubar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsubarubar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsubardbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsubardbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsubarcbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsubarcbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsubarsbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsubarsbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsubarbbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsubarbbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsdbarg = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsdbarg = ', '    xsqg = xsqg + ', modifiedline) 
+                    if (modifiedline.startswith('xsdbaru = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsdbaru = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsdbard = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsdbard = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsdbarc = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsdbarc = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsdbars = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsdbars = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsdbarb = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsdbarb = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsdbarubar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsdbarubar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsdbardbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsdbardbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsdbarcbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsdbarcbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsdbarsbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsdbarsbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsdbarbbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsdbarbbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xscbarg = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xscbarg = ', '    xsqg = xsqg + ', modifiedline) 
+                    if (modifiedline.startswith('xscbaru = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xscbaru = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xscbard = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xscbard = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xscbarc = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xscbarc = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xscbars = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xscbars = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xscbarb = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xscbarb = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xscbarubar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xscbarubar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xscbardbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xscbardbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xscbarcbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xscbarcbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xscbarsbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xscbarsbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xscbarbbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xscbarbbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xssbarg = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xssbarg = ', '    xsqg = xsqg + ', modifiedline) 
+                    if (modifiedline.startswith('xssbaru = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xssbaru = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xssbard = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xssbard = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xssbarc = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xssbarc = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xssbars = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xssbars = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xssbarb = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xssbarb = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xssbarubar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xssbarubar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xssbardbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xssbardbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xssbarcbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xssbarcbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xssbarsbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xssbarsbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xssbarbbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xssbarbbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsbbarg = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsbbarg = ', '    xsqg = xsqg + ', modifiedline) 
+                    if (modifiedline.startswith('xsbbaru = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsbbaru = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsbbard = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsbbard = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsbbarc = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsbbarc = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsbbars = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsbbars = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsbbarb = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsbbarb = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsbbarubar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsbbarubar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsbbardbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsbbardbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsbbarcbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsbbarcbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsbbarsbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsbbarsbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsbbarbbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsbbarbbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsgq = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsgq = ', '    xsgq = xsgq + ', modifiedline) 
+                    if (modifiedline.startswith('xsgqbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsgqbar = ', '    xsgq = xsgq + ', modifiedline) 
+                    if (modifiedline.startswith('xsuq = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsuq = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsuqbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsuqbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsdq = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsdq = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsdqbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsdqbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xscq = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xscq = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xscqbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xscqbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xssq = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xssq = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xssqbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xssqbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsbq = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsbq = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsbqbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsbqbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsubarq = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsubarq = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsubarqbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsubarqbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsdbarq = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsdbarq = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsdbarqbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsdbarqbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xscbarq = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xscbarq = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xscbarqbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xscbarqbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xssbarq = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xssbarq = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xssbarqbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xssbarqbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsbbarq = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsbbarq = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsbbarqbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsbbarqbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsqg = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsqg = ', '    xsqg = xsqg + ', modifiedline) 
+                    if (modifiedline.startswith('xsqu = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsqu = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsqd = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsqd = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsqc = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsqc = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsqs = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsqs = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsqb = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsqb = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsqubar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsqubar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsqdbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsqdbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsqcbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsqcbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsqsbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsqsbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsqbbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsqbbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsqq = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsqq = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsqqbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsqqbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsqbarg = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsqbarg = ', '    xsqg = xsqg + ', modifiedline) 
+                    if (modifiedline.startswith('xsqbaru = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsqbaru = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsqbard = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsqbard = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsqbarc = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsqbarc = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsqbars = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsqbars = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsqbarb = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsqbarb = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsqbarubar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsqbarubar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsqbardbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsqbardbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsqbarcbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsqbarcbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsqbarsbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsqbarsbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsqbarbbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsqbarbbar = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsqbarq = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsqbarq = ', '    xsqq = xsqq + ', modifiedline) 
+                    if (modifiedline.startswith('xsqbarqbar = ')): 
+                        xsecline = True
+                        modifiedline = re.sub('xsqbarqbar = ', '    xsqq = xsqq + ', modifiedline) 
 
                     # Check for any unrecognised channel 
                     if (re.search('=', modifiedline)): 
                         channel = modifiedline[:modifiedline.find("=")].strip() 
-                        if (channel != 'wtgg' and channel != 'wtgq' and channel != 'wtqg' and channel != 'wtqq'): 
+                        if (channel != 'wtgg' and channel != 'wtgq' and channel != 'wtqg' and channel != 'wtqq' and channel != 'xsgg' and channel != 'xsgq' and channel != 'xsqg' and channel != 'xsqq'): 
                             print("WARNING: Unrecognised channel found: " + channel) 
                             print("Please only use combinations of g, u, d, c, s, b, ubar, dbar, cbar, sbar, bbar.")
                             print("Examples: gg, gb, bbbar, ubard, ubarubar, ...") 
@@ -1123,7 +1635,13 @@ def main():
 
                     # Add the modified line to the final output 
                     if (len(modifiedline) > 0): 
-                        amplitudelines.append(modifiedline)
+                        if (xsecline == True): 
+                            xseclines.append(modifiedline)
+                        else: 
+                            amplitudelines.append(modifiedline)
+
+                if (xsecline == True): 
+                    user_included = "id_fullImplementation" 
 
     # Containers for additional parameters 
     par_declarations = [] 
@@ -1645,8 +2163,28 @@ def main():
         outputfile.write("\n")
         outputfile.write("    real(dp) :: res\n")
         outputfile.write("    real(dp), intent(in) :: lumigg, lumiqg, lumigq, lumiqqbar \n")
+        outputfile.write("    real(dp) :: xsgg, xsqg, xsgq, xsqq \n")
         outputfile.write("\n")
-        outputfile.write("    res = 0.0_dp \n")
+        outputfile.write("    ! New parameter declarations\n")
+        for i in par_declarations: 
+            outputfile.write(i + "\n")
+        outputfile.write("\n")
+        outputfile.write("    ! New parameter definitions\n")
+        for i in par_definitions: 
+            outputfile.write(i + "\n")
+        outputfile.write("\n")
+        outputfile.write("    ! Initial values\n")
+        outputfile.write("    xsgg = 0.0_dp\n")
+        outputfile.write("    xsqg = 0.0_dp\n")
+        outputfile.write("    xsgq = 0.0_dp\n")
+        outputfile.write("    xsqq = 0.0_dp\n")
+        outputfile.write("\n")
+        outputfile.write("    ! Born cross section\n")
+        for i in xseclines: 
+            outputfile.write(i + "\n")
+        outputfile.write("\n")
+        outputfile.write("    res = xsgg * lumigg + xsqg * lumiqg + xsgq * lumigq + xsqq * lumiqqbar \n")
+        outputfile.write("    res = res * invGev2_to_nb \n")
         outputfile.write("\n")
         outputfile.write("  end function user_cross_section \n")
         outputfile.write("\n")
