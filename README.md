@@ -46,3 +46,9 @@ To run H1jet:
 ./bin/h1jet 
 ```
 H1jet will output a brief summary of the settings used along with the total born-level cross-section <img src="https://render.githubusercontent.com/render/math?math=\sigma_0">, followed by the <img src="https://render.githubusercontent.com/render/math?math=\mathrm{d}\sigma/\mathrm{d}p_{T}"> and <img src="https://render.githubusercontent.com/render/math?math=\sigma(p_{T})"> for each <img src="https://render.githubusercontent.com/render/math?math=p_T"> bin. 
+
+To get a complete list of options for H1jet: 
+```
+./bin/h1jet --help
+```
+See the User's Manual for more details on all options. 
