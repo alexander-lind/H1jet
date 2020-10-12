@@ -34,6 +34,88 @@
 \section{Introduction}
 \label{sec:intro}
 
+After the Higgs discovery in 2012, one of most urgent tasks of the
+Large Hadron Collider (LHC) is the characterisation of the Higgs
+sector, in order to shed light on the exact mechanism for electroweak
+symmetry breaking. In particular, Higgs production data, either in the
+form of signal strenght or cross section measurements, offer powerful
+constraints on Higgs anomalous couplings.
+
+However, it has been pointed out that inclusive Higgs production
+through gluon fusion, the one with the largest rate, is not able to
+discriminate effectively between the Standard Model (SM) and another
+theory giving the same effective coupling between the gluons and the
+Higgs. In fact, top quarks running in loops give an dimension-6
+effective interaction between the incoming gluons and the Higgs, with
+exact top-mass effects giving tiny corrections. Therefore, in many
+theories, the strenght of dimension-6 contact gluon-gluon-Higgs
+interactions can conspire with an anomalous top Higgs Yukawa coupling
+to give exactly the same amplitude for Higgs production as the SM.
+
+There are essentially two ways of solving this problem. One is to put
+a direct constraint on the top Yukawa coupling by the direct
+observation of top quarks in association with the Higgs. The other is
+to break the top loop by looking at Higgs production at large
+transverse momentum, where the Higgs recoils against a hard jet. Both
+are indirect probes of new physics effects. The latter is more
+difficult experimentally, in that it relies on appreciating small
+deviation from the SM in the shape of the Higgs transverse momentum
+distribution, in a region where the phase space closes. It
+nevertheless can give a direct access to new physics coupling gluons
+to Higgs through loops.
+
+Higgs sector aside, production of colour singlets at high transverse
+momentum is commonly used as a probe of new physics. Another relevant
+example is the production of monojets, which can either recoiling
+either against dark matter, or against a SM $Z$ boson decaying into
+neutrinos.
+
+Theoretical predictions for the transverse momentum distribution of a
+colour singlet, both in the SM and beyond, can be currently performed
+with Monte Carlo event generators. These codes, although very general,
+have the drawback of being quite slow. Also, accessing interference
+terms between new physics and the SM, which carry information on the
+strenght of new interactions, are difficult to extract from Monte
+Carlo integrators because they are not positive definite. The aim of
+this paper is to describe a method to obtain the transverse momentum
+spectrum of a colour singlet in a second or less, and its concrete
+implementation in the program H1jet. This program makes it possible to
+predict the effects of several models in a short amount of time, and
+then to devise a more refined cut-based search strategy only for the
+one showing the largest deviations with respect to the SM.
+
+More precisely, H1jet predicts the transverse momentum distribution of
+a colour singlet fully integrated over rapidity, and completely
+inclusive with respect to all coloured particles, i.e.\ the recoiling
+jets. Such approximation is not to unrealistic, because the higher the
+transverse momentum, the more the colour singlet is central, and the
+more its decay products will be likely to pass the detector acceptance
+cuts.
+
+The program is based on basic analytic manipulations on the expression
+for the transverse momentum distribution. These make it possible to
+write the spectrum as a one dimensional integral, whose integrand is
+the product of a parton luminosity, which we extract from an external
+program, and an amplitude squared. The relevant amplitudes can be
+either hard coded, or computed automatically and embedded in the program
+via a simple user interface.
+
+The paper is organised as follows. In section~\ref{sec:method} we
+briefly describe the method underlying H1jet. In
+section~\ref{sec:manual} we describe in detail how H1jet works in
+practice. In particular, we show how it can be installed and run, and
+present the features currently implemented. In
+section~\ref{sec:benchmarking} we present a detailed comparison with
+the existing program SusHi for Higgs production both in the SM and
+beyond. In section~\ref{sec:newprocs} we explain how a user can
+implement a model of new physics inside H1jet. We chose ALP
+production, giving rise to a monojet. We then go all the way from the
+generation of the Feynman rules with Feynrules, to the calculation of
+the amplitude with Feyncalc and its subsequent interface with H1jet to
+obtain the ALP transverse momentum spectrum. Last,
+section~\ref{sec:the-end} presents our conclusions.
+
+
 \section{The method}
 \label{sec:method}
 Before explaining how the H1jet method works, it is instructive to
@@ -163,7 +245,8 @@ spectra.
 
 %\input{manual}
 
-\section{User's manual} \label{sec:manual} 
+\section{User's manual}
+\label{sec:manual} 
 
 This section describes the most important technical details of H1jet, including its installation and usage. 
 
@@ -514,7 +597,8 @@ A resulting example plot with default settings in H1jet is shown in \autoref{fig
   \label{fig:h1jetresult}
 \end{figure}
 
-\section{Benchmarking} \label{sec:benchmarking}
+\section{Benchmarking}
+\label{sec:benchmarking}
 The various process implementations in H1jet have been compared to those of \textsc{SusHi}~\cite{Harlander:2012pb,Harlander:2016hcx}, and have all been found to be in agreement. 
 
 The relative ratio between the H1jet result and the \textsc{SusHi} result for the $p_T$ distribution for the CP-odd Higgs are shown in \autoref{fig:cpoddratio}, and is found to be in agreement within the Monte Carlo error of \textsc{SusHi} for a large range of $p_T$ values. Smaller deviations may be due to the different handling of PDF evolution between the two programs. For low $p_T$ values, the larger deviation may be due to numerical issues in the calculation of the harmonic polylogarithms. Overall the agreement with \textsc{SusHi} is within $3 \times 10^{-4}$. 
@@ -561,7 +645,8 @@ The relative ratio between the H1jet and \textsc{SusHi} results for the MSSM are
 \end{minipage}
 \end{figure}
 
-\section{Adding new processes to H1jet} \label{sec:newprocs} 
+\section{Adding new processes to H1jet}
+\label{sec:newprocs} 
 H1jet can be interfaced to use the squared matrix element evaluated from a custom Fortran code. The implementation may be most easily explained with a specific example. Please read this section carefully before attempting to use the interface. 
 
 \subsection{Example: Axion-Like-Particle (ALP)}
@@ -797,7 +882,9 @@ manually, or with the use of automated programs such as
 FeynCalc~\cite{Shtabovenko:2020gxv}, and connected to the program via
 a simple interface. As an example, we have included in the package the
 calculation of the transverse momentum distribution of an ALP starting
-from the general Feynman rules of ref.~\cite{Brivio:2017ije}.
+from the general Feynman rules of ref.~\cite{Brivio:2017ije}. Note
+that the possibility of automatically implementing a new model inside
+the program is a feature that is not available in SusHi.
 
 We stress that H1jet is not a replacement for a proper Monte Carlo
 analysis implementing realistic experimental cuts. However, we believe
