@@ -1,6 +1,8 @@
-\documentclass[12pt,a4wide]{article}
+\documentclass[12pt]{article}
 
-\usepackage{a4wide,amsmath,amssymb,graphicx,color}
+\usepackage{amsmath,amssymb,graphicx,color}
+
+\usepackage{a4wide}
 
 \usepackage[dvipsnames]{xcolor}
 \usepackage{listings,enumitem,calc,hyperref,caption,mmacells} 
@@ -21,7 +23,7 @@
   keepspaces=true
 }
 
-\title{H1jet, a fast program to compute transverse momentum distributions}
+\title{\textsc{H1jet}, a fast program to compute transverse momentum distributions}
 
 \begin{document}
 
@@ -34,12 +36,14 @@
 \section{Introduction}
 \label{sec:intro}
 
-After the Higgs discovery in 2012, one of most urgent tasks of the
-Large Hadron Collider (LHC) is the characterisation of the Higgs
+After the discovery of the Higgs boson in
+2012\cite{Aad:2012tfa,Chatrchyan:2012ufa}, one of most urgent tasks of
+the Large Hadron Collider (LHC) is the characterisation of the Higgs
 sector, in order to shed light on the exact mechanism for electroweak
 symmetry breaking. In particular, Higgs production data, either in the
-form of signal strenght or cross section measurements, offer powerful
-constraints on Higgs anomalous couplings.
+form of signal strengths~\cite{Aad:2019mbh,Sirunyan:2018koj} or cross
+section measurements~\cite{Aaboud:2018ezd,Sirunyan:2018sgc}, offer
+powerful constraints on Higgs anomalous couplings.
 
 However, it has been pointed out that inclusive Higgs production
 through gluon fusion, the one with the largest rate, is not able to
@@ -50,41 +54,46 @@ effective interaction between the incoming gluons and the Higgs, with
 exact top-mass effects giving tiny corrections. Therefore, in many
 theories, the strenght of dimension-6 contact gluon-gluon-Higgs
 interactions can conspire with an anomalous top Higgs Yukawa coupling
-to give exactly the same amplitude for Higgs production as the SM.
+to give exactly the same amplitude for Higgs production as the
+SM~\cite{Azatov:2013xha,Grojean:2013nya,Banfi:2013yoa}.
 
 There are essentially two ways of solving this problem. One is to put
 a direct constraint on the top Yukawa coupling by the direct
-observation of top quarks in association with the Higgs. The other is
+observation of top quarks in association with the
+Higgs\cite{Aad:2020ivc,Sirunyan:2020sum,Maltoni:2016yxb}. The other is
 to break the top loop by looking at Higgs production at large
-transverse momentum, where the Higgs recoils against a hard jet. Both
-are indirect probes of new physics effects. The latter is more
-difficult experimentally, in that it relies on appreciating small
-deviation from the SM in the shape of the Higgs transverse momentum
-distribution, in a region where the phase space closes. It
-nevertheless can give a direct access to new physics coupling gluons
-to Higgs through loops.
+transverse momentum, where the Higgs recoils against a hard
+jet~\cite{Azatov:2013xha,Grojean:2013nya,Banfi:2013yoa}. Both are
+indirect probes of new physics effects. The latter is more difficult
+experimentally, in that it relies on appreciating small deviation from
+the SM in the shape of the Higgs transverse momentum distribution, in
+a region where the phase space closes. It nevertheless can give a
+direct access to new physics coupling gluons to Higgs through loops.
 
 Higgs sector aside, production of colour singlets at high transverse
-momentum is commonly used as a probe of new physics. Another relevant
-example is the production of monojets, which can either recoiling
-either against dark matter, or against a SM $Z$ boson decaying into
-neutrinos.
+momentum is commonly used as a probe of new physics. A relevant
+example is the production of monojets, which can recoil
+either against dark matter, or against a SM particle decaying into
+invisible (see e.g.\ refs.~\cite{Sirunyan:2017hci,Aaboud:2019yqu}).
 
 Theoretical predictions for the transverse momentum distribution of a
 colour singlet, both in the SM and beyond, can be currently performed
-with Monte Carlo event generators. These codes, although very general,
-have the drawback of being quite slow. Also, accessing interference
-terms between new physics and the SM, which carry information on the
-strenght of new interactions, are difficult to extract from Monte
-Carlo integrators because they are not positive definite. The aim of
-this paper is to describe a method to obtain the transverse momentum
-spectrum of a colour singlet in a second or less, and its concrete
-implementation in the program H1jet. This program makes it possible to
-predict the effects of several models in a short amount of time, and
-then to devise a more refined cut-based search strategy only for the
-one showing the largest deviations with respect to the SM.
+with Monte Carlo event generators, such as
+\textsc{MadGraph5\_aMC@NLO}~\cite{Alwall:2014hca} or
+\textsc{SusHi}\cite{Harlander:2012pb,Harlander:2016hcx}. These codes,
+although general, have the drawback of being quite slow. Also,
+interference terms between new physics and the SM, which
+carry information on the strength of new interactions, are difficult
+to extract from Monte Carlo integrators because they are not positive
+definite. The aim of this paper is to describe a method to obtain the
+transverse momentum spectrum of a colour singlet in a second or less,
+and its concrete implementation in the program \textsc{H1jet}. This program
+makes it possible to predict the effects of several models in a short
+amount of time. This in turns open the way to devising more refined
+cut-based search strategies only for the models showing the largest
+deviations with respect to the SM.
 
-More precisely, H1jet predicts the transverse momentum distribution of
+More precisely, \textsc{H1jet} predicts the transverse momentum distribution of
 a colour singlet fully integrated over rapidity, and completely
 inclusive with respect to all coloured particles, i.e.\ the recoiling
 jets. Such approximation is not to unrealistic, because the higher the
@@ -101,30 +110,30 @@ either hard coded, or computed automatically and embedded in the program
 via a simple user interface.
 
 The paper is organised as follows. In section~\ref{sec:method} we
-briefly describe the method underlying H1jet. In
-section~\ref{sec:manual} we describe in detail how H1jet works in
-practice. In particular, we show how it can be installed and run, and
-present the features currently implemented. In
+briefly describe the method underlying \textsc{H1jet}. In
+section~\ref{sec:manual} we describe in detail how \textsc{H1jet}
+works in practice. In particular, we show how it can be installed and
+run, and present the features currently implemented. In
 section~\ref{sec:benchmarking} we present a detailed comparison with
-the existing program SusHi for Higgs production both in the SM and
-beyond. In section~\ref{sec:newprocs} we explain how a user can
-implement a model of new physics inside H1jet. We chose ALP
+the existing program \textsc{SusHi} for Higgs production both in the
+SM and beyond. In section~\ref{sec:newprocs} we explain how a user can
+implement a model of new physics inside \textsc{H1jet}. We chose ALP
 production, giving rise to a monojet. We then go all the way from the
-generation of the Feynman rules with Feynrules, to the calculation of
-the amplitude with Feyncalc and its subsequent interface with H1jet to
-obtain the ALP transverse momentum spectrum. Last,
-section~\ref{sec:the-end} presents our conclusions.
+generation of the Feynman rules with \textsc{FeynRules}, to the
+calculation of the amplitude with \textsc{FeynCalc} and its subsequent
+interface with \textsc{H1jet} to obtain the ALP transverse momentum
+spectrum. Last, section~\ref{sec:the-end} presents our conclusions.
 
 
 \section{The method}
 \label{sec:method}
-Before explaining how the H1jet method works, it is instructive to
+Before explaining how the \textsc{H1jet} method works, it is instructive to
 consider first how to compute the Born cross section for producing a
 colour singlet $X$, e.g.\ a Higgs, of mass $m_X$. This will also allow
 us to set the notation for the rest of the paper. We consider the
 $2\to 1$ process $p_1 p_2 \to X$, where $p_1,p_2$ are the two incoming
 partons and $p_X$ is the momentum of the considered colour
-singlet. From momentum conservation we have of course
+singlet. From momentum conservation we have 
 \begin{equation}
   \label{eq:mom-conservation}
   \hat s = (p_1+p_2)^2=m_X^2\,.
@@ -132,8 +141,8 @@ singlet. From momentum conservation we have of course
 There can be various partonic subprocesses that can contribute to the
 production of the particle $X$. Let us denote with $M_{ij}$ the
 amplitude for the subprocess $ij\to X$ (e.g. $gg \to H$), with
-$i,j=g,q_f,\bar q_{\bar f}$, where $f,\bar f$ denotes quark (or
-antiquark) flavours. The Born partonic cross section for each
+$i,j=g,q_f,\bar q_{\bar f}$, where $f,\bar f$ denotes quark or
+antiquark flavours. The Born partonic cross section for each
 subprocess is
 \begin{equation}
   \label{eq:Born-xsct}
@@ -156,14 +165,14 @@ where $\mathcal{L}_{ij}\left(\tau,\mu_F\right)$ is the partonic luminosity
 \end{equation}
 If we are able to obtain the luminosity
 $\mathcal{L}_{ij}\left(m_X^2/s,\mu_F\right)$, we are then able to
-obtain a numerical prediction for the cross section from a simple
+obtain a numerical prediction for the cross section through a simple
 multiplication. There are indeed numerical tools that are able to
 compute, tabulate and interpolate luminosities with incredible
 efficiency, for instance the program
-HOPPET~\cite{Salam:2008qg}. Through an interface with HOPPET, we are
+\textsc{HOPPET}~\cite{Salam:2008qg}. Through an interface with \textsc{HOPPET}, we are
 able to compute the Born cross section given the amplitudes
 $M_{ij}$. This procedure is the same adopted in the program
-JetVHeto~\cite{Banfi:2015pju}, that computes cross sections for colour
+\textsc{JetVHeto}~\cite{Banfi:2015pju}, that computes cross sections for colour
 singlets with a veto on additional jets.
 
 A similar strategy can be devised to obtain a fast calculation of
@@ -196,7 +205,7 @@ partonic collision, we can parametrise momenta as follows
   p_2&=\frac{\sqrt s}{2}(1,0,0,1)\,,\qquad p_X = (\sqrt{m_X^2+p^2_T\cosh^2\eta},-1,0,-\sinh\eta)\,,
   \end{split}
 \end{equation}
-so that $\eta$ is the rapidity of parton $p_3$ in the
+where $\eta$ is the rapidity of parton $p_3$ in the
 centre-of-mass frame. The {\em partonic} $p_T$ spectrum for the
 process initiated by partons $ij$ is given by
 \begin{equation}
@@ -208,67 +217,74 @@ particle $p_X$.  The above equation selects two values of $\eta$, as
 follows
 \begin{equation}
 \label{eq:eta-values}
-  \eta = \ln(\hat x_M \pm \sqrt{\hat x_M^2-1})\,,\qquad \hat x_M\equiv\frac{\hat s-m_X^2}{2 p_T \sqrt{\hat s} }\,.
+  \eta = \ln\left(\hat x_M \pm \sqrt{\hat x_M^2-1}\right)\,,\qquad \hat x_M\equiv\frac{\hat s-m_X^2}{2 p_T \sqrt{\hat s} }\,.
 \end{equation}
 The corresponding hadronic cross section reads
 \begin{equation}
 \label{eq:hadronic-pt}
   \frac{d\sigma}{dp_T} = \sum_{i,j} \int_0^1 dx_1\, f_{i/p}(x_1,\mu_F)\int_0^1 dx_2 \, f_{i/p}(x_1,\mu_F) \left[\frac{d\hat \sigma_{ij}}{dp_T} \Theta(s-\hat s) \Theta\left(\hat s-p_T-\sqrt{m_X^2+p^2_T}\right)  \right]_{\hat s=x_1x_2 s}\,.
 \end{equation}
-Since eq.~\eqref{eq:eta-values} give two monotonic functions of $\hat s$ for $s>p_T+\sqrt{m_X^2+p^2_T}$, varying $\hat s$ in the allowed range spans all possible values of $\eta$ in the range $-\eta_M<\eta<\eta_M$ with
+Since eq.~\eqref{eq:eta-values} gives two monotonic functions of $\hat s$ for $s>p_T+\sqrt{m_X^2+p^2_T}$, varying $\hat s$ in the allowed range spans all possible values of $\eta$ in the range $-\eta_M<\eta<\eta_M$ with
 \begin{equation}
 \label{eq:eta-range}
 \eta_M \equiv \ln(x_M + \sqrt{x_M^2-1})\,,\qquad  x_M\equiv\frac{s-m_X^2}{2 p_T \sqrt{s} }\,.
 \end{equation}
-This allows us to integrate over $\eta$ last, and obtain, after some
+This allows us to perform the  $\eta$ integration last, and obtain, after some
 manipulations,
 \begin{equation}
 \label{eq:hadronic-pt-lumi}
-  \frac{d\sigma}{dp_T} = \frac{p_T}{8 \pi}\int_{-\eta_M}^{\eta_M}\!d\eta\, \sum_{i,j}  \left[\frac{M^2_{ij}\left(\hat s,-p_T e^{-\eta}\sqrt {\hat s}  ,- p_T e^{\eta}\sqrt{\hat s}\right)}{E_X \hat s^{3/2}}\mathcal{L}_{ij}\left(\frac{\hat s}{s},\mu_F\right) \right]_{\hat s=\left(p_T\cosh\eta+\sqrt{m_X^2+p^2_T\cosh^2\eta}\right)^2}\,,
+  \frac{d\sigma}{dp_T} = \frac{p_T}{8 \pi}\int_{-\eta_M}^{\eta_M}\!d\eta\, \sum_{i,j}  \left[\frac{M^2_{ij}\left(\hat s,\hat t=-p_T e^{-\eta}\sqrt {\hat s}  ,\hat u =- p_T e^{\eta}\sqrt{\hat s}\right)}{E_X \hat s^{3/2}}\mathcal{L}_{ij}\left(\frac{\hat s}{s},\mu_F\right) \right]_{\hat s=\left(p_T\cosh\eta+\sqrt{m_X^2+p^2_T\cosh^2\eta}\right)^2}\,,
 \end{equation}
 where again $\mathcal{L}_{ij}$ is the partonic luminosity for the $ij$
 incoming channel as defined in eq.~\eqref{eq:hoppet-lumi}. If we are
 able to obtain the partonic luminosity $\mathcal{L}_{ij}$, say, from
-HOPPET, we can obtain the transverse momentum spectrum with a
+\textsc{HOPPET}, we can obtain the transverse momentum spectrum with a
 one-dimensional integration, which can be performed extremely fast
 with a gaussian numerical integrator.
 
-Summarising, by interfacing HOPPET with a code that provides
+Summarising, by interfacing \textsc{HOPPET} with a code that provides
 amplitudes for $2\to 1$ and $2\to 2$ partonic subprocesses producing a
 colour singlet $X$, we are able to perform fast computations of total
-cross sections and transverse momentum spectra of $X$. In the
+cross sections and transverse momentum spectra for $X$. In the
 following sections we describe our implementation of the method for
 Born processes. Note that if we are able to perform the analytic
 integration over the phase space of final-state partons, the method
-can also be applied to higher order cross sections and differential
+can also be applied to higher-order cross sections and differential
 spectra.
-
-%\input{manual}
 
 \section{User's manual}
 \label{sec:manual} 
 
-This section describes the most important technical details of H1jet, including its installation and usage. 
+This section describes the most important technical details of
+\textsc{H1jet}, including its installation and usage.
 
 \subsection{Installation} 
-A tarball with the source files of H1jet can be obtained from ref.~\cite{h1jet}. Unpacking will result in a main directory \texttt{H1jet} with the following subdirectories: 
+A tarball with the source files of \textsc{H1jet} can be obtained from
+ref.~\cite{h1jet}. Unpacking will result in a main directory
+\texttt{\textsc{H1jet}} with the following subdirectories:
 \begin{description}[labelindent=\parindent, labelwidth =\widthof{\bfseries9999}, leftmargin = !]
-	\item[\texttt{bin} :] contains the executable program \texttt{h1jet} after compilation, as well as the Python 3 helper scripts \texttt{PlotH1jet.py} and \texttt{DressUserAmpCode.py}. 
+	\item[\texttt{bin} :] contains the executable program \texttt{h1jet} after compilation, as well as the Python 3 helper scripts \texttt{Plot\textsc{H1jet}.py} and \texttt{DressUserAmpCode.py}. 
 	\item[\texttt{src} :] source files. 
 \end{description}
 The \texttt{README.md} file contains information on installation and usage. \\
 
-In the main directory, run the configure script: 
+\noindent
+In the main directory, the user needs to run the configure script: 
 \begin{lstlisting}
 	./configure [options] 
 \end{lstlisting}
-It will attempt to find a Fortran compiler (\texttt{gfortran} or \texttt{ifort}), as well as the dependencies on your machine. If you wish to specify a specific compiler and/or compiler flags, you can do so with the options \texttt{./configure FC=<compiler>} and \texttt{./configure FFLAGS=<flags>}. H1jet has a number of external dependencies which it must be linked to: 
+It will attempt to find a Fortran compiler (\texttt{gfortran} or
+\texttt{ifort}), as well as the dependencies on the user's machine. A
+specific compiler and/or compiler flags can be selected with the
+options \texttt{./configure FC=<compiler>} and \texttt{./configure
+  FFLAGS=<flags>}. \textsc{H1jet} has a number of external
+dependencies which it must be linked to:
 \begin{itemize}
-	\item LHAPDF~\cite{Buckley:2014ana}: Provides the PDF sets for H1jet. 
+	\item \textsc{LHAPDF}~\cite{Buckley:2014ana}: Provides the PDF sets for \textsc{H1jet}. 
 	\item \textsc{HOPPET}~\cite{Salam:2008qg}: For QCD DGLAP evolution of PDFs. 
-	\item \textsc{Chaplin}~\cite{Buehler:2011ev}: For complex harmonic polylogarithms. 
+	\item \textsc{CHAPLIN}~\cite{Buehler:2011ev}: For complex harmonic polylogarithms. 
 \end{itemize} 
-For the \textsc{Chaplin} library, it may be necessary to explicitly state the path to the library files with:
+For the \textsc{CHAPLIN} library, it may be necessary to explicitly state the path to the library files with:
 \begin{lstlisting}
 	./configure LDFLAGS=-L/path/to/chaplin/lib 
 \end{lstlisting}
@@ -281,33 +297,40 @@ To install in a specific location:
 \begin{lstlisting}
 	./configure --prefix=/path/to/installation 
 \end{lstlisting}
-The default installation path is the main \texttt{H1jet}-directory. \\ 
+The default installation path is the main \texttt{\textsc{H1jet}}-directory. \\ 
 The configure script will generate the \texttt{Makefile}. \\ 
-To compile H1jet with the generated \texttt{Makefile}, run: 
+To compile \textsc{H1jet} with the generated \texttt{Makefile}, run: 
 \begin{lstlisting}
 	make [options] 
 \end{lstlisting}
 This command takes the following options: \texttt{make clean} will delete all module and object files; \texttt{make distclean} will delete all module and object files as well as the executable \texttt{h1jet}. \\ 
 
-After compilation, the \texttt{bin}-directory can then be added to the user's \texttt{PATH} environment variable. Alternatively, if the user has specified an install directory with the \texttt{--prefix} option, the executable can be installed with: 
+After compilation, the \texttt{bin}-directory can then be added to the
+user's \texttt{PATH} environment variable. Alternatively, if the user
+has specified an installation directory with the \texttt{--prefix}
+option, the executable can be installed with:
 \begin{lstlisting}
 	make install  
 \end{lstlisting}
 The executable \texttt{h1jet} can then be found in the \texttt{bin}-directory at the path specified by \texttt{--prefix}. 
 
 \subsection{Usage} 
-After compilation, H1jet can be run from the \texttt{bin}-directory with: 
+After compilation, \textsc{H1jet} can be run from the \texttt{bin}-directory with: 
 \begin{lstlisting}
 	./bin/h1jet [options]  
-\end{lstlisting}
+      \end{lstlisting}
+      {\bf [What does H1jet do? What will the user see?]}
+      
+      \noindent      
 The following standard UNIX options are available: 
 \begin{description}[labelindent=\parindent, labelwidth =\widthof{\bfseries9999999999999999999999}, leftmargin = !] 
 	\item[\texttt{-h, --help}] Display the help message along with all possible options. 
-	\item[\texttt{-v, --version}] Display the version of the installed H1jet. 
+	\item[\texttt{-v, --version}] Display the version of the installed \textsc{H1jet}. 
 \end{description}
-H1jet will display the requested information and then terminate. 
+\textsc{H1jet} will display the requested information and then terminate. 
 
-To direct the output to a file, use the option:
+\noindent
+To direct the output to a file, the user needs to select the option: {\bf [What is the default?]}
 \begin{description}[labelindent=\parindent, labelwidth =\widthof{\bfseries9999999999999999999999}, leftmargin = !] 
 	\item[\texttt{-o, --out <file>}] Direct the output to \texttt{<file>}. 
 \end{description}
@@ -328,19 +351,27 @@ The options listed here apply to all processes.
 \begin{description}[labelindent=\parindent, labelwidth =\widthof{\bfseries9999999999999999999999}, leftmargin = !] 
 	\item[\texttt{--collider <arg>}] Specify the collider type. \\ Arguments: \texttt{pp} (default), \texttt{ppbar}. 
 	\item[\texttt{--roots <value>}] Center-of-mass energy in [GeV]. \\ Default: 13000 GeV. 
-	\item[\texttt{--pdf\_name <arg>}] Specify the PDF set name from LHAPDF. \\ Please make sure that the specified PDF set is available in the local installation of LHAPDF. \\ Default: \texttt{MSTW2008nlo68cl}. 
+	\item[\texttt{--pdf\_name <arg>}] Specify the PDF set name from \textsc{LHAPDF}. \\ The specified PDF set must be available in the local installation of \textsc{LHAPDF}. \\ Default: \texttt{MSTW2008nlo68cl}. 
 	\item[\texttt{--pdf\_mem <value>}] Integer value specifying the PDF member. \\ Default: 0. 
 	\item[\texttt{--scale\_strategy <arg>}] Set the scale strategy, i.e. the dynamic $\mu = \mu_R = \mu_F$ value. Arguments: \vspace{-2mm} 
 	\begin{description}[labelwidth =\widthof{\bfseries99999}, leftmargin = !] 
-		\item[\texttt{M}] $\mu_R = \mu_F = M$. 
-		\item[\texttt{HT}] $\mu_R = \mu_F = p_T + \sqrt{p_T^2 + M^2}$ (default). 
-		\item[\texttt{MT}] $\mu_R = \mu_F = \sqrt{p_T^2 + M^2}$. 
+		\item[\texttt{M}] $\mu = M$. 
+		\item[\texttt{HT}] $\mu = p_T + \sqrt{p_T^2 + M^2}$ (default). 
+		\item[\texttt{MT}] $\mu = \sqrt{p_T^2 + M^2}$. 
 	\end{description} \vspace{-1mm} 
-	Where the mass $M$ is given by option \texttt{--mH} for processes \texttt{H} and \texttt{bbH}, option \texttt{--mZ} for process \texttt{Z}, and option \texttt{--mass} for process \texttt{user}. 
-	\item[\texttt{--xmur <value>}] Additional factor $x_{\mu_R}$ for the renormalisation scale, multiplied to the choice from \texttt{--scale\_strategy}. \\ Default: 0.5. 
-	\item[\texttt{--xmuf <value>}] Additional factor $x_{\mu_F}$ for the factorisation scale, multiplied to the choice from \texttt{--scale\_strategy}. \\ Default: 0.5. 
-	\item[\texttt{--nbins <value>}] Number of histogram bins in the output. \\ Default: 400. 
-	\item[\texttt{--log}] Enables logarithmic $x$-axis of the histogram, i.e.\ logarithmic bins and $p_{T}$. Remember to set option \texttt{--ptmin} to a non-zero value. 
+	The mass $M$ is given by option \texttt{--mH} for processes \texttt{H} and \texttt{bbH}, option \texttt{--mZ} for process \texttt{Z}, and option \texttt{--mass} for process \texttt{user}. 
+      \item[\texttt{--xmur <value>}] Additional factor $x_R$ for the
+        renormalisation scale, i.e.\ $\mu_R=x_R\,\mu$, where $\mu$ is
+        determined by the choice from \texttt{--scale\_strategy}. \\
+        Default: 0.5.
+      \item[\texttt{--xmuf <value>}] Additional factor $x_F$ for the
+        factorisation scale, , i.e.\ $\mu_R=x_R\,\mu$, where $\mu$ is
+        determined by the choice from \texttt{--scale\_strategy}. \\
+        Default: 0.5.
+      \item[\texttt{--nbins <value>}] Number of histogram bins in the
+        output of the transverse momentum distribution. \\ Default:
+        400.
+	\item[\texttt{--log}] Enables logarithmic $x$-axis of the histogram, i.e.\ logarithmic bins and $p_{T}$ {\bf [???]}. The option \texttt{--ptmin} must be set to a non-zero value in order to use this option {\bf [A warning must be set then]}. 
 	\item[\texttt{--ptmin <value>}] Minimum $p_{T}$ value [GeV]. \\ Default: 0 GeV. 
 	\item[\texttt{--ptmax <value>}] Maximum $p_{T}$ value [GeV]. \\ Default: 4000 GeV. 
 	\item[\texttt{--accuracy <value>}] The desired integration accuracy. \\ Default: 0.001. 
@@ -364,7 +395,7 @@ has been selected, then the following options are relevant:
 \end{description}
 Note that the Yukawa couplings are given by $y_q m_q / v$, where $y_q$ are the dimensionless factors specified by the options \texttt{--yt} and \texttt{--yb} above. \\ 
 
-Note also that H1jet uses the $G_{\mu}$ scheme for the all electroweak parameters. Hence, the Higgs vacuum expectation value is given by $v = 1 / \sqrt{\sqrt{2} G_F}$, and the Weinberg angle is $\sin^2\left ( \theta_W \right ) = 1 - m_W^2 / m_Z^2$. \\ 
+Note also that \textsc{H1jet} uses the $G_{\mu}$ scheme for the all electroweak parameters. Hence, the Higgs vacuum expectation value is given by $v = 1 / \sqrt{\sqrt{2} G_F}$, and the Weinberg angle is $\sin^2\left ( \theta_W \right ) = 1 - m_W^2 / m_Z^2$. \\ 
 
 To consider a CP-odd Higgs instead, use the following option: 
 \begin{description}[labelindent=\parindent, labelwidth =\widthof{\bfseries9999999999999999999999}, leftmargin = !] 
@@ -374,7 +405,7 @@ The coupling between the CP-odd Higgs and the SM top quark is:
 \begin{equation}
    \mathcal{L} \supset i \tilde{\kappa}_t \frac{m_t}{v} \bar{t} \gamma_5 t h
 \end{equation}
-where the implementation in H1jet uses $\tilde{\kappa}_t = 1$. 
+where the implementation in \textsc{H1jet} uses $\tilde{\kappa}_t = 1$. 
 
 \paragraph{Top-partner} 
 To include a top-partner $T$ in the quark loops, it will be necessary to set the top-partner mass $m_T$ to a non-zero value by using the \texttt{--mtp} option. 
@@ -577,33 +608,33 @@ Here is an example snippet of Fortran code which could appear in the \texttt{res
 \end{lstlisting}
 
 \subsubsection{Output}
-H1jet will print out a brief summary of the settings and parameters used, as well as the Born cross section $\sigma_0$, followed by the $\mathrm{d}\sigma/\mathrm{d}p_{T}$ and $\sigma(p_{T})$ for each $p_T$ bin. \\ 
+\textsc{H1jet} will print out a brief summary of the settings and parameters used, as well as the Born cross section $\sigma_0$, followed by the $\mathrm{d}\sigma/\mathrm{d}p_{T}$ and $\sigma(p_{T})$ for each $p_T$ bin. \\ 
 
-The helper script \texttt{PlotH1jet.py} facilitates easy and quick plotting of the output from H1jet. The script requires Python 3 installed in order to run. Simply pipe the output from H1jet to the script: 
+The helper script \texttt{Plot\textsc{H1jet}.py} facilitates easy and quick plotting of the output from \textsc{H1jet}. The script requires Python 3 installed in order to run. Simply pipe the output from \textsc{H1jet} to the script: 
 \begin{lstlisting}
-	./h1jet [options] | python PlotH1jet.py 
+	./h1jet [options] | python Plot\textsc{H1jet}.py 
 \end{lstlisting}
-Alternatively, the plotting script can run on an output file from H1jet: 
+Alternatively, the plotting script can run on an output file from \textsc{H1jet}: 
 \begin{lstlisting}
 	./h1jet [options] -o result.out 
-	python PlotH1jet.py result.out 
+	python Plot\textsc{H1jet}.py result.out 
 \end{lstlisting}
-A resulting example plot with default settings in H1jet is shown in \autoref{fig:h1jetresult}. 
+A resulting example plot with default settings in \textsc{H1jet} is shown in \autoref{fig:h1jetresult}. 
 
 \begin{figure}[tbh] 
   \centering
   \includegraphics[width=0.6\linewidth]{figures/h1jetresult}
-  \captionof{figure}{The $p_{T}$ distribution for the SM process $pp \rightarrow H + \text{jet}$ from H1jet with default settings.}
+  \captionof{figure}{The $p_{T}$ distribution for the SM process $pp \rightarrow H + \text{jet}$ from \textsc{H1jet} with default settings.}
   \label{fig:h1jetresult}
 \end{figure}
 
 \section{Benchmarking}
 \label{sec:benchmarking}
-The various process implementations in H1jet have been compared to those of \textsc{SusHi}~\cite{Harlander:2012pb,Harlander:2016hcx}, and have all been found to be in agreement. 
+The various process implementations in \textsc{H1jet} have been compared to those of \textsc{SusHi}~\cite{Harlander:2012pb,Harlander:2016hcx}, and have all been found to be in agreement. 
 
-The relative ratio between the H1jet result and the \textsc{SusHi} result for the $p_T$ distribution for the CP-odd Higgs are shown in \autoref{fig:cpoddratio}, and is found to be in agreement within the Monte Carlo error of \textsc{SusHi} for a large range of $p_T$ values. Smaller deviations may be due to the different handling of PDF evolution between the two programs. For low $p_T$ values, the larger deviation may be due to numerical issues in the calculation of the harmonic polylogarithms. Overall the agreement with \textsc{SusHi} is within $3 \times 10^{-4}$. 
+The relative ratio between the \textsc{H1jet} result and the \textsc{SusHi} result for the $p_T$ distribution for the CP-odd Higgs are shown in \autoref{fig:cpoddratio}, and is found to be in agreement within the Monte Carlo error of \textsc{SusHi} for a large range of $p_T$ values. Smaller deviations may be due to the different handling of PDF evolution between the two programs. For low $p_T$ values, the larger deviation may be due to numerical issues in the calculation of the harmonic polylogarithms. Overall the agreement with \textsc{SusHi} is within $3 \times 10^{-4}$. 
 
-The low $p_T$ behaviour in \autoref{fig:cpoddratio} is due to possible numerical instability. The H1jet result can be further checked in the $p_{T} \rightarrow 0$ limit, by comparing it to the resummation expression, 
+The low $p_T$ behaviour in \autoref{fig:cpoddratio} is due to possible numerical instability. The \textsc{H1jet} result can be further checked in the $p_{T} \rightarrow 0$ limit, by comparing it to the resummation expression, 
 \begin{equation}
 	\frac{\mathrm{d} \sigma}{\mathrm{d} p_T} \xrightarrow{p_T \rightarrow 0} \sigma_0 \left [ 4 C_A \frac{\alpha_s}{\pi} \frac{1}{p_T} \left(\ln\left ( \frac{m_a}{p_T} \right ) + \mathcal{O} (1)\right) \right ] \,, \label{eq:resum}
 \end{equation}
@@ -614,7 +645,7 @@ where $\sigma_0$ is the total Born cross section for $gg \rightarrow h$. In \aut
 \begin{minipage}{.485\textwidth}
   \centering
   \includegraphics[width=\linewidth]{figures/CPoddratio}
-  \captionof{figure}{The relative difference between the H1jet result and that of \textsc{SusHi} for the $p_T$ distribution for a CP-odd Higgs. The grey band indicates the Monte Carlo error of \textsc{SusHi}.}
+  \captionof{figure}{The relative difference between the \textsc{H1jet} result and that of \textsc{SusHi} for the $p_T$ distribution for a CP-odd Higgs. The grey band indicates the Monte Carlo error of \textsc{SusHi}.}
   \label{fig:cpoddratio}
 \end{minipage}%
 \hfill% 
@@ -626,14 +657,14 @@ where $\sigma_0$ is the total Born cross section for $gg \rightarrow h$. In \aut
 \end{minipage}
 \end{figure}
 
-The relative ratio between the H1jet and \textsc{SusHi} results for the MSSM are shown in \autoref{fig:mssmratio} and is within $2 \times 10^{-4}$. Again the low $p_T$ behaviour can be checked by comparing to the resummed expression in \autoref{fig:mssmresum}. 
+The relative ratio between the \textsc{H1jet} and \textsc{SusHi} results for the MSSM are shown in \autoref{fig:mssmratio} and is within $2 \times 10^{-4}$. Again the low $p_T$ behaviour can be checked by comparing to the resummed expression in \autoref{fig:mssmresum}. 
 
 \begin{figure}[tbh] 
 \centering
 \begin{minipage}{.485\textwidth}
   \centering
   \includegraphics[width=\linewidth]{figures/MSSMratio}
-  \captionof{figure}{The relative difference between the H1jet result and that of \textsc{SusHi} for the $p_T$ distribution in the MSSM. The grey band indicates the Monte Carlo error of \textsc{SusHi}.}
+  \captionof{figure}{The relative difference between the \textsc{H1jet} result and that of \textsc{SusHi} for the $p_T$ distribution in the MSSM. The grey band indicates the Monte Carlo error of \textsc{SusHi}.}
   \label{fig:mssmratio}
 \end{minipage}%
 \hfill% 
@@ -645,12 +676,12 @@ The relative ratio between the H1jet and \textsc{SusHi} results for the MSSM are
 \end{minipage}
 \end{figure}
 
-\section{Adding new processes to H1jet}
+\section{Adding new processes to \textsc{H1jet}}
 \label{sec:newprocs} 
-H1jet can be interfaced to use the squared matrix element evaluated from a custom Fortran code. The implementation may be most easily explained with a specific example. Please read this section carefully before attempting to use the interface. 
+\textsc{H1jet} can be interfaced to use the squared matrix element evaluated from a custom Fortran code. The implementation may be most easily explained with a specific example. Please read this section carefully before attempting to use the interface. 
 
 \subsection{Example: Axion-Like-Particle (ALP)}
-We will present here a specific example of adding to H1jet the production of a light axion-like-particle (ALP) $a$ along with a jet. We will, for simplicity, only consider the gluon-fusion channel, 
+We will present here a specific example of adding to \textsc{H1jet} the production of a light axion-like-particle (ALP) $a$ along with a jet. We will, for simplicity, only consider the gluon-fusion channel, 
 \begin{equation}
     g g \rightarrow g a \,. 
 \end{equation}
@@ -730,7 +761,7 @@ ampsquared = Simplify[
           (SUNSimplify[#1, Explicit -> True, SUNNToCACF -> False] & )[
             FeynAmpDenominatorExplicit[(1 / (SUNN^2 - 1)^2) * (amp * ComplexConjugate[amp])]]]]]]] /. SUNN -> 3 
 \end{mmaCell}
-Setting the \texttt{SUNNToCACF} option in \texttt{SUNSimplify[]} to \texttt{False} is not necessary, nor is it necessary to fix \texttt{SUNN} to $3$. This can be handled by the dressing script and H1jet. 
+Setting the \texttt{SUNNToCACF} option in \texttt{SUNSimplify[]} to \texttt{False} is not necessary, nor is it necessary to fix \texttt{SUNN} to $3$. This can be handled by the dressing script and \textsc{H1jet}. 
 
 Finally, we will write the amplitude as Fortran code to a file: 
 \begin{mmaCell}{Code}
@@ -750,7 +781,7 @@ The helper script has a help message which can be called with \texttt{-h} or \te
 \end{lstlisting}
 The provided input Fortran code files does not necessarily have to be generated with \textsc{FeynCalc}. They can be generated by any other program or even be written by hand. \\ 
 
-To use the new dressed custom Fortran code with H1jet, it is necessary to recompile H1jet with the custom Fortran code: 
+To use the new dressed custom Fortran code with \textsc{H1jet}, it is necessary to recompile \textsc{H1jet} with the custom Fortran code: 
 \begin{lstlisting}
 	./configure USERFILE=/path/to/custom/user_interface.f90 
 	make clean
@@ -764,7 +795,7 @@ Running \texttt{./h1jet --help} we see that three new additional options have be
 \end{description}
 The leading \texttt{c\_} in the name stands for ``custom'' and is automatically added in order to avoid naming issues in the code. \\ 
 
-The result from the ALP implementation in H1jet is shown in \autoref{fig:alpresult} and can be compared to the H1jet result for the CP-odd Higgs by using a single top quark in the loop with an infinite mass limit, resulting in an effective coupling between the CP-odd Higgs and the gluons. The respective ALP and CP-odd couplings are then related as such, 
+The result from the ALP implementation in \textsc{H1jet} is shown in \autoref{fig:alpresult} and can be compared to the \textsc{H1jet} result for the CP-odd Higgs by using a single top quark in the loop with an infinite mass limit, resulting in an effective coupling between the CP-odd Higgs and the gluons. The respective ALP and CP-odd couplings are then related as such, 
 \begin{equation}
 	\frac{c_{\tilde{G}}^2}{f_a^2} = \frac{\alpha_s^2}{64 \pi^2 v^2} \,. 
 \end{equation}
@@ -780,14 +811,14 @@ several hours depending on the number of events, due to
 \begin{minipage}{.485\textwidth}
   \centering
   \includegraphics[width=\linewidth]{figures/ALPresult}
-  \captionof{figure}{The $p_{T}$ distribution for the process $gg \rightarrow ga$ from H1jet with the amplitude from the user interface.}
+  \captionof{figure}{The $p_{T}$ distribution for the process $gg \rightarrow ga$ from \textsc{H1jet} with the amplitude from the user interface.}
   \label{fig:alpresult}
 \end{minipage}%
 \hfill% 
 \begin{minipage}{.485\textwidth}
   \centering
   \includegraphics[width=\linewidth]{figures/ALPratio}
-  \captionof{figure}{The ratio between the result from H1jet with the amplitude from \textsc{FeynCalc} and the CP-odd result.}
+  \captionof{figure}{The ratio between the result from \textsc{H1jet} with the amplitude from \textsc{FeynCalc} and the CP-odd result.}
   \label{fig:alpratio}
 \end{minipage}
 \end{figure}
@@ -833,7 +864,7 @@ ampsquared = Simplify[
       (SUNSimplify[#1, Explicit -> True, SUNNToCACF -> False] & )[
         FeynAmpDenominatorExplicit[(1 / (SUNN^2 - 1)^2) * (amp * ComplexConjugate[amp])]]]]]
 \end{mmaCell}
-For a $2 \rightarrow 1$ process, the hadronic cross section is given in \autoref{eq:Born-had}, where the partonic luminosity $\mathcal{L}_{gg}$ is handled by H1jet. Hence, we need to multiply our squared matrix element with:
+For a $2 \rightarrow 1$ process, the hadronic cross section is given in \autoref{eq:Born-had}, where the partonic luminosity $\mathcal{L}_{gg}$ is handled by \textsc{H1jet}. Hence, we need to multiply our squared matrix element with:
 \begin{mmaCell}{Code}
 xsec = Pi * ampsquared / mA^4 
 \end{mmaCell}
@@ -847,22 +878,22 @@ The new generated code \texttt{ALP\_xsec.f90} is provided to \texttt{DressUserAm
 \begin{lstlisting}
 	python DressUserAmpCode.py ALP_amp.f90 ALP_xsec.f90 
 \end{lstlisting}
-And H1jet can be recompiled to include the new source code: 
+And \textsc{H1jet} can be recompiled to include the new source code: 
 \begin{lstlisting}
 	./configure USERFILE=/path/to/custom/user_interface.f90 
 	make clean
 	make 
 \end{lstlisting}
-After which H1jet will calculate the Born cross section for the custom process. 
+After which \textsc{H1jet} will calculate the Born cross section for the custom process. 
 
 \section{Conclusions}
 \label{sec:the-end}
 
 We have presented a method that allows a fast computation of the
 transverse momentum distribution of a colour singlet. The method is
-implemented in the program H1jet, which returns a transverse momentum
-spectrum for the specified colour singlet in about a second. H1jet is
-similar in spirit to SusHi, but is incomparably faster.
+implemented in the program \textsc{H1jet}, which returns a transverse momentum
+spectrum for the specified colour singlet in about a second. \textsc{H1jet} is
+similar in spirit to \textsc{SusHi}, but is incomparably faster.
 
 The program implements various processes, including Higgs production
 both in gluon fusion and bottom-antibottom annihilation, as well as
@@ -884,20 +915,20 @@ a simple interface. As an example, we have included in the package the
 calculation of the transverse momentum distribution of an ALP starting
 from the general Feynman rules of ref.~\cite{Brivio:2017ije}. Note
 that the possibility of automatically implementing a new model inside
-the program is a feature that is not available in SusHi.
+the program is a feature that is not available in \textsc{SusHi}.
 
-We stress that H1jet is not a replacement for a proper Monte Carlo
+We stress that \textsc{H1jet} is not a replacement for a proper Monte Carlo
 analysis implementing realistic experimental cuts. However, we believe
 it will be unvaluable for BSM experts to assess whether a given model
 gives sizeable deviations from the SM. In fact, due to its fast
-implementation, H1jet makes it possible to perform parameter scans in
+implementation, \textsc{H1jet} makes it possible to perform parameter scans in
 seconds, and to take into account mass effects in specific
-models. Also, due to the fact that H1jet is not based on a Monte Carlo
+models. Also, due to the fact that \textsc{H1jet} is not based on a Monte Carlo
 integration, one can separate interference between different
 contributions very precisely, something which is very difficult to
 achieve with Monte Carlo event generators.
 
-H1jet can be also useful to precision phenomenology. In fact, it makes
+\textsc{H1jet} can be also useful to precision phenomenology. In fact, it makes
 it possible to easily perform theoretical studies of the transverse
 momentum distribution of a colour singlet, especially those involving
 the matching of resummed calculations with exaxct fixed order. Also,
@@ -912,7 +943,7 @@ compute transverse momentum spectra started from the collaboration of
 AB on related topics with G.~Zanderighi, P.~F.~Monni and F.~Caola. AB
 acknowledges many useful discussions with them on the topic. AB also
 wishes to thank B.~Dillon and S.~Kvedarait\.e for contributions to a
-private preliminary version of H1jet. The studentship of AL is
+private preliminary version of \textsc{H1jet}. The studentship of AL is
 supported by the Science Technology and Facilities Council (STFC)
 under grant number ST/P000819/1. The work of AB is supported by the
 Science Technology and Facilities Council (STFC) under grants number
@@ -923,7 +954,7 @@ ST/P000819/1 and ??????.
 \section{Implementation of scalar integrals}
 \label{sec:scalar-integrals}
 
-This appendix contains the details of how H1jet computes one-loop
+This appendix contains the details of how \textsc{H1jet} computes one-loop
 scalar integrals that are relevant for Higgs production. These
 integrals depend on one internal mass, which we denot by $m$, and are
 functions of Mandelstam
@@ -1085,12 +1116,5 @@ which keeps track of the correct imaginary part.
 \bibliographystyle{plainurl}
 \bibliography{h1jet.bib}
 
-%\begin{thebibliography}{1}
-%   \bibitem{h1jet} H1jet can be downloaded from: \\ \href{https://h1jet.hepforge.com}{https://h1jet.hepforge.com}
-%   \bibitem{lhapdf} A.\ Buckley, J.\ Ferrando, S.\ Lloyd, K.\ Nordstrom, B.\ Page, M.\ Ruefenacht, M.\ Schoenherr, and G.\ Watt, \textit{LHAPDF6: parton density access in the LHC precision era}, Eur.\ Phys.\ J.\ \textbf{C75} (2015) 3, 132, [\href{https://arxiv.org/abs/1412.7420}{arXiv:1412.7420}]. 
-%   \bibitem{hoppet} G.\ P.\ Salam and J.\ Rojo, \textit{A Higher Order Perturbative Parton Evolution Toolkit (HOPPET)}, Comput.\ Phys.\ Commun.\ \textbf{180} (2009) 120-156, [\href{https://arxiv.org/abs/0804.3755}{arXiv:0804.3755}]. 
-%   \bibitem{chaplin} S.\ Buehler and C.\ Duhr, \textit{CHAPLIN - Complex Harmonic Polylogarithms in Fortran}, Comput.\ Phys.\ Commun.\ \textbf{185} (2014) 2703, [\href{https://arxiv.org/abs/1106.5739}{arXiv:1106.5739}]. 
-%   \bibitem{alp} I.\ Brivio, M.\ B.\ Gavela, L.\ Merlo, K.\ Mimasu, J.\ M.\ No, R.\ del Rey, and V.\ Sanz, \textit{ALPs Effective Field Theory and Collider Signatures}, Eur.\ Phys.\ J.\ \textbf{C77} (2017) 572, [\href{https://arxiv.org/abs/1701.05379}{arXiv:1701.05379}]. The \textsc{FeynRules} model file is available here: \href{https://feynrules.irmp.ucl.ac.be/wiki/ALPsEFT}{https://feynrules.irmp.ucl.ac.be/wiki/ALPsEFT}. 
-%\end{thebibliography}
 
 \end{document}
