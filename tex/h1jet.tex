@@ -389,77 +389,87 @@ has been selected, then the following options are relevant:
 	\item[\texttt{--mZ <value>}] Z boson mass, $m_Z$ [GeV]. \\ Default: 91.1876 GeV.
 	\item[\texttt{--mt <value>}] Top quark mass, $m_t$ [GeV]. \\ Default: 173.5 GeV. 
 	\item[\texttt{--mb <value>}] On-shell bottom quark mass, $m_b^{\text{OS}}$ [GeV]. \\ Default: 4.65 GeV. 
-	\item[\texttt{--yt <value>}] Top Yukawa factor [GeV]. \\ Default: 1. 
-	\item[\texttt{--yb <value>}] Bottom Yukawa factor [GeV]. \\ Default: 1. 
+	\item[\texttt{--yt <value>}] Top Yukawa factor $\kappa_t$ [GeV]. \\ Default: 1. 
+	\item[\texttt{--yb <value>}] Bottom Yukawa factor $\kappa_b$
+          [GeV]. \\ Default: 1.
 	\item[\texttt{--GF <value>}] Fermi coupling constant, $G_F$ [GeV$^{-2}$]. \\ Default: $0.116638 \times 10^{-4}$ GeV$^{-2}$. 
 \end{description}
-Note that the Yukawa couplings are given by $y_q m_q / v$, where $y_q$ are the dimensionless factors specified by the options \texttt{--yt} and \texttt{--yb} above. \\ 
+Note that the Yukawa couplings are given by $y_q=\kappa_q m_q / v$, where $\kappa_q$ are the dimensionless factors specified by the options \texttt{--yt} and \texttt{--yb} above. \\ 
 
 Note also that \textsc{H1jet} uses the $G_{\mu}$ scheme for the all electroweak parameters. Hence, the Higgs vacuum expectation value is given by $v = 1 / \sqrt{\sqrt{2} G_F}$, and the Weinberg angle is $\sin^2\left ( \theta_W \right ) = 1 - m_W^2 / m_Z^2$. \\ 
 
-To consider a CP-odd Higgs instead, use the following option: 
+\noindent
+To consider a CP-odd Higgs instead, one must select the following option: 
 \begin{description}[labelindent=\parindent, labelwidth =\widthof{\bfseries9999999999999999999999}, leftmargin = !] 
-	\item[\texttt{--cpodd}] Toggle for calculation of CP-odd Higgs instead. 
+	\item[\texttt{--cpodd}] Toggle for calculation of CP-odd Higgs. 
 \end{description}
 The coupling between the CP-odd Higgs and the SM top quark is: 
 \begin{equation}
    \mathcal{L} \supset i \tilde{\kappa}_t \frac{m_t}{v} \bar{t} \gamma_5 t h
 \end{equation}
-where the implementation in \textsc{H1jet} uses $\tilde{\kappa}_t = 1$. 
+where the implementation in \textsc{H1jet} uses $\tilde{\kappa}_t = 1$. {\bf [How do you select $\tilde\kappa_t\ne 1$?]}
 
-\paragraph{Top-partner} 
-To include a top-partner $T$ in the quark loops, it will be necessary to set the top-partner mass $m_T$ to a non-zero value by using the \texttt{--mtp} option. 
+\paragraph{Top-partner.} \textsc{H1jet} allows the calculation of
+Higgs production via loops of top partners in addition to top loops.
+To include a top-partner $T$ in the quark loops, it is necessary
+to set the top-partner mass $m_T$ to a non-zero value by using the
+\texttt{--mtp} option.
 
-The SM top Yukawa coupling factor can be modified by the mixing angle, 
+The SM top Yukawa factor can be modified by the mixing angle, 
 \begin{equation}
-   y_t \rightarrow y_t \cos^2\theta_T \,, 
+   \kappa_t \rightarrow \kappa_t \cos^2\theta_T \,, 
 \end{equation} 
-where $y_t$ is the Yukawa factor set by option \texttt{--yt}. 
+where $\kappa_t$ is the Yukawa factor set by option \texttt{--yt}. 
 
-The top-partner Yukawa coupling factor will likewise be modified 
+The top-partner Yukawa factor will likewise be modified 
 \begin{equation}
-   y_T \rightarrow y_T \sin^2\theta_T \,. 
+   \kappa_T \rightarrow \kappa_T \sin^2\theta_T \,. 
 \end{equation} 
-with $y_T$ set by \texttt{--ytp}. 
+with $\kappa_T$ set by \texttt{--ytp}.
 
+\noindent
 The top-partner specific options are: 
 \begin{description}[labelindent=\parindent, labelwidth =\widthof{\bfseries9999999999999999999999}, leftmargin = !] 
 	\item[\texttt{--mtp <value>}] Top-partner mass, $m_{T}$ [GeV]. \\ Default: 0 GeV. 
-	\item[\texttt{--ytp <value>}] Top-partner Yukawa factor, $y_T$. \\ Default: 1. 
+	\item[\texttt{--ytp <value>}] Top-partner Yukawa factor, $\kappa_T$. \\ Default: 1. 
 	\item[\texttt{--sth2 <value>}] Top-partner mixing angle, $\sin^2 \theta_T$. \\ Default: 0. 
 \end{description} 
-The top-partner can also be considered in the composite Higgs models as described in ref.~\cite{Banfi:2019xai}. There are four different models, $\textbf{M1}_{\textbf{5}}$, $\textbf{M1}_{\textbf{14}}$, $\textbf{M4}_{\textbf{5}}$, and $\textbf{M4}_{\textbf{14}}$, which modifies the Yukawa coupling factors in the following way: 
+The top-partner can also be considered in the composite Higgs models
+as described in ref.~\cite{Banfi:2019xai}. Four different models are
+implemented, $\textbf{M1}_{\textbf{5}}$, $\textbf{M1}_{\textbf{14}}$,
+$\textbf{M4}_{\textbf{5}}$, and $\textbf{M4}_{\textbf{14}}$, which
+modifies the Yukawa coupling factors in the following way:
 \begin{eqnarray}
 	\textbf{M1}_{\textbf{5}}: && \hspace{5mm} \begin{array}{l} 
-		y_b \rightarrow y_b c_\varepsilon \\ 
-		y_t \rightarrow y_t c_\varepsilon \cos^2 \theta_T \\ 
-		y_T \rightarrow y_T c_\varepsilon \sin^2 \theta_T \\ 
-		\tilde{y}_b = \tilde{y}_t = \tilde{y}_T = 0 
+		\kappa_b \rightarrow \kappa_b c_\varepsilon \\ 
+		\kappa_t \rightarrow \kappa_t c_\varepsilon \cos^2 \theta_T \\ 
+		\kappa_T \rightarrow \kappa_T c_\varepsilon \sin^2 \theta_T \\ 
+		\tilde{\kappa}_b = \tilde{\kappa}_t = \tilde{\kappa}_T = 0 
 	\end{array} \\ \nonumber \\ 
 	\textbf{M1}_{\textbf{14}}: && \hspace{5mm} \begin{array}{l} 
-		y_b \rightarrow y_b \frac{2 c_\varepsilon^2 - 1}{c_\varepsilon} \\ 
-		y_t \rightarrow y_t \frac{2 c_\varepsilon^2 - 1}{c_\varepsilon} \cos^2\theta_T  \\ 
-		y_T \rightarrow y_T \frac{2 c_\varepsilon^2 - 1}{c_\varepsilon} \sin^2\theta_T  \\ 
-		\tilde{y}_b = \tilde{y}_t = \tilde{y}_T = 0 
+		\kappa_b \rightarrow \kappa_b \frac{2 c_\varepsilon^2 - 1}{c_\varepsilon} \\ 
+		\kappa_t \rightarrow \kappa_t \frac{2 c_\varepsilon^2 - 1}{c_\varepsilon} \cos^2\theta_T  \\ 
+		\kappa_T \rightarrow \kappa_T \frac{2 c_\varepsilon^2 - 1}{c_\varepsilon} \sin^2\theta_T  \\ 
+		\tilde{\kappa}_b = \tilde{\kappa}_t = \tilde{\kappa}_T = 0 
 	\end{array} \\ \nonumber \\ 
 	\textbf{M4}_{\textbf{5}}: && \hspace{5mm} \begin{array}{l} 
-		y_b \rightarrow y_b c_\varepsilon \\ 
-		y_t \rightarrow y_t c_\varepsilon \left ( \cos^2\theta_R - \frac{s_\varepsilon^2}{1 + c_\varepsilon^2} \left ( \cos^2\theta_L - \cos^2\theta_R \right ) \right ) \\ 
-		y_T \rightarrow y_T c_\varepsilon \left ( \sin^2\theta_R - \frac{s_\varepsilon^2}{1 + c_\varepsilon^2} \left ( \sin^2\theta_L - \sin^2\theta_R \right ) \right ) \\ 
-		\tilde{y}_b = 0 \\
-		\tilde{y}_t = \frac{4 c_\varepsilon s_\varepsilon}{\sqrt{2(1 + c_\varepsilon^2)}} \text{Im}(c_1) \sin\theta_R \cos\theta_R \\ 
-		\tilde{y}_T = -\tilde{y}_t 
+		\kappa_b \rightarrow \kappa_b c_\varepsilon \\ 
+		\kappa_t \rightarrow \kappa_t c_\varepsilon \left ( \cos^2\theta_R - \frac{s_\varepsilon^2}{1 + c_\varepsilon^2} \left ( \cos^2\theta_L - \cos^2\theta_R \right ) \right ) \\ 
+		\kappa_T \rightarrow \kappa_T c_\varepsilon \left ( \sin^2\theta_R - \frac{s_\varepsilon^2}{1 + c_\varepsilon^2} \left ( \sin^2\theta_L - \sin^2\theta_R \right ) \right ) \\ 
+		\tilde{\kappa}_b = 0 \\
+		\tilde{\kappa}_t = \frac{4 c_\varepsilon s_\varepsilon}{\sqrt{2(1 + c_\varepsilon^2)}} \text{Im}(c_1) \sin\theta_R \cos\theta_R \\ 
+		\tilde{\kappa}_T = -\tilde{\kappa}_t 
 	\end{array} \\ \nonumber \\ 
 	\textbf{M4}_{\textbf{14}}: && \hspace{5mm} \begin{array}{l} 
-		y_b \rightarrow y_b \frac{2 c_\varepsilon^2 - 1}{c_\varepsilon} \\ 
-		y_t \rightarrow y_t \left ( \frac{(2 c_\varepsilon^2 - 1)}{c_\varepsilon} \cos^2\theta_R - \frac{s_\varepsilon^2 c_\varepsilon (8 c_\varepsilon^2 - 3)}{1 - 3 c_\varepsilon^2 + 4 c_\varepsilon^4} \left ( \cos^2\theta_L - \cos^2\theta_R \right ) \right ) \\ 
-		y_T \rightarrow y_T \left ( \frac{(2 c_\varepsilon^2 - 1)}{c_\varepsilon} \sin^2\theta_R - \frac{s_\varepsilon^2 c_\varepsilon (8 c_\varepsilon^2 - 3)}{1 - 3 c_\varepsilon^2 + 4 c_\varepsilon^4} \left ( \sin^2\theta_L - \sin^2\theta_R \right ) \right )) \\ 
-		\tilde{y}_b = 0 \\
-		\tilde{y}_t = \frac{4 s_\varepsilon (1 - 2 s_\varepsilon^2)}{\sqrt{2(1 - 3 c_\varepsilon^2 + 4 c_\varepsilon^4)}} \text{Im}(c_1) \sin\theta_R \cos\theta_R \\ 
-		\tilde{y}_T = -\tilde{y}_t 
+		\kappa_b \rightarrow \kappa_b \frac{2 c_\varepsilon^2 - 1}{c_\varepsilon} \\ 
+		\kappa_t \rightarrow \kappa_t \left ( \frac{(2 c_\varepsilon^2 - 1)}{c_\varepsilon} \cos^2\theta_R - \frac{s_\varepsilon^2 c_\varepsilon (8 c_\varepsilon^2 - 3)}{1 - 3 c_\varepsilon^2 + 4 c_\varepsilon^4} \left ( \cos^2\theta_L - \cos^2\theta_R \right ) \right ) \\ 
+		\kappa_T \rightarrow \kappa_T \left ( \frac{(2 c_\varepsilon^2 - 1)}{c_\varepsilon} \sin^2\theta_R - \frac{s_\varepsilon^2 c_\varepsilon (8 c_\varepsilon^2 - 3)}{1 - 3 c_\varepsilon^2 + 4 c_\varepsilon^4} \left ( \sin^2\theta_L - \sin^2\theta_R \right ) \right )) \\ 
+		\tilde{\kappa}_b = 0 \\
+		\tilde{\kappa}_t = \frac{4 s_\varepsilon (1 - 2 s_\varepsilon^2)}{\sqrt{2(1 - 3 c_\varepsilon^2 + 4 c_\varepsilon^4)}} \text{Im}(c_1) \sin\theta_R \cos\theta_R \\ 
+		\tilde{\kappa}_T = -\tilde{\kappa}_t 
 	\end{array}
 \end{eqnarray}
-where the $\tilde{y}$'s are the CP-odd couplings, and, 
+where the $\tilde{\kappa}$'s are the CP-odd couplings, and, 
 \begin{equation}
 	s_\varepsilon = \frac{v}{f} \,, \hspace{7 mm} \text{ and } \hspace{7 mm} c_\varepsilon = \sqrt{1 - s_\varepsilon^2} \,,
 \end{equation}
@@ -479,7 +489,7 @@ The composite Higgs top-partner model specific options are:
 		\item[\texttt{M4\_14}] $\textbf{M4}_{\textbf{5}}$, with a light top-partner transforming as a $\textbf{4}_{\textbf{2/3}}$ of $\text{SO}(4)$, and the SM top-bottom doublet embedded in a $\textbf{14}$ of $\text{SO}(5)$. 
 	\end{description} \vspace{-1mm} 
 	\item[\texttt{--imc1 <value>}] Imaginary part of the $c_1$ coefficient, $\text{Im}(c_1)$. \\ Default: 0.  
-	\item[\texttt{--fscale <value>}] Top-partner confinement scale, $f$ [GeV]. \\ Default: 0 GeV. 
+	\item[\texttt{--fscale <value>}] Compositeness scale $f$ [GeV]. \\ Default: 0 GeV. {\bf {What happens if $f=0$? This must be explained}}
 \end{description} 
 
 \paragraph{Multiple top-partners models}
@@ -522,10 +532,10 @@ where $\Delta m$ is set with the \texttt{--delta} option.
 
 The stop Yukawa coupling factors will be given by: 
 \begin{equation}
-   y_{\tilde{t}_1} = \frac{m_t^2}{m_{\tilde{t}_1}^2} \left [ \alpha_1 \cos^2 \theta_{\tilde{t}} + \alpha_2 \sin^2 \theta_{\tilde{t}} + 2 - \frac{\Delta m^2}{2 m_t^2} \sin^2\left ( 2 \theta_{\tilde{t}} \right ) \right ] \,,
+   \kappa_{\tilde{t}_1} = \frac{m_t^2}{m_{\tilde{t}_1}^2} \left [ \alpha_1 \cos^2 \theta_{\tilde{t}} + \alpha_2 \sin^2 \theta_{\tilde{t}} + 2 - \frac{\Delta m^2}{2 m_t^2} \sin^2\left ( 2 \theta_{\tilde{t}} \right ) \right ] \,,
 \end{equation} 
 \begin{equation}
-   y_{\tilde{t}_2} = \frac{m_t^2}{m_{\tilde{t}_2}^2} \left [ \alpha_1 \sin^2 \theta_{\tilde{t}} + \alpha_2 \cos^2 \theta_{\tilde{t}} + 2 + \frac{\Delta m^2}{2 m_t^2} \sin^2\left ( 2 \theta_{\tilde{t}} \right ) \right ] \,, 
+   \kappa_{\tilde{t}_2} = \frac{m_t^2}{m_{\tilde{t}_2}^2} \left [ \alpha_1 \sin^2 \theta_{\tilde{t}} + \alpha_2 \cos^2 \theta_{\tilde{t}} + 2 + \frac{\Delta m^2}{2 m_t^2} \sin^2\left ( 2 \theta_{\tilde{t}} \right ) \right ] \,, 
 \end{equation} 
 where 
 \begin{equation}
