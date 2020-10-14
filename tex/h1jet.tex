@@ -319,8 +319,12 @@ After compilation, \textsc{H1jet} can be run from the \texttt{bin}-directory wit
 \begin{lstlisting}
 	./bin/h1jet [options]  
       \end{lstlisting}
-      {\bf [What does H1jet do? What will the user see?]}
-      
+      \textsc{H1jet} will print out a brief summary of the settings
+      and parameters used, as well as the Born cross section
+      $\sigma_0$, followed by the $\mathrm{d}\sigma/\mathrm{d}p_{T}$
+      and the integrated cross section $\sigma(p_{T})$ with a lower
+      bound in $p_T$ for each $p_T$ bin.
+
       \noindent      
 The following standard UNIX options are available: 
 \begin{description}[labelindent=\parindent, labelwidth =\widthof{\bfseries9999999999999999999999}, leftmargin = !] 
@@ -330,9 +334,9 @@ The following standard UNIX options are available:
 \textsc{H1jet} will display the requested information and then terminate. 
 
 \noindent
-To direct the output to a file, the user needs to select the option: {\bf [What is the default?]}
+To direct the output to a file, the user needs to select the option: 
 \begin{description}[labelindent=\parindent, labelwidth =\widthof{\bfseries9999999999999999999999}, leftmargin = !] 
-	\item[\texttt{-o, --out <file>}] Direct the output to \texttt{<file>}. 
+	\item[\texttt{-o, --out <file>}] Direct the output to \texttt{<file>}.\\ Default: standard output.
 \end{description}
 The physics process can be selected with: 
 \begin{description}[labelindent=\parindent, labelwidth =\widthof{\bfseries9999999999999999999999}, leftmargin = !] 
@@ -365,13 +369,17 @@ The options listed here apply to all processes.
         determined by the choice from \texttt{--scale\_strategy}. \\
         Default: 0.5.
       \item[\texttt{--xmuf <value>}] Additional factor $x_F$ for the
-        factorisation scale, , i.e.\ $\mu_R=x_R\,\mu$, where $\mu$ is
+        factorisation scale, , i.e.\ $\mu_F=x_F\,\mu$, where $\mu$ is
         determined by the choice from \texttt{--scale\_strategy}. \\
         Default: 0.5.
       \item[\texttt{--nbins <value>}] Number of histogram bins in the
         output of the transverse momentum distribution. \\ Default:
         400.
-	\item[\texttt{--log}] Enables logarithmic $x$-axis of the histogram, i.e.\ logarithmic bins and $p_{T}$ {\bf [???]}. The option \texttt{--ptmin} must be set to a non-zero value in order to use this option {\bf [A warning must be set then]}. 
+      \item[\texttt{--log}] Enables logarithmic $x$-axis of the
+        histogram, i.e.\ logarithmic bins in $p_{T}$. The option
+        \texttt{--ptmin} must be set to a non-zero value in order to
+        use this option, otherwise the program will quit with an
+        error.
 	\item[\texttt{--ptmin <value>}] Minimum $p_{T}$ value [GeV]. \\ Default: 0 GeV. 
 	\item[\texttt{--ptmax <value>}] Maximum $p_{T}$ value [GeV]. \\ Default: 4000 GeV. 
 	\item[\texttt{--accuracy <value>}] The desired integration accuracy. \\ Default: 0.001. 
@@ -379,9 +387,9 @@ The options listed here apply to all processes.
 
 \subsubsection{Relevant Options for Process: \texttt{H}}
 If process \texttt{H}, i.e.\ 
-\begin{equation}
-	pp/p\bar{p} \rightarrow H + \text{jet}
-\end{equation}
+%\begin{equation}
+$	pp/p\bar{p} \rightarrow H + \text{jet}$,
+%\end{equation}
 has been selected, then the following options are relevant: 
 \begin{description}[labelindent=\parindent, labelwidth =\widthof{\bfseries9999999999999999999999}, leftmargin = !] 
 	\item[\texttt{--mH <value>}] Higgs mass, $m_H$ [GeV]. \\ Default: 125 GeV. 
@@ -394,20 +402,20 @@ has been selected, then the following options are relevant:
           [GeV]. \\ Default: 1.
 	\item[\texttt{--GF <value>}] Fermi coupling constant, $G_F$ [GeV$^{-2}$]. \\ Default: $0.116638 \times 10^{-4}$ GeV$^{-2}$. 
 \end{description}
-Note that the Yukawa couplings are given by $y_q=\kappa_q m_q / v$, where $\kappa_q$ are the dimensionless factors specified by the options \texttt{--yt} and \texttt{--yb} above. \\ 
+Note that the Yukawa couplings are given by $y_q=\kappa_q (\sqrt 2 m_q / v)$, where $\kappa_q$ are the dimensionless factors specified by the options \texttt{--yt} and \texttt{--yb} above. \\ 
 
-Note also that \textsc{H1jet} uses the $G_{\mu}$ scheme for the all electroweak parameters. Hence, the Higgs vacuum expectation value is given by $v = 1 / \sqrt{\sqrt{2} G_F}$, and the Weinberg angle is $\sin^2\left ( \theta_W \right ) = 1 - m_W^2 / m_Z^2$. \\ 
+Note also that \textsc{H1jet} uses the $G_{\mu}$ scheme for the all electroweak parameters~\cite{Georgi:1991ci}. Hence, the Higgs vacuum expectation value is given by $v = 1 / \sqrt{\sqrt{2} G_F}$, and the Weinberg angle is $\sin^2\left ( \theta_W \right ) = 1 - m_W^2 / m_Z^2$. \\ 
 
 \noindent
 To consider a CP-odd Higgs instead, one must select the following option: 
 \begin{description}[labelindent=\parindent, labelwidth =\widthof{\bfseries9999999999999999999999}, leftmargin = !] 
 	\item[\texttt{--cpodd}] Toggle for calculation of CP-odd Higgs. 
 \end{description}
-The coupling between the CP-odd Higgs and the SM top quark is: 
+The coupling between the CP-odd Higgs and a SM quark is: 
 \begin{equation}
-   \mathcal{L} \supset i \tilde{\kappa}_t \frac{m_t}{v} \bar{t} \gamma_5 t h
+   \mathcal{L} \supset i \tilde{\kappa}_q \frac{m_q}{v} \bar{q} \gamma_5 q h
 \end{equation}
-where the implementation in \textsc{H1jet} uses $\tilde{\kappa}_t = 1$. {\bf [How do you select $\tilde\kappa_t\ne 1$?]}
+where the implementation in \textsc{H1jet} uses by default $\tilde{\kappa}_t = 1$ and $\tilde{\kappa}_b = 0$. Both paramaters can be changed through the options \texttt{--yt} and \texttt{--yb}. 
 
 \paragraph{Top-partner.} \textsc{H1jet} allows the calculation of
 Higgs production via loops of top partners in addition to top loops.
@@ -433,12 +441,15 @@ The top-partner specific options are:
 	\item[\texttt{--mtp <value>}] Top-partner mass, $m_{T}$ [GeV]. \\ Default: 0 GeV. 
 	\item[\texttt{--ytp <value>}] Top-partner Yukawa factor, $\kappa_T$. \\ Default: 1. 
 	\item[\texttt{--sth2 <value>}] Top-partner mixing angle, $\sin^2 \theta_T$. \\ Default: 0. 
-\end{description} 
-The top-partner can also be considered in the composite Higgs models
-as described in ref.~\cite{Banfi:2019xai}. Four different models are
-implemented, $\textbf{M1}_{\textbf{5}}$, $\textbf{M1}_{\textbf{14}}$,
-$\textbf{M4}_{\textbf{5}}$, and $\textbf{M4}_{\textbf{14}}$, which
-modifies the Yukawa coupling factors in the following way:
+        \end{description}
+        The above is for a simplified composite Higgs model, where the
+        compositeness scale $f$ is set to infinity.  The top-partner
+        can also be considered in the explicit composite Higgs models
+        of ref.~\cite{Banfi:2019xai}, all with finite $f$. Four
+        different models are implemented, $\textbf{M1}_{\textbf{5}}$,
+        $\textbf{M1}_{\textbf{14}}$, $\textbf{M4}_{\textbf{5}}$, and
+        $\textbf{M4}_{\textbf{14}}$, which modify the Yukawa
+        coupling factors in the following way:
 \begin{eqnarray}
 	\textbf{M1}_{\textbf{5}}: && \hspace{5mm} \begin{array}{l} 
 		\kappa_b \rightarrow \kappa_b c_\varepsilon \\ 
@@ -617,8 +628,7 @@ Here is an example snippet of Fortran code which could appear in the \texttt{res
     end if
 \end{lstlisting}
 
-\subsubsection{Output}
-\textsc{H1jet} will print out a brief summary of the settings and parameters used, as well as the Born cross section $\sigma_0$, followed by the $\mathrm{d}\sigma/\mathrm{d}p_{T}$ and $\sigma(p_{T})$ for each $p_T$ bin. \\ 
+\subsubsection{Output} 
 
 The helper script \texttt{Plot\textsc{H1jet}.py} facilitates easy and quick plotting of the output from \textsc{H1jet}. The script requires Python 3 installed in order to run. Simply pipe the output from \textsc{H1jet} to the script: 
 \begin{lstlisting}
