@@ -5,7 +5,7 @@
 \usepackage{a4wide}
 
 \usepackage[dvipsnames]{xcolor}
-\usepackage{listings,enumitem,calc,hyperref,caption,mmacells} 
+\usepackage{listings,enumitem,calc,hyperref,caption,mmacells,array,booktabs} 
 \lstset{basicstyle=\small\ttfamily,breaklines=true,breakatwhitespace=true}
 \allowdisplaybreaks
 
@@ -318,12 +318,12 @@ The executable \texttt{h1jet} can then be found in the \texttt{bin}-directory at
 After compilation, \textsc{H1jet} can be run from the \texttt{bin}-directory with: 
 \begin{lstlisting}
 	./bin/h1jet [options]  
-      \end{lstlisting}
-      \textsc{H1jet} will print out a brief summary of the settings
-      and parameters used, as well as the Born cross section
-      $\sigma_0$, followed by the $\mathrm{d}\sigma/\mathrm{d}p_{T}$
-      and the integrated cross section $\sigma(p_{T})$ with a lower
-      bound in $p_T$ for each $p_T$ bin.
+\end{lstlisting}
+\textsc{H1jet} will print out a brief summary of the settings
+and parameters used, as well as the Born cross section
+$\sigma_0$, followed by the $\mathrm{d}\sigma/\mathrm{d}p_{T}$
+and the integrated cross section $\sigma(p_{T})$ with a lower
+bound in $p_T$ for each $p_T$ bin.
 
       \noindent      
 The following standard UNIX options are available: 
@@ -415,7 +415,7 @@ The coupling between the CP-odd Higgs and a SM quark is:
 \begin{equation}
    \mathcal{L} \supset i \tilde{\kappa}_q \frac{m_q}{v} \bar{q} \gamma_5 q h
 \end{equation}
-where the implementation in \textsc{H1jet} uses by default $\tilde{\kappa}_t = 1$ and $\tilde{\kappa}_b = 0$. Both paramaters can be changed through the options \texttt{--yt} and \texttt{--yb}. 
+where the implementation in \textsc{H1jet} uses by default $\tilde{\kappa}_t = 1$ and $\tilde{\kappa}_b = 0$. Both parameters can be changed through the options \texttt{--yt} and \texttt{--yb}. 
 
 \paragraph{Top-partner.} \textsc{H1jet} allows the calculation of
 Higgs production via loops of top partners in addition to top loops.
@@ -450,46 +450,48 @@ The top-partner specific options are:
         $\textbf{M1}_{\textbf{14}}$, $\textbf{M4}_{\textbf{5}}$, and
         $\textbf{M4}_{\textbf{14}}$, which modify the Yukawa
         coupling factors in the following way:
-\begin{eqnarray}
-	\textbf{M1}_{\textbf{5}}: && \hspace{5mm} \begin{array}{l} 
+\begin{table}[h]
+	\centering
+	\begin{tabular}{ll}
+		%\hline
+		$\textbf{M1}_{\textbf{5}}$ & $\displaystyle\begin{array}{l} 
 		\kappa_b \rightarrow \kappa_b c_\varepsilon \\ 
-		\kappa_t \rightarrow \kappa_t c_\varepsilon \cos^2 \theta_T \\ 
-		\kappa_T \rightarrow \kappa_T c_\varepsilon \sin^2 \theta_T \\ 
+		\kappa_t \rightarrow \kappa_t c_\varepsilon \cos^2 \theta_L \\ 
+		\kappa_T \rightarrow \kappa_T c_\varepsilon \sin^2 \theta_L \\ 
 		\tilde{\kappa}_b = \tilde{\kappa}_t = \tilde{\kappa}_T = 0 
-	\end{array} \\ \nonumber \\ 
-	\textbf{M1}_{\textbf{14}}: && \hspace{5mm} \begin{array}{l} 
+	\end{array}$ \\ \midrule
+		$\textbf{M1}_{\textbf{14}}$ & $\displaystyle\begin{array}{l} 
 		\kappa_b \rightarrow \kappa_b \frac{2 c_\varepsilon^2 - 1}{c_\varepsilon} \\ 
-		\kappa_t \rightarrow \kappa_t \frac{2 c_\varepsilon^2 - 1}{c_\varepsilon} \cos^2\theta_T  \\ 
-		\kappa_T \rightarrow \kappa_T \frac{2 c_\varepsilon^2 - 1}{c_\varepsilon} \sin^2\theta_T  \\ 
+		\kappa_t \rightarrow \kappa_t \frac{2 c_\varepsilon^2 - 1}{c_\varepsilon} \cos^2\theta_L  \\ 
+		\kappa_T \rightarrow \kappa_T \frac{2 c_\varepsilon^2 - 1}{c_\varepsilon} \sin^2\theta_L  \\ 
 		\tilde{\kappa}_b = \tilde{\kappa}_t = \tilde{\kappa}_T = 0 
-	\end{array} \\ \nonumber \\ 
-	\textbf{M4}_{\textbf{5}}: && \hspace{5mm} \begin{array}{l} 
+	\end{array}$ \\ \midrule
+		$\textbf{M4}_{\textbf{5}}$ & $\displaystyle\begin{array}{l} 
 		\kappa_b \rightarrow \kappa_b c_\varepsilon \\ 
 		\kappa_t \rightarrow \kappa_t c_\varepsilon \left ( \cos^2\theta_R - \frac{s_\varepsilon^2}{1 + c_\varepsilon^2} \left ( \cos^2\theta_L - \cos^2\theta_R \right ) \right ) \\ 
 		\kappa_T \rightarrow \kappa_T c_\varepsilon \left ( \sin^2\theta_R - \frac{s_\varepsilon^2}{1 + c_\varepsilon^2} \left ( \sin^2\theta_L - \sin^2\theta_R \right ) \right ) \\ 
 		\tilde{\kappa}_b = 0 \\
 		\tilde{\kappa}_t = \frac{4 c_\varepsilon s_\varepsilon}{\sqrt{2(1 + c_\varepsilon^2)}} \text{Im}(c_1) \sin\theta_R \cos\theta_R \\ 
 		\tilde{\kappa}_T = -\tilde{\kappa}_t 
-	\end{array} \\ \nonumber \\ 
-	\textbf{M4}_{\textbf{14}}: && \hspace{5mm} \begin{array}{l} 
+	\end{array}$ \\ \midrule
+		$\textbf{M4}_{\textbf{14}}$ & $\displaystyle\begin{array}{l} 
 		\kappa_b \rightarrow \kappa_b \frac{2 c_\varepsilon^2 - 1}{c_\varepsilon} \\ 
 		\kappa_t \rightarrow \kappa_t \left ( \frac{(2 c_\varepsilon^2 - 1)}{c_\varepsilon} \cos^2\theta_R - \frac{s_\varepsilon^2 c_\varepsilon (8 c_\varepsilon^2 - 3)}{1 - 3 c_\varepsilon^2 + 4 c_\varepsilon^4} \left ( \cos^2\theta_L - \cos^2\theta_R \right ) \right ) \\ 
 		\kappa_T \rightarrow \kappa_T \left ( \frac{(2 c_\varepsilon^2 - 1)}{c_\varepsilon} \sin^2\theta_R - \frac{s_\varepsilon^2 c_\varepsilon (8 c_\varepsilon^2 - 3)}{1 - 3 c_\varepsilon^2 + 4 c_\varepsilon^4} \left ( \sin^2\theta_L - \sin^2\theta_R \right ) \right )) \\ 
 		\tilde{\kappa}_b = 0 \\
 		\tilde{\kappa}_t = \frac{4 s_\varepsilon (1 - 2 s_\varepsilon^2)}{\sqrt{2(1 - 3 c_\varepsilon^2 + 4 c_\varepsilon^4)}} \text{Im}(c_1) \sin\theta_R \cos\theta_R \\ 
 		\tilde{\kappa}_T = -\tilde{\kappa}_t 
-	\end{array}
-\end{eqnarray}
-where the $\tilde{\kappa}$'s are the CP-odd couplings, and, 
+	\end{array}$ \\ %\hline
+	\end{tabular}
+\end{table}
+\\ where the $\tilde{\kappa}$'s are the CP-odd couplings, and, 
 \begin{equation}
-	s_\varepsilon = \frac{v}{f} \,, \hspace{7 mm} \text{ and } \hspace{7 mm} c_\varepsilon = \sqrt{1 - s_\varepsilon^2} \,,
+	s_\varepsilon = \frac{v}{f} \,, \hspace{7 mm} \text{ and } \hspace{7 mm} c_\varepsilon = \sqrt{1 - s_\varepsilon^2} \,. 
 \end{equation}
-and where the $\theta_R$ and $\theta_L$ mixing angles are related to $\theta_T$, 
-\begin{eqnarray}
-	& \theta_R = \theta_T \,, \nonumber \\ 
-	& \tan^2\theta_L = \frac{m_T^2}{m_t^2} \tan^2\theta_T \,, \\ 
-	& \sin^2\theta_L = \frac{1}{1 + \tan^2\theta_L}, \hspace{7 mm} \cos^2\theta_L = 1 - \sin^2\theta_L \,. \nonumber  
-\end{eqnarray}
+For $\textbf{M1}_{\textbf{5}}$ and $\textbf{M1}_{\textbf{14}}$ the mixing angle is $\theta_L = \theta_T$ where $\theta_T$ is set by the option \texttt{--sth2}, while for $\textbf{M4}_{\textbf{5}}$ and $\textbf{M4}_{\textbf{14}}$ the mixing angle is $\theta_R = \theta_T$ with 
+\begin{equation}
+	\tan^2\theta_L = \frac{m_T^2}{m_t^2} \tan^2\theta_T \,. 
+\end{equation}
 The composite Higgs top-partner model specific options are: 
 \begin{description}[labelindent=\parindent, labelwidth =\widthof{\bfseries9999999999999999999999}, leftmargin = !] 
 	\item[\texttt{--model <arg>}] Specify the top-partner model. Arguments: \vspace{-2mm} 
@@ -503,7 +505,7 @@ The composite Higgs top-partner model specific options are:
 	\item[\texttt{--fscale <value>}] Compositeness scale $f$ [GeV]. \\ Default: 0 GeV. {\bf {What happens if $f=0$? This must be explained}}
 \end{description} 
 
-\paragraph{Multiple top-partners models}
+\paragraph{Multiple top-partners models.}
 To include multiple top-partners in the quark loops, it will be necessary to specify an input file with the masses and Yukawa coupling factors for each top-partner. This can be done with the following option: 
 \begin{description}[labelindent=\parindent, labelwidth =\widthof{\bfseries9999999999999999999999}, leftmargin = !] 
 	\item[\texttt{-i, --in <file>}] Include input file with top-partner masses and Yukawas. See the file \texttt{SM.dat} for an example. 
@@ -534,7 +536,7 @@ The integer value specifying the loop approximations can take the following valu
 \end{description}
 See Section \ref{sec:loopapprox} for more information on the loop approximations. 
 
-\paragraph{MSSM}
+\paragraph{MSSM.}
 To include the MSSM stops $\tilde{t}_1$ and $\tilde{t}_2$ in the quark loops, it will be necessary to set the first stop mass $m_{\tilde{t}_1}$ to a non-zero value by using the \texttt{--mst} option. The second stop mass is then given by 
 \begin{equation}
 	m_{\tilde{t}_2} = \sqrt{m_{\tilde{t}_1}^2 + \Delta m^2} 
@@ -557,7 +559,7 @@ where
 \end{equation} 
 Note that $m_t$, $m_Z$, and $\sin^2\theta_W$ can be set with the \texttt{--mt}, \texttt{--mZ}, and \texttt{--sinwsq} options respectively, while $\sin^2 \theta_{\tilde{t}}$ and $\tan\beta$ are MSSM specific options and can be set with the \texttt{--sth2} and \texttt{--tbeta} options. 
 
-All of the MSSM specific options are: 
+\noindent All of the MSSM specific options are: 
 \begin{description}[labelindent=\parindent, labelwidth =\widthof{\bfseries9999999999999999999999}, leftmargin = !] 
 	\item[\texttt{--mst <value>}] MSSM stop mass, $m_{\tilde{t}}$ [GeV]. \\ Default: 0 GeV. 
 	\item[\texttt{--delta <value>}] MSSM stop mass separation $\Delta m$ [GeV]. \\ Default: 0 GeV. 
@@ -1133,7 +1135,7 @@ which keeps track of the correct imaginary part.
 %	\mathrm{H}(0,-1;x) &= -\mathrm{Li}_{2}\left ( -x \right ). 
 %\end{align} 
 
-\bibliographystyle{plainurl}
+\bibliographystyle{ieeetr}
 \bibliography{h1jet.bib}
 
 
