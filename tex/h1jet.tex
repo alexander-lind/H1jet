@@ -426,7 +426,7 @@ then the following options are relevant:
 \end{description}
 Note that the Yukawa couplings are given by $y_q=\kappa_q (\sqrt 2 m_q / v)$, where $\kappa_q$ are the dimensionless factors specified by the options \texttt{--yt} and \texttt{--yb} above. \\ 
 
-Note also that \textsc{H1jet} uses the $G_{\mu}$ scheme for the all electroweak parameters~\cite{Georgi:1991ci}. Hence, the Higgs vacuum expectation value is given by $v = 1 / \sqrt{\sqrt{2} G_F}$, and the Weinberg angle is $\sin^2\left ( \theta_W \right ) = 1 - m_W^2 / m_Z^2$. \\ 
+Note also that \textsc{H1jet} uses the $G_{\mu}$ scheme for the all electroweak parameters~\cite{Georgi:1991ci}. Hence, the Higgs vacuum expectation value is given by $v = 1 / \sqrt{\sqrt{2} G_F}$, and the Weinberg angle is $\sin^2 \theta_W = 1 - m_W^2 / m_Z^2$. \\ 
 
 \noindent
 To consider a CP-odd Higgs instead, one must select the following option: 
@@ -590,16 +590,16 @@ $\tilde{t}_2$ in the quark loops, it will be necessary to set the
 first stop mass $m_{\tilde{t}_1}$ to a non-zero value by using the
 \texttt{--mst} option. The second stop mass is then given by
 \begin{equation}
-	m_{\tilde{t}_2} = \sqrt{m_{\tilde{t}_1}^2 + \Delta m^2} 
+	m_{\tilde{t}_2} = \sqrt{m_{\tilde{t}_1}^2 + (\Delta m)^2} 
 \end{equation}
 where $\Delta m$ is set with the \texttt{--delta} option. 
 
 The stop Yukawa coupling factors will be given by: 
 \begin{equation}
-   \kappa_{\tilde{t}_1} = \frac{m_t^2}{m_{\tilde{t}_1}^2} \left [ \alpha_1 \cos^2 \theta_{\tilde{t}} + \alpha_2 \sin^2 \theta_{\tilde{t}} + 2 - \frac{\Delta m^2}{2 m_t^2} \sin^2\left ( 2 \theta_{\tilde{t}} \right ) \right ] \,,
+   \kappa_{\tilde{t}_1} = \frac{m_t^2}{m_{\tilde{t}_1}^2} \left [ \alpha_1 \cos^2 \theta_{\tilde{t}} + \alpha_2 \sin^2 \theta_{\tilde{t}} + 2 - \frac{(\Delta m)^2}{2 m_t^2} \sin^2\left ( 2 \theta_{\tilde{t}} \right ) \right ] \,,
 \end{equation} 
 \begin{equation}
-   \kappa_{\tilde{t}_2} = \frac{m_t^2}{m_{\tilde{t}_2}^2} \left [ \alpha_1 \sin^2 \theta_{\tilde{t}} + \alpha_2 \cos^2 \theta_{\tilde{t}} + 2 + \frac{\Delta m^2}{2 m_t^2} \sin^2\left ( 2 \theta_{\tilde{t}} \right ) \right ] \,, 
+   \kappa_{\tilde{t}_2} = \frac{m_t^2}{m_{\tilde{t}_2}^2} \left [ \alpha_1 \sin^2 \theta_{\tilde{t}} + \alpha_2 \cos^2 \theta_{\tilde{t}} + 2 + \frac{(\Delta m)^2}{2 m_t^2} \sin^2\left ( 2 \theta_{\tilde{t}} \right ) \right ] \,, 
 \end{equation} 
 where 
 \begin{equation}
@@ -703,7 +703,7 @@ A resulting example plot with default settings in \textsc{H1jet} is shown in \au
 
 \begin{figure}[tbh] 
   \centering
-  \includegraphics[width=0.6\linewidth]{figures/h1jetresult}
+  \includegraphics[width=0.6\linewidth]{figures/h1jetresult.pdf}
   \captionof{figure}{The $p_{T}$ distribution for the SM process $pp \rightarrow H + \text{jet}$ from \textsc{H1jet} with default settings.}
   \label{fig:h1jetresult}
 \end{figure}
@@ -725,39 +725,39 @@ to the approximate expression valid at low $p_T$
 \begin{equation}
 	\frac{\mathrm{d} \sigma}{\mathrm{d} p_T} \xrightarrow{p_T \rightarrow 0} \sigma_0 \left [ 4 C_A \frac{\alpha_s}{\pi} \frac{1}{p_T} \left(\ln\left ( \frac{m_H}{p_T} \right ) + \mathcal{O} (1)\right) \right ] \,, \label{eq:resum}
 \end{equation}
-where $\sigma_0$ is the total Born cross section for $gg \rightarrow h$. In \autoref{fig:cpoddresum}, we show $\frac{p_T}{\sigma_0} \left ( \frac{\mathrm{d} \sigma}{\mathrm{d} p_T} \right )$ with the first term of \autoref{eq:resum} subtracted, as a function of $\ln \frac{p_T}{m_H}$. For $p_T \rightarrow 0$ this goes nicely towards a constant as expected. 
+where $\sigma_0$ is the total Born cross section for $gg \rightarrow h$. In \autoref{fig:cpoddresum}, we show $\frac{p_T}{\sigma_0} \left ( \frac{\mathrm{d} \sigma}{\mathrm{d} p_T} \right )$ with the first term of eq.~\eqref{eq:resum} subtracted, as a function of $\ln \frac{p_T}{m_H}$. For $p_T \rightarrow 0$ this goes nicely towards a constant as expected. 
 
 \begin{figure}[tbh] 
 \centering
 \begin{minipage}{.485\textwidth}
   \centering
-  \includegraphics[width=\linewidth]{figures/CPoddratio}
+  \includegraphics[width=\linewidth]{figures/CPoddratio.pdf}
   \captionof{figure}{The relative difference between the \textsc{H1jet} result and that of \textsc{SusHi} for the $p_T$ distribution for a CP-odd Higgs. The grey band indicates the Monte Carlo error of \textsc{SusHi}.}
   \label{fig:cpoddratio}
 \end{minipage}%
 \hfill% 
 \begin{minipage}{.485\textwidth}
   \centering
-  \includegraphics[width=\linewidth]{figures/CPoddresum}
+  \includegraphics[width=\linewidth]{figures/CPoddresum.pdf}
   \captionof{figure}{The distribution $\frac{p_T}{\sigma_0} \left ( \frac{\mathrm{d} \sigma}{\mathrm{d} p_T} \right )$ with the first term of the $p_T$ resummation subtracted, as a function of $\ln \frac{p_T}{m_H}$. For low $p_T$ values it convergences to a constant value.}
   \label{fig:cpoddresum}
 \end{minipage}
 \end{figure}
-The relative ratio between the \textsc{H1jet} and \textsc{SusHi} results for the SUSY are shown in \autoref{fig:mssmratio} and is within $2 \times 10^{-4}$. Again the low $p_T$ behaviour can be checked by comparing to the resummed expression in~\autoref{fig:mssmresum}. 
+The relative ratio between the \textsc{H1jet} and \textsc{SusHi} results for the SUSY are shown in \autoref{fig:susyratio} and is within $2 \times 10^{-4}$. Again the low $p_T$ behaviour can be checked by comparing to the resummed expression in~\autoref{fig:susyresum}. 
 \begin{figure}[tbh] 
 \centering
 \begin{minipage}{.485\textwidth}
   \centering
   \includegraphics[width=\linewidth]{figures/SUSYratio.pdf}
   \captionof{figure}{The relative difference between the \textsc{H1jet} result and that of \textsc{SusHi} for the $p_T$ distribution in the SUSY. The grey band indicates the Monte Carlo error of \textsc{SusHi}.}
-  \label{fig:mssmratio}
+  \label{fig:susyratio}
 \end{minipage}%
 \hfill% 
 \begin{minipage}{.485\textwidth}
   \centering
-  \includegraphics[width=\linewidth]{figures/SUSYresum}
-  \captionof{figure}{The distribution $\frac{p_T}{\sigma_0} \left ( \frac{\mathrm{d} \sigma}{\mathrm{d} p_T} \right )$ with the first term of the $p_T$ resummation subtracted, as a function of $\ln \frac{p_T}{m_a}$. For low $p_T$ values it convergences to a constant value.}
-  \label{fig:mssmresum}
+  \includegraphics[width=\linewidth]{figures/SUSYresum.pdf}
+  \captionof{figure}{The distribution $\frac{p_T}{\sigma_0} \left ( \frac{\mathrm{d} \sigma}{\mathrm{d} p_T} \right )$ with the first term of the $p_T$ resummation subtracted, as a function of $\ln \frac{p_T}{m_H}$. For low $p_T$ values it convergences to a constant value.}
+  \label{fig:susyresum}
 \end{minipage}
 \end{figure}
 
@@ -871,10 +871,10 @@ Note here that we specify the gluon-gluon channel with the \texttt{gg = ampsquar
 
 The generated Fortran code \texttt{ALP\_amp.f90} has the following content:
 \begin{lstlisting}[language=Fortran,keywordstyle=\color{Red},stringstyle=\color{Green},identifierstyle=\color{Blue},showstringspaces=false]
-  gg = (3.*CGtil**2*(mA**8 - 2.*mA**6*(t + u) +     &
-  3.*mA**4*(t + u)**2 - 2.*mA**2*(t + u)**3 +    &
-  (t**2 + t*u + u**2)**2)*SMP("g_s")**2)/     &
-  (fa**2*s*t*u)
+        gg = (3.*CGtil**2*(mA**8 - 2.*mA**6*(t + u) + 
+     &      3.*mA**4*(t + u)**2 - 2.*mA**2*(t + u)**3 + 
+     &      (t**2 + t*u + u**2)**2)*SMP("g_s")**2)/
+     &  (fa**2*s*t*u)
 \end{lstlisting}
 This code has to be dressed by the Python helper script \texttt{DressUserAmpCode.py}: 
 \begin{lstlisting}
@@ -903,7 +903,7 @@ To use the new dressed custom Fortran code with \textsc{H1jet}, it is necessary 
 \end{lstlisting}
 Running \texttt{./h1jet --help} we see that three new additional options have been added: 
 \begin{description}[labelindent=\parindent, labelwidth =\widthof{\bfseries9999999999999999999999}, leftmargin = !] 
-	\item[\texttt{--c\_CGtil <value>}] The Wilson coefficient $c_{\tilde{G}}$ in \eqref{eq:ggacoupling}. 
+	\item[\texttt{--c\_CGtil <value>}] The Wilson coefficient $c_{\tilde{G}}$ in eq.~\eqref{eq:ggacoupling}. 
 	\item[\texttt{--c\_mA <value>}] The ALP mass, $m_a$. 
 	\item[\texttt{--c\_fa <value>}] The ALP suppression scale $f_a$ in \eqref{eq:ggacoupling}. 
 \end{description}
@@ -928,14 +928,14 @@ $p_T$, while \textsc{H1jet} has by construction the correct behaviour.
 \centering
 \begin{minipage}{.485\textwidth}
   \centering
-  \includegraphics[width=\linewidth]{figures/ALPresult}
+  \includegraphics[width=\linewidth]{figures/ALPresult.pdf}
   \captionof{figure}{The $p_{T}$ distribution for the process $gg \rightarrow ga$ from \textsc{H1jet} with the amplitude from the user interface.}
   \label{fig:alpresult}
 \end{minipage}%
 \hfill% 
 \begin{minipage}{.485\textwidth}
   \centering
-  \includegraphics[width=\linewidth]{figures/ALPratio}
+  \includegraphics[width=\linewidth]{figures/ALPratio.pdf}
   \captionof{figure}{The ratio between the result from \textsc{H1jet} with the amplitude from \textsc{FeynCalc} and the CP-odd result.}
   \label{fig:alpratio}
 \end{minipage}
@@ -982,7 +982,7 @@ ampsquared = Simplify[
       (SUNSimplify[#1, Explicit -> True, SUNNToCACF -> False] & )[
         FeynAmpDenominatorExplicit[(1 / (SUNN^2 - 1)^2) * (amp * ComplexConjugate[amp])]]]]]
 \end{mmaCell}
-For a $2 \rightarrow 1$ process, the hadronic cross section is given in \autoref{eq:Born-had}, where the partonic luminosity $\mathcal{L}_{gg}$ is handled by \textsc{H1jet}. Hence, we need to multiply our squared matrix element with:
+For a $2 \rightarrow 1$ process, the hadronic cross section is given in eq.~\eqref{eq:Born-had}, where the partonic luminosity $\mathcal{L}_{gg}$ is handled by \textsc{H1jet}. Hence, we need to multiply our squared matrix element with:
 \begin{mmaCell}{Code}
 xsec = Pi * ampsquared / mA^4 
 \end{mmaCell}
