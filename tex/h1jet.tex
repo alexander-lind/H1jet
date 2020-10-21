@@ -2,7 +2,13 @@
 
 \usepackage{amsmath,amssymb,graphicx,color}
 
-\usepackage{a4wide}
+%\usepackage{a4wide}
+
+\voffset=-2cm
+\hoffset=-3cm
+\textheight=650pt
+\textwidth=550pt
+
 
 \usepackage{authblk}
 
@@ -50,7 +56,7 @@
 \label{sec:intro}
 
 After the discovery of the Higgs boson in
-2012\cite{Aad:2012tfa,Chatrchyan:2012ufa}, one of most urgent tasks of
+2012~\cite{Aad:2012tfa,Chatrchyan:2012ufa}, one of most urgent tasks of
 the Large Hadron Collider (LHC) is the characterisation of the Higgs
 sector, in order to shed light on the exact mechanism for electroweak
 symmetry breaking. In particular, Higgs production data, either in the
@@ -294,8 +300,11 @@ options \texttt{./configure FC=<compiler>} and \texttt{./configure
 dependencies which it must be linked to:
 \begin{itemize}
 	\item \textsc{LHAPDF}~\cite{Buckley:2014ana}: Provides the PDF sets for \textsc{H1jet}. 
-	\item \textsc{HOPPET}~\cite{Salam:2008qg}: For QCD DGLAP evolution of PDFs. 
-	\item \textsc{CHAPLIN}~\cite{Buehler:2011ev}: For complex harmonic polylogarithms. 
+	\item \textsc{HOPPET}~\cite{Salam:2008qg}: For QCD DGLAP
+          evolution of PDFs and numerical integrations.
+	\item \textsc{CHAPLIN}~\cite{Buehler:2011ev}: For complex
+          harmonic polylogarithms used to represent scalar integrals
+          in loop-induced processes.
 \end{itemize} 
 For the \textsc{CHAPLIN} library, it may be necessary to explicitly state the path to the library files with:
 \begin{lstlisting}
@@ -428,7 +437,13 @@ The coupling between the CP-odd Higgs and a SM quark is:
 \begin{equation}
    \mathcal{L} \supset i \tilde{\kappa}_q \frac{m_q}{v} \bar{q} \gamma_5 q h
 \end{equation}
-where the implementation in \textsc{H1jet} uses by default $\tilde{\kappa}_t = 1$ and $\tilde{\kappa}_b = 0$. Both parameters can be changed through the options \texttt{--yt} and \texttt{--yb}. 
+where the implementation in \textsc{H1jet} uses by default $\tilde{\kappa}_t = 1$ and $\tilde{\kappa}_b = 0$. Both parameters can be changed through the options \texttt{--yt} and \texttt{--yb}.
+
+Here, both CP-even and CP-odd Higgs production are loop-induced
+processes. The amplitudes for $2\to 1$ processes are taken
+from ref.~\cite{Spira:1995rr}. For CP-even Higgs production in $2\to 2$,
+the amplitudes are taken from ref.~\cite{Baur:1989cm}, whereas we have
+taken the CP-odd $2\to 2$ amplitudes from ref.~\cite{Grojean:2013nya}.
 
 \paragraph{Top-partner.} \textsc{H1jet} allows the calculation of
 Higgs production via loops of top partners in addition to top loops.
