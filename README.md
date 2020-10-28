@@ -32,6 +32,7 @@ To compile with a custom user interface:
 make
 ```
 See the User's Manual for more information on the implementation of a custom user interface. 
+
 To install in a specific location: 
 ```
 ./configure --prefix=/path/to/installation
@@ -45,7 +46,7 @@ To run H1jet:
 ```
 ./bin/h1jet 
 ```
-H1jet will output a brief summary of the settings used along with the total born-level cross-section <img src="https://render.githubusercontent.com/render/math?math=\sigma_0">, followed by the <img src="https://render.githubusercontent.com/render/math?math=\mathrm{d}\sigma/\mathrm{d}p_{T}"> and <img src="https://render.githubusercontent.com/render/math?math=\sigma(p_{T})"> for each <img src="https://render.githubusercontent.com/render/math?math=p_T"> bin. 
+H1jet will output a brief summary of the settings used along with the Born cross section <img src="https://render.githubusercontent.com/render/math?math=\sigma_0">, followed by the <img src="https://render.githubusercontent.com/render/math?math=\mathrm{d}\sigma/\mathrm{d}p_{T}"> and the integrated cross section <img src="https://render.githubusercontent.com/render/math?math=\sigma(p_{T})"> with a lower bound in <img src="https://render.githubusercontent.com/render/math?math=p_T"> for each <img src="https://render.githubusercontent.com/render/math?math=p_T"> bin. 
 
 To get a complete list of options for H1jet: 
 ```
