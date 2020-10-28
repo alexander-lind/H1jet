@@ -282,7 +282,7 @@ A tarball with the source files of \textsc{H1jet} can be obtained from
 ref.~\cite{h1jet}. Unpacking will result in a main directory
 \texttt{\textsc{H1jet}} with the following subdirectories:
 \begin{description}[labelindent=\parindent, labelwidth =\widthof{\bfseries9999}, leftmargin = !]
-	\item[\texttt{bin} :] contains the executable program \texttt{h1jet} after compilation, as well as the Python 3 helper scripts \texttt{Plot\textsc{H1jet}.py} and \texttt{DressUserAmpCode.py}. 
+	\item[\texttt{bin} :] contains the executable program \texttt{h1jet} after compilation, as well as the Python 3 helper scripts \texttt{PlotH1jet.py} and \texttt{DressUserAmpCode.py}. 
 	\item[\texttt{src} :] source files. 
 \end{description}
 The \texttt{README.md} file contains information on installation and usage. \\
@@ -319,7 +319,7 @@ To install in a specific location:
 \begin{lstlisting}
 	./configure --prefix=/path/to/installation 
 \end{lstlisting}
-The default installation path is the main \texttt{\textsc{H1jet}}-directory. \\ 
+The default installation path is the main \texttt{H1jet}-directory. \\ 
 The configure script will generate the \texttt{Makefile}. \\ 
 To compile \textsc{H1jet} with the generated \texttt{Makefile}, run: 
 \begin{lstlisting}
@@ -687,17 +687,17 @@ Here is an example snippet of Fortran code which could appear in the \texttt{res
 
 \subsubsection{Output} 
 
-The helper script \texttt{Plot\textsc{H1jet}.py} facilitates easy and
+The helper script \texttt{PlotH1jet.py} facilitates easy and
 quick plotting of the output from \textsc{H1jet}. The script requires
 Python 3 installed in order to run. The user should simply pipe the
 output of \textsc{H1jet} to the script:
 \begin{lstlisting}
-	./h1jet [options] | python Plot\textsc{H1jet}.py 
+	./h1jet [options] | python PlotH1jet.py 
 \end{lstlisting}
 Alternatively, the plotting script can run on an output file from \textsc{H1jet}: 
 \begin{lstlisting}
 	./h1jet [options] -o result.out 
-	python Plot\textsc{H1jet}.py result.out 
+	python PlotH1jet.py result.out 
 \end{lstlisting}
 A resulting example plot with default settings in \textsc{H1jet} is shown in \autoref{fig:h1jetresult}. 
 
