@@ -28,6 +28,18 @@ pdf_line   = False
 hist_line  = False 
 
 def parseLine(line):
+    global bin_min
+    global bin_med
+    global bin_max
+    global dsigma_dpt 
+    global sigmapt
+    global collider
+    global roots
+    global process
+    global model
+    global pdf_name
+    global log
+    global legend_x0
     global pdf_line
     global hist_line
     rline = line.rstrip() 
@@ -49,7 +61,10 @@ def parseLine(line):
         legend_x0 = 0.50 
     elif rline.startswith(' model          = SM with top partners'):
         model = "SM + top partner"
-        legend_x0 = 0.30 
+        legend_x0 = 0.30
+    elif rline.startswith(' model          = CP-odd Higgs'):
+        model = "CP-odd Higgs"
+        legend_x0 = 0.35
     elif rline.startswith('LHAPDF'):
         pdf_line = True
     elif rline.startswith(' log            = T'):
@@ -136,8 +151,9 @@ def main():
     # Text on Plot 
     plt.text(legend_x0, 0.90, r"H1jet ", transform = ax.transAxes, fontsize = font_size)
     plt.text(legend_x0, 0.82, process, transform = ax.transAxes, fontsize = font_size)
-    plt.text(legend_x0, 0.74, model + ", " + collider + r"$, \sqrt{s} = $" + str(roots) + " TeV", transform = ax.transAxes, fontsize = font_size)
-    plt.text(legend_x0, 0.66, pdf_name, transform = ax.transAxes, fontsize = font_size)
+    #plt.text(legend_x0, 0.74, model + ", " + collider + r"$, \sqrt{s} = $" + str(roots) + " TeV", transform = ax.transAxes, fontsize = font_size)
+    plt.text(legend_x0, 0.74, model + r"$, \sqrt{s} = $" + str(roots) + " TeV", transform = ax.transAxes, fontsize = font_size)
+    #plt.text(legend_x0, 0.66, pdf_name, transform = ax.transAxes, fontsize = font_size)
 
     plt.tight_layout()
 
