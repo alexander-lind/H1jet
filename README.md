@@ -1,5 +1,5 @@
 # H1jet
-A fast program to compute the differential transverse momentum distributions of one of the final-state particles produced in a
+A fast and easy-to-use program to compute the differential transverse momentum distributions of one of the final-state particles produced in a
   <img src="https://render.githubusercontent.com/render/math?math=2\to 2"> process. 
 
 The latest version can be obtained with: 
@@ -53,3 +53,11 @@ To get a complete list of options for H1jet:
 ./bin/h1jet --help
 ```
 See the User's Manual for more details on all options. 
+
+The output from H1jet can be easily plotted with a provided helper script. 
+Simply pipe the output: 
+```
+./bin/h1jet | python PlotH1jet.py 
+```
+This will produce the following plot for default options: 
+![alt text](https://github.com/alexander-lind/H1jet/blob/master/tex/figures/H1jetresult.pdf?raw=true)
