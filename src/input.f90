@@ -155,9 +155,9 @@ contains
       res = M1_5
     else if (model == 'M1_14') then
       res = M1_14
-    else if (proc == 'M4_5') then
+    else if (model == 'M4_5') then
       res = M4_5
-    else  if (proc == 'M4_14') then
+    else  if (model == 'M4_14') then
       res = M4_14
     else
       call wae_error('model_to_id', 'Unrecognised model ', model)
