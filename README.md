@@ -60,4 +60,4 @@ Simply pipe the output:
 ./bin/h1jet | python PlotH1jet.py 
 ```
 This will produce the following plot for default options: 
-![alt text](https://github.com/alexander-lind/H1jet/blob/master/tex/figures/H1jetresult.pdf?raw=true)
+![Example plot of default H1jet output.](https://github.com/alexander-lind/H1jet/blob/master/tex/figures/H1jetresult.png?raw=true)
