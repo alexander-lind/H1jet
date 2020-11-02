@@ -39,8 +39,8 @@
 
 \title{\vspace{-10mm}\textsc{H1jet}, a fast program to compute transverse momentum distributions\blfootnote{\textsc{H1jet} can be obtained from ref.~\cite{h1jet}.}}
 
-\author[1]{Alexander Lind \footnote{Email: \href{mailto:a.lind@sussex.ac.uk}{a.lind@sussex.ac.uk} (corresponding author)}} 
-\author[1]{Andrea Banfi \footnote{Email: \href{mailto:a.banfi@sussex.ac.uk}{a.banfi@sussex.ac.uk}}}
+\author[1]{Alexander Lind} %\footnote{Email: \href{mailto:a.lind@sussex.ac.uk}{a.lind@sussex.ac.uk} (corresponding author)}} 
+\author[1]{Andrea Banfi} %\footnote{Email: \href{mailto:a.banfi@sussex.ac.uk}{a.banfi@sussex.ac.uk}}}
 \affil[1]{Department of Physics and Astronomy, University of Sussex, BN1 9QH Brighton, UK}
 \renewcommand\Affilfont{\itshape\small}
 \date{}
@@ -95,7 +95,7 @@ There are essentially two ways of solving this problem. One is to put
 a direct constraint on the top Yukawa coupling by the
 observation of top quarks in association with the
 Higgs~\cite{Aad:2020ivc,Sirunyan:2020sum,Maltoni:2016yxb}. The other is
-to break the top loop by looking at Higgs production at large
+to break the top loop by looking e.g.\  at Higgs production at large
 transverse momentum, where the Higgs recoils against a hard
 jet~\cite{Azatov:2013xha,Grojean:2013nya,Banfi:2013yoa}. Both are
 indirect probes of new physics effects. The latter is more difficult
@@ -148,7 +148,14 @@ The main process is
 \begin{equation}
     pp \to H + \mathrm{jet} \,, 
 \end{equation}
-where the initial state are gluons and light quarks. This process can be calculated in \textsc{H1jet} for different physics models including the SM, a CP-odd Higgs, a simplified SUSY model, and a single or multiple top-partners. In addition, the $b\bar{b} \to H + \mathrm{jet}$ and $pp \to Z + \mathrm{jet}$ processes for the SM are implemented. Moreover, \textsc{H1jet} is very flexible and can be easily interfaced to use a custom user-specified process. 
+where the initial state are gluons and light quarks. This process can
+be calculated in \textsc{H1jet} for different physics models including
+the SM, a CP-odd Higgs, a simplified SUSY model, and composite Higgs
+models with a single or multiple top-partners. In addition, the
+$b\bar{b} \to H + \mathrm{jet}$ and $pp \to Z + \mathrm{jet}$
+processes for the SM are implemented. Moreover, \textsc{H1jet} is very
+flexible and can be easily interfaced to a custom user-specified
+process.
 
 The paper is organised as follows. In section~\ref{sec:method} we
 briefly describe the method underlying \textsc{H1jet}. In
@@ -217,7 +224,7 @@ $M_{ij}$. This procedure is the same adopted in the program
 singlets with a veto on additional jets.
 
 A similar strategy can be devised to obtain a fast calculation of
-distribution in the transverse momentum of particle $X$. A non-zero
+distributions in the transverse momentum of particle $X$. A non-zero
 transverse momentum for $X$ is obtained via a generic $2\to 2$
 partonic process $p_1 p_2 \to p_3 X$, where $p_1$, $p_2$, and $p_3$ are massless
 partons, and $p_X$ is the momentum of the colour singlet $X$. We
@@ -253,7 +260,7 @@ process initiated by partons $ij$ is given by
   \label{eq:partonic-pt}
   \frac{d\hat \sigma_{ij}}{dp_T} = \frac{p_T}{16\pi}\int d\eta \frac{|M_{ij}(\hat s,\hat t,\hat u)|^2}{E_X \hat s} \delta\left(\sqrt{\hat s} - p_T\cosh\eta-\sqrt{m_X^2+p^2_T\cosh^2\eta}\right)\,, 
 \end{equation}
-with $E_X=\sqrt{m_X^2+p^2_T\cosh^2\eta}$ as the energy of the colour-singlet
+where $E_X=\sqrt{m_X^2+p^2_T\cosh^2\eta}$ is the energy of the colour-singlet
 particle $p_X$.  The above equation selects two values of $\eta$, as
 follows
 \begin{equation}
@@ -280,7 +287,7 @@ where again $\mathcal{L}_{ij}$ is the partonic luminosity for the $ij$
 incoming channel as defined in eq.~\eqref{eq:hoppet-lumi}. If we are
 able to obtain the partonic luminosity $\mathcal{L}_{ij}$, say, from
 \textsc{HOPPET}, we can obtain the transverse momentum spectrum with a
-one-dimensional integration, which can be performed extremely fast
+one-dimensional integration, which can be performed extremely quickly
 with a Gaussian numerical integrator.
 
 Summarising, by interfacing \textsc{HOPPET} with a code that provides
@@ -288,7 +295,7 @@ amplitudes for $2\to 1$ and $2\to 2$ partonic subprocesses producing a
 colour singlet $X$, we are able to perform fast computations of total
 cross sections and transverse momentum spectra for $X$. In the
 following sections we describe our implementation of the method for
-Born processes. Note that if we are able to perform the analytic
+Born processes. Note that, if one were able to perform the analytic
 integration over the phase space of final-state partons, the method
 can also be applied to higher-order cross sections and differential
 spectra.
@@ -413,7 +420,7 @@ The options listed here apply to all processes.
         determined by the choice from \texttt{--scale\_strategy}. \\
         Default: 0.5.
       \item[\texttt{--xmuf <value>}] Additional factor $x_F$ for the
-        factorisation scale, , i.e.\ $\mu_F=x_F\,\mu$, where $\mu$ is
+        factorisation scale, i.e.\ $\mu_F=x_F\,\mu$, where $\mu$ is
         determined by the choice from \texttt{--scale\_strategy}. \\
         Default: 0.5.
       \item[\texttt{--nbins <value>}] Number of histogram bins in the
@@ -455,17 +462,18 @@ To consider a CP-odd Higgs instead, one must select the following option:
 \begin{description}[labelindent=1cm, labelwidth =\widthof{\bfseries9999999999999999999999}, leftmargin = !] 
 	\item[\texttt{--cpodd}] Toggle for calculation of CP-odd Higgs. 
 \end{description}
-The coupling between the CP-odd Higgs and a SM quark is: 
+The interaction between the CP-odd Higgs $h$ and a SM quark $q$ is: 
 \begin{equation}
    \mathcal{L} \supset i \tilde{\kappa}_q \frac{m_q}{v} \bar{q} \gamma_5 q h
 \end{equation}
 where the implementation in \textsc{H1jet} uses by default $\tilde{\kappa}_t = 1$ and $\tilde{\kappa}_b = 0$. Both parameters can be changed through the options \texttt{--yt} and \texttt{--yb}.
 
 Here, both CP-even and CP-odd Higgs production are loop-induced
-processes. The amplitudes for $2\to 1$ processes are taken
-from ref.~\cite{Spira:1995rr}. For CP-even Higgs production in $2\to 2$,
-the amplitudes are taken from ref.~\cite{Baur:1989cm}, and their interface is adapted from HERWIG. We have
-taken the CP-odd $2\to 2$ amplitudes from ref.~\cite{Grojean:2013nya}.
+processes. The amplitudes for $2\to 1$ processes are taken from
+ref.~\cite{Spira:1995rr}. For CP-even Higgs production in $2\to 2$,
+the amplitudes are taken from ref.~\cite{Baur:1989cm}, and their
+interface is adapted from \textsc{HERWIG 6}~\cite{Corcella:2000bw}. We have taken the CP-odd $2\to 2$
+amplitudes from ref.~\cite{Grojean:2013nya}.
 
 \paragraph{Top-partner.} \textsc{H1jet} allows the calculation of
 Higgs production via loops of top partners in addition to top loops.
@@ -541,13 +549,13 @@ where the $\tilde{\kappa}$'s are the CP-odd couplings, and,
 For $\textbf{M1}_{\textbf{5}}$ and $\textbf{M1}_{\textbf{14}}$, the
 option \texttt{--sth2} sets the mixing angle $\theta_L$, while for
 $\textbf{M4}_{\textbf{5}}$ and $\textbf{M4}_{\textbf{14}}$, the same
-option sets the angle $\theta_R$. The reason for this is that you want
+option sets the angle $\theta_R$. The reason for this is that we want
 to reproduce the $f\to \infty$ limit, where
 $\theta_T=\theta_L,\theta_R$ depending on the chosen model. When
 needed, the angles $\theta_L$ and $\theta_R$ are derived one from the
 other by using the relation
 \begin{equation}
-	m_t^2 \tan^2\theta_L = m_T^2 \tan^2\theta_T \,. 
+	m_t^2 \tan^2\theta_L = m_T^2 \tan^2\theta_R \,. 
 \end{equation}
 The composite Higgs top-partner model specific options are: 
 \begin{description}[labelindent=1cm, labelwidth =\widthof{\bfseries9999999999999999999999}, leftmargin = !] 
@@ -577,21 +585,22 @@ following option:
   masses and Yukawas. See the file \texttt{SM.dat} for the SM case,
   without any top partners.
 \end{description} 
-The first line of the input file should specify the number of top-partners, e.g.: 
+The first line of the input file should specify the number of
+particles running in the loops, e.g.:
 \begin{lstlisting}
-	nqmax: 2 
+	nmax: 2 
 \end{lstlisting}
-This should be followed by \texttt{nqmax} number of lines -- one for each top-partner -- in the format of four numbers specifying the mass, $\kappa$, $\tilde{\kappa}$, and loop approximation, in that order. For example, for a SM top quark: 
+This should be followed by \texttt{nqmax} number of lines -- one for each particle loop -- in the format of four numbers specifying the mass, $\kappa$, $\tilde{\kappa}$, and loop approximation (see later), in that order. For example, for a SM top quark: 
 \begin{lstlisting}
 	173.5 1.0 0.0 1 
 \end{lstlisting}
 with mass $173.5$ GeV, $\kappa = 1$, $\tilde{\kappa} = 0$, and the loop approximation set to $1$. \\ 
 
-The dimensionless Yukawa coupling factors $\kappa$ and $\tilde{\kappa}$ are the CP-even and CP-odd couplings respectively, with the following Lagrangian: 
+The dimensionless Yukawa coupling factors $\kappa_q$ and $\tilde{\kappa}_q$ are respectively the CP-even and CP-odd couplings for a quark $q$, with the following Lagrangian: 
 \begin{equation}
-	\mathcal{L} \supset -m_T \bar{T}T + \kappa \frac{m_T}{v} \bar{T}T h + i \tilde{\kappa} \frac{m_T}{v} \bar{T} \gamma_5 T h 
+	\mathcal{L} \supset -m_q \bar{q}q - \kappa \frac{m_T}{v} \bar{q}q h + i \tilde{\kappa} \frac{m_q}{v} \bar{q} \gamma_5 q h\,,
 \end{equation}
-for a top-partner $T$. \\ 
+where $m_q$ is the mass of the quark. \\ 
 
 The integer value specifying the loop approximations can take the following values: 
 \begin{description}[labelindent=1cm, labelwidth =\widthof{\bfseries9999}, leftmargin = !] 
@@ -602,17 +611,17 @@ The integer value specifying the loop approximations can take the following valu
 	\item[$4$] Large mass limit for scalars. 
 \end{description}
 See Section \ref{sec:loopapprox} for more information on the loop
-approximations. Note that using an input file is the only way to
-change the approximation in which loops are computed. 
+approximations. Note that, for implemented processes, using an input
+file is the only way to change the approximation in which loops are
+computed.
 
 \paragraph{SUSY.} \textsc{H1jet} includes the simplified SUSY model with
-two stops $\tilde{t}_1$ and $\tilde{t}_2$ considered in refs.~\cite{Gunion:2002zf} and~\cite{Banfi:2018pki}.  of ref.~\cite{Gunion:2002zf} and~\cite{Banfi:2018pki}. as considered in
-ref.\cite{Banfi:2018pki}. To include the SUSY stops $\tilde{t}_1$ and
+two stops $\tilde{t}_1$ and $\tilde{t}_2$ considered in refs.~\cite{Gunion:2002zf} and~\cite{Banfi:2018pki}. To include the SUSY stops $\tilde{t}_1$ and
 $\tilde{t}_2$ in the quark loops, it will be necessary to set the
 first stop mass $m_{\tilde{t}_1}$ to a non-zero value by using the
 \texttt{--mst} option. The second stop mass is then given by
 \begin{equation}
-	m_{\tilde{t}_2} = \sqrt{m_{\tilde{t}_1}^2 + (\Delta m)^2} 
+	m_{\tilde{t}_2} = \sqrt{m_{\tilde{t}_1}^2 + (\Delta m)^2} \,,
 \end{equation}
 where $\Delta m$ is set with the \texttt{--delta} option. 
 
@@ -674,7 +683,7 @@ of the above physics options may be relevant if they are used in the
 custom amplitude code. The code will have to be inspected to determine
 this. The only built-in process-relevant option is:
 \begin{description}[labelindent=1cm, labelwidth =\widthof{\bfseries9999999999999999999999}, leftmargin = !] 
-	\item[\texttt{--mass <value>}] Relevant mass in the user specified process, $M$ [GeV]. Used in the scale choice and in the setup of kinematics. \\ Default: 0 GeV. 
+	\item[\texttt{-M, --mass <value>}] Relevant mass in the user specified process, $M$ [GeV]. Used in the scale choice and in the setup of kinematics. \\ Default: 0 GeV. 
 \end{description}
 Additional options may be added depending on the custom process/amplitude. See Section \ref{sec:newprocs} below for more details on the implementation of a custom process. 
 
@@ -707,9 +716,10 @@ The size of the array must match the number of particles appearing in the loops,
 
 \subsubsection{Output} 
 
-The helper script \texttt{PlotH1jet.py} facilitates easy and
-quick plotting of the output from \textsc{H1jet}. The script requires
-Python 3 installed in order to run. Simply pipe the output of \textsc{H1jet} to the script:
+The helper script \texttt{PlotH1jet.py} facilitates easy and quick
+plotting of the output from \textsc{H1jet}. The script requires Python
+3 installed in order to run. The user needs to simply pipe the output
+of \textsc{H1jet} to the script:
 \begin{lstlisting}
 	./bin/h1jet [options] | python PlotH1jet.py 
 \end{lstlisting}
@@ -805,7 +815,7 @@ programs used to compute the PDF evolution (\textsc{HOPPET}) and the
 scalar integrals (\textsc{CHAPLIN}). We have modified various internal
 parameters of the two libraries, and we obtained differences that are
 less than permille level. So, a conservative estimate of the numerical
-uncertainty of \textsc{H1jet} is $1\times 10^{-3}$
+uncertainty of \textsc{H1jet} is $1\times 10^{-3}$.
 
 \section{Adding New Processes to \textsc{H1jet}}
 \label{sec:newprocs} 
@@ -823,13 +833,16 @@ jet. For simplicity, we only consider the gluon-fusion channel,
 \end{equation}
 This is a tree-level process due to an effective ALP-gluon coupling, 
 \begin{equation}
-   \delta \mathcal{L}_a \supset -c_{\tilde{G}}\frac{a}{f_a} G_{\mu\nu}^{a} \tilde{G}^{a \mu\nu} \,. \label{eq:ggacoupling}
+   \delta \mathcal{L}_a \supset -c_{\tilde{G}}\frac{a}{f_a} G_{\mu\nu}^{a} \tilde{G}^{a \mu\nu} \,, \label{eq:ggacoupling}
 \end{equation}
-The model and the \textsc{FeynRules}~\cite{Alloul:2013bka} model files
-are described and provided in ref.~\cite{Brivio:2017ije}. We use
+where $G_{\mu\nu}^{a}$ is the gluon field strength tensor and
+$\tilde{G}^{a}_{ \mu\nu}=(1/2)\epsilon_{\mu\nu\rho\sigma}{G}^{a
+  \mu\nu}$ its dual.  The model and the
+\textsc{FeynRules}~\cite{Alloul:2013bka} model files are described and
+provided in ref.~\cite{Brivio:2017ije}. We use
 \textsc{FeynCalc}~\cite{Mertig:1990an,Shtabovenko:2016sxi,Shtabovenko:2020gxv}
-to evaluate the amplitude from the model, so we have to convert
-the \textsc{FeynRules} model to a \textsc{FeynArts}~\cite{Hahn:2000kx}
+to evaluate the amplitude from the model, so we have to convert the
+\textsc{FeynRules} model to a \textsc{FeynArts}~\cite{Hahn:2000kx}
 model in Mathematica:
 \begin{mmaCell}{Code}
 << FeynRules` 
@@ -1028,7 +1041,7 @@ ampsquared = Simplify[
       (SUNSimplify[#1, Explicit -> True, SUNNToCACF -> False] & )[
         FeynAmpDenominatorExplicit[(1 / (SUNN^2 - 1)^2) * (amp * ComplexConjugate[amp])]]]]]
 \end{mmaCell}
-For a $2 \rightarrow 1$ process, the hadronic cross section is given in eq.~\eqref{eq:Born-had}, where the partonic luminosity $\mathcal{L}_{gg}$ is handled by \textsc{H1jet}. Hence, we need to multiply our squared matrix element with:
+For a $2 \rightarrow 1$ process, the hadronic cross section is given in eq.~\eqref{eq:Born-had}, where the partonic luminosity $\mathcal{L}_{gg}$ is handled by \textsc{H1jet}. Hence, we need to multiply our squared matrix element by
 \begin{mmaCell}{Code}
 xsec = Pi * ampsquared / mA^4 
 \end{mmaCell}
@@ -1082,7 +1095,7 @@ that the possibility of automatically implementing a new model inside
 the program is a feature that is not available in \textsc{SusHi}. We
 also stress that it is also possible to take advantage of input files
 to obtain results for an arbitrary number of fermions and scalars in
-loops, with appropriate couplings. This for instance, could be used to
+loops, with appropriate couplings. This could be used, for instance, to
 implement the MSSM instead of the provided simplified SUSY model.
 
 We stress that \textsc{H1jet} is not a replacement for a proper Monte Carlo
@@ -1105,10 +1118,10 @@ order in QCD, nothing prevents the inclusion of higher orders, provided one
 integrates over all coloured particles. 
 
 \paragraph{Acknowledgements.} The idea of having a fast program to
-compute transverse momentum spectra started from the collaboration of
-AB on related topics with G.~Zanderighi, P.~F.~Monni and F.~Caola. AB
+compute transverse momentum spectra started from AB's collaboration
+with G.~Zanderighi, P.~F.~Monni and F.~Caola. AB
 acknowledges many useful discussions with them on the topic. AB also
-wishes to thank B.~Dillon and S.~Kvedarait\.e for contributions to a
+wishes to thank B.~Dillon, W.~Ketaiam and S.~Kvedarait\.e for contributions to a
 private preliminary version of \textsc{H1jet}. The studentship of AL is
 supported by the Science Technology and Facilities Council (STFC)
 under grant number ST/P000819/1. The work of AB is supported by the
@@ -1253,8 +1266,12 @@ negative imaginary part. The reverse happens for $v>4m^2$. Therefore,
 we need to perform some formal manipulations to use the harmonic
 polylogarithms provided by CHAPLIN.
 
-In practice, whenever the argument $z$ of the dilogarithm is complex, we just use the
-definitory relation $\mathrm{Li_2}(z)=H(0,1;z)$. When $z=x+i\varepsilon$, we use $\mathrm{Li_2}(x+i\varepsilon)=H(0,1;x)$, with $H(0,1;x)$ the complex number provided by CHAPLIN. If $z=x-i\varepsilon$, we use the identities
+In practice, whenever the argument $z$ of the dilogarithm is complex,
+we just use the definitory relation $\mathrm{Li_2}(z)=H(0,1;z)$. When
+$z=x+i\varepsilon$, with $x$ real, we use
+$\mathrm{Li_2}(x+i\varepsilon)=H(0,1;x)$, with $H(0,1;x)$ the complex
+number provided by CHAPLIN. If $z=x-i\varepsilon$, we use the
+identities
 \begin{equation}
   \begin{split}
 \mathrm{Li}_{2}\left ( x-i\varepsilon \right )&= -H\left(0,1;\frac{1}{x} \right ) - \frac{\pi^2}{6} - H(0,0; -x)  = -H(0,-1;-x) = \\ & 
