@@ -55,7 +55,7 @@ contains
     write(stderr,'(a)') '  --ptmax <value>        Maximum pT value, default = 4000 GeV'
     write(stderr,'(a)') '  --accuracy <value>     The desired Monte Carlo integration accuracy, default = 0.001'
     write(stderr,'(a)') '  --cpodd                Toggle for CP-odd Higgs' 
-    write(stderr,'(a)') '  --mass <value>         Relevant mass in user process [GeV], default = 0 GeV' 
+    write(stderr,'(a)') '  -M, --mass <value>     Relevant mass in user process [GeV], default = 0 GeV' 
     write(stderr,'(a)') '  --mH <value>           Higgs mass [GeV], default = 125 GeV'
     write(stderr,'(a)') '  --mZ <value>           Z boson mass [GeV], default = 91.1876 GeV'
     write(stderr,'(a)') '  --mW <value>           W boson mass [GeV], default = 80.385 GeV'

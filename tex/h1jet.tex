@@ -462,9 +462,9 @@ To consider a CP-odd Higgs instead, one must select the following option:
 \begin{description}[labelindent=1cm, labelwidth =\widthof{\bfseries9999999999999999999999}, leftmargin = !] 
 	\item[\texttt{--cpodd}] Toggle for calculation of CP-odd Higgs. 
 \end{description}
-The interaction between the CP-odd Higgs $h$ and a SM quark $q$ is: 
+The interaction between the CP-odd Higgs $H$ and a SM quark $q$ is: 
 \begin{equation}
-   \mathcal{L} \supset i \tilde{\kappa}_q \frac{m_q}{v} \bar{q} \gamma_5 q h
+   \mathcal{L} \supset i \tilde{\kappa}_q \frac{m_q}{v} \bar{q} \gamma_5 q H
 \end{equation}
 where the implementation in \textsc{H1jet} uses by default $\tilde{\kappa}_t = 1$ and $\tilde{\kappa}_b = 0$. Both parameters can be changed through the options \texttt{--yt} and \texttt{--yb}.
 
@@ -590,7 +590,7 @@ particles running in the loops, e.g.:
 \begin{lstlisting}
 	nmax: 2 
 \end{lstlisting}
-This should be followed by \texttt{nqmax} number of lines -- one for each particle loop -- in the format of four numbers specifying the mass, $\kappa$, $\tilde{\kappa}$, and loop approximation (see later), in that order. For example, for a SM top quark: 
+This should be followed by \texttt{nmax} number of lines -- one for each particle loop -- in the format of four numbers specifying the mass, $\kappa$, $\tilde{\kappa}$, and loop approximation (see later), in that order. For example, for a SM top quark: 
 \begin{lstlisting}
 	173.5 1.0 0.0 1 
 \end{lstlisting}
@@ -598,7 +598,7 @@ with mass $173.5$ GeV, $\kappa = 1$, $\tilde{\kappa} = 0$, and the loop approxim
 
 The dimensionless Yukawa coupling factors $\kappa_q$ and $\tilde{\kappa}_q$ are respectively the CP-even and CP-odd couplings for a quark $q$, with the following Lagrangian: 
 \begin{equation}
-	\mathcal{L} \supset -m_q \bar{q}q - \kappa \frac{m_T}{v} \bar{q}q h + i \tilde{\kappa} \frac{m_q}{v} \bar{q} \gamma_5 q h\,,
+	\mathcal{L} \supset -m_q \bar{q}q - \kappa_q \frac{m_q}{v} \bar{q}q H + i \tilde{\kappa}_q \frac{m_q}{v} \bar{q} \gamma_5 q H \,,
 \end{equation}
 where $m_q$ is the mass of the quark. \\ 
 

@@ -26,8 +26,6 @@ program h1jet
   integer :: i
   ! I/O unit identifier
   integer :: idev
-  ! Maximum number of warnings
-  integer :: max_warns = 3
   ! Local kinematical variables
   real(dp) :: lnpt, xmom, ymin, ymax 
   ! Variables related to bbH 

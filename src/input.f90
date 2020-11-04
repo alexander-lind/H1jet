@@ -229,7 +229,7 @@ contains
         delta = dble_val_opt('--delta', zero) ! SUSY fine-tuning parameter 
         mst2 = sqrt(mst1**2 + delta**2)
         tbeta = dble_val_opt('--tbeta', zero) ! Ratio of VEV's in MHDMs, tan(beta) 
-        c2beta = (one-tbeta**2) / (one + tbeta**2) ! cos(2 * beta) 
+        c2beta = (one - tbeta**2) / (one + tbeta**2) ! cos(2 * beta) 
 
         if ((mst1 * mtp) /= zero) then 
           call wae_error('set_masses_and_couplings', 'Simoultaneous top partners &
@@ -324,7 +324,16 @@ contains
 
         ! Relevant mass for the user specified amplitude 
         ! Important to set for correct scales muR and muF 
-        M = dble_val_opt('--mass', zero) 
+        M = zero
+        if (log_val_opt('--mass')) then
+          M = dble_val_opt('--mass', zero) 
+        else if (log_val_opt('-M')) then
+          M = dble_val_opt('-M', zero)
+        else 
+          call wae_warn(max_warns, 'set_masses_and_couplings', 'It is &
+          &recommended to set relevant mass with option -M or --mass for user-&
+          &specified processes')
+        end if
 
       case default
 

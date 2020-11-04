@@ -14,6 +14,9 @@ module common_vars
   integer, public, parameter :: stdout = 6
   integer, public, parameter :: stderr = 0
 
+  ! Maximum number of warnings
+  integer :: max_warns = 3
+
   ! Process id 
   integer, public, parameter :: id_H = 1
   integer, public, parameter :: id_Z = 2
