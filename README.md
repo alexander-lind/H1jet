@@ -42,7 +42,7 @@ make install
 By default the prefix is set to the H1jet main directory. 
 
 ## Use 
-To run H1jet: 
+To run H1jet from the main directory: 
 ```
 ./bin/h1jet 
 ```
@@ -54,8 +54,8 @@ To get a complete list of options for H1jet:
 ```
 See the User's Manual for more details on all options. 
 
-The output from H1jet can be easily plotted with a provided helper script. 
-Simply pipe the output: 
+The output from H1jet can be easily plotted with the provided helper script. 
+Simply pipe the output from H1jet to the script: 
 ```
 ./bin/h1jet | python bin/PlotH1jet.py 
 ```
