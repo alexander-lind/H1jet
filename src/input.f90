@@ -348,12 +348,12 @@ contains
 !======================================================================================= 
 ! Set Yukawa couplings for specific composite Higgs models
 
-  subroutine set_yukawas(model, invfscale, imc1, mtp, yt, ytp, yb)
+  subroutine set_yukawas(model, invfscale, imc1, mtp, yt, yb, ytp)
     use hboson
     use ew_parameters
     integer, intent(in) :: model
     real(dp), intent(in) :: invfscale, imc1, mtp
-    real(dp), intent(inout) :: yt, ytp, yb
+    real(dp), intent(inout) :: yt, yb, ytp
     !-----------------------------------------  
     real(dp) :: seps, ceps
     real(dp) :: sthRsq, cthRsq, tanthRsq
