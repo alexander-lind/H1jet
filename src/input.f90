@@ -265,6 +265,8 @@ contains
           ! The inverse of fscale
           if (log_val_opt('--fscale')) then
             invfscale = one / dble_val_opt('--fscale', zero)
+          else if (log_val_opt('-f')) then
+            invfscale = one / dble_val_opt('-f', zero)
           else
             invfscale = zero
             yt = yt * (one - sth2)

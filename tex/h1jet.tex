@@ -32,6 +32,24 @@
   keepspaces=true
 }
 
+% Redefine maketitle 
+\makeatletter
+\def\@maketitle{%
+  \newpage
+  \null
+  \vskip 2em%
+  \begin{center}%
+  \let \footnote \thanks
+    {\LARGE \@title \par}%
+    \vskip 1.5em%
+    {\large \@author \par}%
+    \vskip 1em%
+    {\large \@date}%
+  \end{center}%
+  \par
+  \vskip 1em}
+\makeatother
+
 % Footnote without number or mark 
 \makeatletter
 \def\blfootnote{\gdef\@thefnmark{}\@footnotetext}
@@ -39,17 +57,15 @@
 
 \title{\vspace{-10mm}\textsc{H1jet}, a fast program to compute transverse momentum distributions\blfootnote{\textsc{H1jet} can be obtained from ref.~\cite{h1jet}.}}
 
-\author[1]{Alexander Lind} %\footnote{Email: \href{mailto:a.lind@sussex.ac.uk}{a.lind@sussex.ac.uk} (corresponding author)}} 
-\author[1]{Andrea Banfi} %\footnote{Email: \href{mailto:a.banfi@sussex.ac.uk}{a.banfi@sussex.ac.uk}}}
-\affil[1]{Department of Physics and Astronomy, University of Sussex, BN1 9QH Brighton, UK}
+\author{Alexander Lind} 
+\author{Andrea Banfi} 
+\affil{Department of Physics and Astronomy, University of Sussex, BN1 9QH Brighton, UK}
 \renewcommand\Affilfont{\itshape\small}
-\date{}
+\date{\small E-mail: \href{mailto:a.lind@sussex.ac.uk}{a.lind@sussex.ac.uk}, \href{mailto:a.banfi@sussex.ac.uk}{a.banfi@sussex.ac.uk}}
 
 \begin{document}
 
 \maketitle
-
-\vspace{-10mm} 
 
 \abstract{We present \textsc{H1jet}, a fast code that computes the
   total cross section and differential distribution in the transverse
@@ -567,7 +583,7 @@ The composite Higgs top-partner model specific options are:
 		\item[\texttt{M4\_14}] $\textbf{M4}_{\textbf{5}}$, with a light top-partner transforming as a $\textbf{4}_{\textbf{2/3}}$ of $\text{SO}(4)$, and the SM top-bottom doublet embedded in a $\textbf{14}$ of $\text{SO}(5)$. 
 	\end{description} \vspace{-1mm} 
 	\item[\texttt{--imc1 <value>}] Imaginary part of the $c_1$ coefficient, $\text{Im}(c_1)$. \\ Default: 0.  
-	\item[\texttt{--fscale <value>}] Compositeness scale $f$
+	\item[\texttt{-f, --fscale <value>}] Compositeness scale $f$
           [GeV]. \\ If the option is not set, all couplings will be
           automatically computed in the limit $f\to\infty$. If the
           option is set but no value is provided, the program will

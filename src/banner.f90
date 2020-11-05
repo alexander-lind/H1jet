@@ -84,7 +84,7 @@ contains
     write(stderr,'(a)') '                                 SM top-bottom doublet embedded in a 14 of SO(5)'
     write(stderr,'(a)') '                         See arXiv:1905.12747 for more information on the models'
     write(stderr,'(a)') '  --imc1 <value>         Imaginary part of the c_1 coefficients, default = 0'
-    write(stderr,'(a)') '  --fscale <value>       Top-partner confinement scale [GeV], default = 0 GeV'
+    write(stderr,'(a)') '  -f, --fscale <value>   Top-partner confinement scale [GeV], default = 0 GeV'
     write(stderr,'(a)') 
 
     call user_help_message 
