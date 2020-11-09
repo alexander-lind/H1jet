@@ -55,7 +55,7 @@
 \def\blfootnote{\gdef\@thefnmark{}\@footnotetext}
 \makeatother
 
-\title{\vspace{-10mm}\textsc{H1jet}, a fast program to compute transverse momentum distributions\blfootnote{\textsc{H1jet} can be obtained from ref.~\cite{h1jet}.}}
+\title{\bf \vspace{-10mm}\textsc{H1jet}, a fast program to compute transverse momentum distributions\blfootnote{\textsc{H1jet} can be obtained from ref.~\cite{h1jet}.}}
 
 \author{Alexander Lind} 
 \author{Andrea Banfi} 
@@ -127,7 +127,7 @@ either against dark matter, or against a SM particle decaying into
 invisible particles (see e.g.\ refs.~\cite{Sirunyan:2017hci,Aaboud:2019yqu}).
 
 Theoretical predictions for the transverse momentum distribution of a
-colour singlet, both in the SM and beyond, can be currently performed
+colour singlet, both in the SM and beyond, can be currently obtained
 with Monte Carlo programs, such as
 \textsc{\linebreak MadGraph5\_aMC@NLO}~\cite{Alwall:2014hca} or
 \textsc{SusHi}~\cite{Harlander:2012pb,Harlander:2016hcx}. These codes,
@@ -159,15 +159,16 @@ program. The relevant amplitudes can be
 either hard coded, or computed automatically and embedded in the program
 via a simple user interface.
 
-\textsc{H1jet} already comes with several hard-coded processes and models. 
+\textsc{H1jet} already comes with a number of hard-coded processes and models. 
 The main process is 
 \begin{equation}
     pp \to H + \mathrm{jet} \,, 
 \end{equation}
-where the initial state consists of gluons and light quarks. This process can
-be calculated in \textsc{H1jet} for different physics models including
-the SM, a CP-odd Higgs, a simplified SUSY model, and composite Higgs
-models with a single or multiple top-partners. In addition, the
+where the initial state consists of gluons and light quarks, and Higgs
+production procedes via quark loops. This process can be calculated in
+\textsc{H1jet} for different physics models including the SM, a CP-odd
+Higgs, a simplified SUSY model, and composite Higgs models with a
+single or multiple top-partners. In addition, the
 $b\bar{b} \to H + \mathrm{jet}$ and $pp \to Z + \mathrm{jet}$
 processes for the SM are implemented. Moreover, \textsc{H1jet} is very
 flexible and can be easily interfaced to use a custom user-specified
@@ -181,9 +182,10 @@ run, and present the features currently implemented. In
 section~\ref{sec:benchmarking} we present a detailed comparison with
 the existing program \textsc{SusHi} for Higgs production both in the
 SM and beyond. In section~\ref{sec:newprocs} we explain how a user can
-implement a model of new physics inside \textsc{H1jet}. We choose axion-like-particle 
-(ALP) production, giving rise to a monojet. We then go all the way from the
-generation of the Feynman rules with \textsc{FeynRules}, to the
+implement a model of new physics inside \textsc{H1jet}. We choose
+axion-like-particle (ALP) production, giving rise to a monojet. We
+then describe how to obtain ALP transverse momentum distributions from
+the generation of the Feynman rules with \textsc{FeynRules}, to the
 calculation of the amplitude with \textsc{FeynCalc} and its subsequent
 interface with \textsc{H1jet} to obtain the ALP transverse momentum
 spectrum. Last, section~\ref{sec:the-end} presents our conclusions.
@@ -202,7 +204,7 @@ singlet. From momentum conservation we have
   \label{eq:mom-conservation}
   \hat s = (p_1+p_2)^2=m_X^2\,.
 \end{equation}
-There can be various partonic subprocesses that can contribute to the
+There can be various partonic subprocesses that contribute to the
 production of the particle $X$. Let us denote with $M_{ij}$ the
 amplitude for the subprocess $ij\to X$ (e.g. $gg \to H$), with
 $i,j=g,q_f,\bar q_{\bar f}$, where $f,\bar f$ denotes quark or
@@ -469,7 +471,7 @@ then the following options are relevant:
           [GeV]. \\ Default: 1.
 	\item[\texttt{--GF <value>}] Fermi coupling constant, $G_F$ [GeV$^{-2}$]. \\ Default: $0.116638 \times 10^{-4}$ GeV$^{-2}$. 
 \end{description}
-Note that the Yukawa couplings are given by $y_q=\kappa_q (\sqrt 2 m_q / v)$, where $\kappa_q$ are the dimensionless factors specified by the options \texttt{--yt} and \texttt{--yb} above. \\ 
+Note that the Yukawa couplings are given by $y_q=\kappa_q (\sqrt 2 m_q / v)$, where $\kappa_q$ are the dimensionless factors specified by the options \texttt{--yt} and \texttt{--yb} above, and $v/\sqrt{2}$ is the vacuum expectation value of the Higgs field. \\ 
 
 Note also that \textsc{H1jet} uses the $G_{\mu}$ scheme for the all electroweak parameters~\cite{Georgi:1991ci}. Hence, the Higgs vacuum expectation value is given by $v = 1 / \sqrt{\sqrt{2} G_F}$, and the Weinberg angle is $\sin^2 \theta_W = 1 - m_W^2 / m_Z^2$. \\ 
 
@@ -480,7 +482,7 @@ To consider a CP-odd Higgs instead, it is necessary to select the following opti
 \end{description}
 The interaction between the CP-odd Higgs $H$ and a SM quark $q$ is: 
 \begin{equation}
-   \mathcal{L} \supset i \tilde{\kappa}_q \frac{m_q}{v} \bar{q} \gamma_5 q H
+   \mathcal{L} \supset i \tilde{\kappa}_q \frac{m_q}{v} \bar{q} \gamma_5 q H\,,
 \end{equation}
 where the implementation in \textsc{H1jet} uses by default $\tilde{\kappa}_t = 1$ and $\tilde{\kappa}_b = 0$. Both parameters can be changed with the options \texttt{--yt} and \texttt{--yb}.
 
