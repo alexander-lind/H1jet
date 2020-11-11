@@ -104,9 +104,12 @@ contains
     integer, intent(in) :: idev
     
     write(idev,'(a)') '============================================================'
-    write(idev,'(a)') '                    H1jet version '//trim(version_number) 
+    write(idev,'(a)') '                     H1jet version '//trim(version_number) 
     write(idev,'(a)') '    Tool for the fast and accurate calculation of the pT    '
     write(idev,'(a)') ' distribution in Higgs + jet production at hadron colliders '
+    write(idev,'(a)') 
+    write(idev,'(a)') '         Written by Alexander Lind and Andrea Banfi'
+    write(idev,'(a)') '                  arXiv:2011.04694 [hep-ph]'
     write(idev,'(a)') '============================================================'
 
     write(idev,*) ! Blank space for cleaner output 
