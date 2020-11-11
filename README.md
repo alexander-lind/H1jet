@@ -8,6 +8,7 @@ git clone https://github.com/alexander-lind/H1jet.git
 ```
 
 See the User's Manual for more information, available at: 
+https://arxiv.org/abs/2011.04694
 
 ## Dependencies 
 H1jet requires the following external packages: 
@@ -31,7 +32,7 @@ To compile with a custom user interface:
 ./configure USERFILE=/path/to/custom/user_interface.f90 
 make
 ```
-See the User's Manual for more information on the implementation of a custom user interface. 
+See the [User's Manual](https://arxiv.org/abs/2011.04694) for more information on the implementation of a custom user interface. 
 
 To install in a specific location: 
 ```
@@ -52,7 +53,7 @@ To get a complete list of options for H1jet:
 ```
 ./bin/h1jet --help
 ```
-See the User's Manual for more details on all options. 
+See the [User's Manual](https://arxiv.org/abs/2011.04694) for more details on all options. 
 
 The output from H1jet can be easily plotted with the provided helper script. 
 Simply pipe the output from H1jet to the script: 
