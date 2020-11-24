@@ -63,7 +63,7 @@ contains
     write(stderr,'(a)') '  --mt <value>           Top quark mass [GeV], default = 173.5 GeV'
     write(stderr,'(a)') '  --mb <value>           On-shell bottom quark mass [GeV], default = 4.65 GeV'
     write(stderr,'(a)') '  --yt <value>           Top Yukawa factor [GeV], default = 1'
-    write(stderr,'(a)') '  --yb <value>           Bottom Yukawa factor [GeV], default = 1'
+    write(stderr,'(a)') '  --yb <value>           Bottom Yukawa factor [GeV], default = 1 (0 for CP-odd Higgs)'
     write(stderr,'(a)') '  --mtp <value>          Top partner mass [GeV], default = 0 GeV'
     write(stderr,'(a)') '  --ytp <value>          Top partner Yukawa factor, default = 1'
     write(stderr,'(a)') '  --mst <value>          SUSY stop mass [GeV], default = 0 GeV'

@@ -471,14 +471,14 @@ $	pp/p\bar{p} \rightarrow H + \text{jet}$,
 %\end{equation}
 then the following options are relevant: 
 \begin{description}[labelindent=1cm, labelwidth =\widthof{\bfseries9999999999999999999999}, leftmargin = !] 
-	\item[\texttt{-{}-mH <value>}] Higgs mass, $m_H$ [GeV]. \\ Default: 125 GeV. 
-	\item[\texttt{-{}-mW <value>}] W boson mass, $m_W$ [GeV]. \\ Default: 80.385 GeV. 
-	\item[\texttt{-{}-mZ <value>}] Z boson mass, $m_Z$ [GeV]. \\ Default: 91.1876 GeV.
-	\item[\texttt{-{}-mt <value>}] Top quark mass, $m_t$ [GeV]. \\ Default: 173.5 GeV. 
+	\item[\texttt{-{}-mH <value>}] Higgs mass, $m_H$ [GeV]. \\ Default: $125$ GeV. 
+	\item[\texttt{-{}-mW <value>}] W boson mass, $m_W$ [GeV]. \\ Default: $80.385$ GeV. 
+	\item[\texttt{-{}-mZ <value>}] Z boson mass, $m_Z$ [GeV]. \\ Default: $91.1876$ GeV.
+	\item[\texttt{-{}-mt <value>}] Top quark mass, $m_t$ [GeV]. \\ Default: $173.5$ GeV. 
 	\item[\texttt{-{}-mb <value>}] On-shell bottom quark mass, $m_b^{\text{OS}}$ [GeV]. \\ Default: 4.65 GeV. 
-	\item[\texttt{-{}-yt <value>}] Top Yukawa factor, $\kappa_t$ [GeV]. \\ Default: 1. 
+	\item[\texttt{-{}-yt <value>}] Top Yukawa factor, $\kappa_t$ [GeV]. \\ Default: $1$. 
 	\item[\texttt{-{}-yb <value>}] Bottom Yukawa factor, $\kappa_b$
-          [GeV]. \\ Default: 1.
+          [GeV]. \\ Default: $1$ ($0$ for CP-odd Higgs).
 	\item[\texttt{-{}-GF <value>}] Fermi coupling constant, $G_F$ [GeV$^{-2}$]. \\ Default: $0.116638 \times 10^{-4}$ GeV$^{-2}$. 
 \end{description}
 Note that the Yukawa couplings are given by $y_q=\kappa_q (\sqrt 2 m_q / v)$, where $\kappa_q$ are the dimensionless factors specified by the options \texttt{-{}-yt} and \texttt{-{}-yb} above, and $v/\sqrt{2}$ is the vacuum expectation value of the Higgs field. \\ 
@@ -633,9 +633,9 @@ where $m_q$ is the mass of the quark. \\
 The integer value specifying the loop approximations can take the following values: 
 \begin{description}[labelindent=1cm, labelwidth =\widthof{\bfseries9999}, leftmargin = !] 
 	\item[$0$] Small mass limit for fermions. 
-	\item[$1$] Full mass limit for fermions. 
+	\item[$1$] Full mass effects for fermions. 
 	\item[$2$] Large mass limit for fermions. 
-	\item[$3$] Full mass limit for scalars. 
+	\item[$3$] Full mass effects for scalars. 
 	\item[$4$] Large mass limit for scalars. 
 \end{description}
 See Section \ref{sec:loopapprox} for more information on the loop
@@ -721,9 +721,9 @@ Small and large mass limits can be used as approximations for the quarks in the 
 In the file \texttt{input.f90} located in the \texttt{src}-directory, the subroutine \texttt{reset\_iloop\_array} can be found. This subroutine can be used by the user to set the \texttt{iloop\_array}, which is an array specifying the approximation used for each loop particle. The approximations that can be used are: 
 \begin{description}[labelindent=1cm, labelwidth =\widthof{\bfseries9999999999999999999}, leftmargin = !] 
 	\item[\texttt{iloop\_sm\_fermion}] Small mass limit for fermions. 
-	\item[\texttt{iloop\_fm\_fermion}] Full mass limit for fermions. 
+	\item[\texttt{iloop\_fm\_fermion}] Full mass effects for fermions. 
 	\item[\texttt{iloop\_lm\_fermion}] Large mass limit for fermions. 
-	\item[\texttt{iloop\_fm\_scalar}] Full mass limit for scalars. 
+	\item[\texttt{iloop\_fm\_scalar}] Full mass effects for scalars. 
 	\item[\texttt{iloop\_lm\_scalar}] Large mass limit for scalars. 
 \end{description}
 The size of the array must match the number of particles appearing in the loops, which should be checked by the user. Below is an example Fortran code snippet for the \texttt{reset\_iloop\_array} subroutine, which sets the loop approximations for an effective theory with SM top and bottom quarks, and one infinitely heavy top-partner: 
