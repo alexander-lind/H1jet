@@ -277,8 +277,8 @@ partonic collision, we can parameterise momenta as follows
 \begin{equation}
   \label{eq:momenta}
   \begin{split}
-  p_1&=\frac{\sqrt s}{2}(1,0,0,1)\,,\qquad p_3 = p_T(\cosh\eta,1,0,\sinh\eta)\,,\\
-  p_2&=\frac{\sqrt s}{2}(1,0,0,1)\,,\qquad p_X = \left ( \sqrt{m_X^2+p^2_T\cosh^2\eta},-1,0,-\sinh\eta \right ) \,,
+  p_1&=\frac{\sqrt {\hat s}}{2}(1,0,0,1)\,,\qquad p_3 = p_T(\cosh\eta,1,0,\sinh\eta)\,,\\
+  p_2&=\frac{\sqrt {\hat s}}{2}(1,0,0,1)\,,\qquad p_X = \left ( \sqrt{m_X^2+p^2_T\cosh^2\eta},-p_T,0,-p_T \sinh\eta \right ) \,,
   \end{split}
 \end{equation}
 where $\eta$ is the rapidity of parton $p_3$ in the
@@ -298,7 +298,7 @@ follows
 The corresponding hadronic cross section reads
 \begin{equation}
 \label{eq:hadronic-pt}
-  \frac{d\sigma}{dp_T} = \sum_{i,j} \int_0^1 dx_1\, f_{i/p}(x_1,\mu_F)\int_0^1 dx_2 \, f_{i/p}(x_1,\mu_F) \left[\frac{d\hat \sigma_{ij}}{dp_T} \Theta(s-\hat s) \Theta\left(\hat s-p_T-\sqrt{m_X^2+p^2_T}\right)  \right]_{\hat s=x_1x_2 s}\,.
+  \frac{d\sigma}{dp_T} = \sum_{i,j} \int_0^1 dx_1\, f_{i/p}(x_1,\mu_F)\int_0^1 dx_2 \, f_{i/p}(x_1,\mu_F) \left[\frac{d\hat \sigma_{ij}}{dp_T}\, \Theta\left(\hat s-p_T-\sqrt{m_X^2+p^2_T}\right)  \right]_{\hat s=x_1x_2 s}\,.
 \end{equation}
 Since eq.~\eqref{eq:eta-values} gives two monotonic functions of $\hat s$ for $s>p_T+\sqrt{m_X^2+p^2_T}$, varying $\hat s$ in the allowed range spans all possible values of $\eta$ in the range $-\eta_M<\eta<\eta_M$ with
 \begin{equation}
