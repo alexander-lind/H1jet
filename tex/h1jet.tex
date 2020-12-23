@@ -400,9 +400,10 @@ After compilation, \textsc{H1jet} can be run from the \texttt{bin}-directory wit
 \end{lstlisting}
 \textsc{H1jet} will print out a brief summary of the settings
 and parameters used, as well as the Born cross section
-$\sigma_0$, followed by the $d\sigma/dp_{T}$
-and the integrated cross section $\sigma(p_{T})$ with a lower
-bound in $p_T$ for each $p_T$ bin.
+$\sigma_0$, followed by a five-column table. The first three entries of each row specifies the lower end, the midpoint, and the upper end of each $p_T$ bin. The fourth entry is $d\sigma/dp_T$ evaluated at the midpoint of the corresponding $p_T$ bin. The fifth entry is the integrated cross section $\sigma(p_T)$ with a lower bound in $p_T$ corresponding to the lower end of the given $p_T$ bin. We remark that the fundamental object we compute is $d\sigma/dp_T$. The integrated cross section $\sigma(p_T)$ is obtained by summing $d\sigma/dp_T$ over the appropriate range and multiplying by the bin width. Therefore, this procedure gives a reliable estimate of $\sigma(p_T)$ only if the binning is fine enough.
+%followed by the $d\sigma/dp_{T}$
+%and the integrated cross section $\sigma(p_{T})$ with a lower
+%bound in $p_T$ for each $p_T$ bin.
 
       \noindent      
 The following standard UNIX options are available: 
