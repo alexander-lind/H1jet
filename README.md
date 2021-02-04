@@ -9,6 +9,11 @@ git clone https://github.com/alexander-lind/H1jet.git
 
 See the User's Manual for more information, presented in [arXiv:2011.04694](https://arxiv.org/abs/2011.04694) and published in [*Eur. Phys. J. C* **81**, 72 (2021)](https://link.springer.com/article/10.1140%2Fepjc%2Fs10052-020-08815-w). Project website available at [h1jet.hepforge.org](https://h1jet.hepforge.org/). 
 
+H1jet is distributed under the GNU General Public License v3.0 (GPLv3) with the additional request that you cite the following publication if you use it:
+```
+A. Lind & A. Banfi, Eur. Phys. J. C 81, 72 (2021) (arXiv:2011.04694).
+```
+
 ## Dependencies 
 H1jet requires the following external packages: 
  - HOPPET, for QCD DGLAP evolution of PDFs, available [here](https://github.com/gavinsalam/hoppet). 
