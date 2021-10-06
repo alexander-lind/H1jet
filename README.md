@@ -1,6 +1,6 @@
 # H1jet
 A fast and easy-to-use program to compute the differential transverse momentum distributions of one of the final-state particles produced in a
-  <img src="https://render.githubusercontent.com/render/math?math=2\to 2"> process. Written in Fortran 95 and Python 3. 
+  2 → 2 process. Written in Fortran 95 and Python 3. 
 
 The latest version can be obtained with: 
 ```
@@ -51,7 +51,7 @@ To run H1jet from the main directory:
 ```
 ./bin/h1jet 
 ```
-H1jet will output a brief summary of the settings used along with the Born cross section <img src="https://render.githubusercontent.com/render/math?math=\sigma_0">, followed by the <img src="https://render.githubusercontent.com/render/math?math=\mathrm{d}\sigma/\mathrm{d}p_{T}"> and the integrated cross section <img src="https://render.githubusercontent.com/render/math?math=\sigma(p_{T})"> with a lower bound in <img src="https://render.githubusercontent.com/render/math?math=p_T"> for each <img src="https://render.githubusercontent.com/render/math?math=p_T"> bin. 
+H1jet will output a brief summary of the settings used along with the Born cross section σ<sub>0</sub>, followed by the dσ/dp<sub>T</sub> and the integrated cross section σ(p<sub>T</sub>) with a lower bound in p<sub>T</sub> for each p<sub>T</sub> bin.
 
 To get a complete list of options for H1jet: 
 ```
