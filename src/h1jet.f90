@@ -187,8 +187,13 @@ program h1jet
   ! Compute the integrated distribution as a function of ptmin 
   ! and print the result on the screen
   do i = 1, nbins
-    sigma(i) = sum(dsigma_dpt(i:nbins)) * bin_width
-    write(idev,*) binmin(i), binmed(i), binmax(i), dsigma_dpt(i), sigma(i)
+    if (log_val_opt('--log')) then
+      sigma(i) = sum(exp(binmed(i:nbins)) * dsigma_dpt(i:nbins)) * bin_width
+      write(idev,*) exp(binmin(i)), exp(binmed(i)), exp(binmax(i)), dsigma_dpt(i), sigma(i)
+    else
+      sigma(i) = sum(dsigma_dpt(i:nbins)) * bin_width
+      write(idev,*) binmin(i), binmed(i), binmax(i), dsigma_dpt(i), sigma(i)
+    end if
   end do
 
   write(*,*) ! Blank line for nicer output  

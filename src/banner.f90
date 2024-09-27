@@ -14,7 +14,7 @@ module banner
   private
 
   ! Version number 
-  character(len=5), parameter :: version_number = '1.0.0' 
+  character(len=5), parameter :: version_number = '1.0.1'
 
   ! Publically available subroutines  
   public :: print_help_message, print_welcome_banner, print_version_number 
